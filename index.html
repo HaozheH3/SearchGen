@@ -597,7 +597,7 @@ const D3_TW1=`<analysis_reasoning>The prompt requests a labeled CRISPR-Cas9 mech
   <query search_type="web">CRISPR Cas9 sgRNA PAM RuvC HNH mechanism steps molecular components</query>
 </search_queries>`;
 
-const D3_TW2=`<visual_planning>Integrate image search results (Cas9 bilobed structure, DNA double helix, domain color conventions) with web search results (exact molecular nomenclature: sgRNA=crRNA+tracrRNA, PAM 5'-NGG-3', RuvC, HNH, DSB). Structure follows the three steps the user requested: guide RNA binding → PAM recognition → double-strand break.</visual_planning>
+const D3_TW2=`<visual_planning>Integrate two types of references: (1) visual — image search results ground the diagram layout (Cas9 bilobed shape, DNA helix, domain colors, arrow conventions); (2) textual — web search results provide exact molecular nomenclature (sgRNA=crRNA+tracrRNA, PAM 5'-NGG-3', RuvC, HNH, DSB). Both are injected into the refined prompt.</visual_planning>
 
 <borrow_from_references>
   <ref index="visual-1" used="true">
@@ -605,6 +605,9 @@ const D3_TW2=`<visual_planning>Integrate image search results (Cas9 bilobed stru
   </ref>
   <ref index="visual-2" used="true">
     <reference_focus>sgRNA hairpin binding visualization, REC/NUC lobe labeling, domain color coding</reference_focus>
+  </ref>
+  <ref index="web-search" used="true">
+    <reference_focus>Exact molecular nomenclature: sgRNA = crRNA + tracrRNA, PAM sequence (5'-NGG-3'), HNH domain cleaves target strand, RuvC domain cleaves non-target strand, DSB 3 bp upstream of PAM</reference_focus>
   </ref>
 </borrow_from_references>
 
