@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Search-Augmented Visual Generation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#fff;--surface:#f7f7f8;--border:#e5e5ea;--border-lt:#f0f0f0;--text:#1a1a1a;--text2:#6b6b6b;--text3:#999;--accent:#0066ff;--green:#16a34a;--green-lt:#dcfce7;--orange:#ea580c;--orange-lt:#fff7ed;--red:#dc2626;--red-lt:#fef2f2;--blue:#2563eb;--blue-lt:#eff6ff;--gold:#ca8a04;--gold-lt:#fefce8;--purple:#7c3aed}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;line-height:1.6;overflow-x:hidden}
+.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--purple));z-index:100;transition:width .3s linear}
+.hero{text-align:center;padding:80px 40px 60px;max-width:800px;margin:0 auto;opacity:0;transform:translateY(20px);transition:all .8s ease}
+.hero.v{opacity:1;transform:translateY(0)}
+.hero h1{font-size:42px;font-weight:800;letter-spacing:-1.5px;line-height:1.2;margin-bottom:16px}
+.hero h1 .gr{background:linear-gradient(135deg,var(--accent),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:18px;color:var(--text2);max-width:560px;margin:0 auto}
+.demos{max-width:880px;margin:0 auto;padding:0 24px 80px;display:flex;flex-direction:column;gap:64px}
+.sec-label{display:flex;align-items:center;gap:16px;margin-bottom:24px;opacity:0;transform:translateY(10px);transition:all .5s ease}
+.sec-label.v{opacity:1;transform:translateY(0)}
+.sec-label .badge{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;padding:6px 16px;border-radius:100px;white-space:nowrap}
+.sec-label .badge.vis{background:var(--orange-lt);color:var(--orange)}
+.sec-label .badge.skip{background:var(--green-lt);color:var(--green)}
+.sec-label .badge.txt{background:var(--blue-lt);color:var(--blue)}
+.sec-label .line{flex:1;height:1px;background:var(--border)}
+.msg{display:flex;gap:14px;padding:16px 0;opacity:0;transform:translateY(10px);transition:all .5s ease}
+.msg.v{opacity:1;transform:translateY(0)}
+.av{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+.av.u{background:var(--surface);border:1px solid var(--border);color:var(--text2)}
+.av.a{background:var(--text);color:#fff}
+.msg-body{flex:1;min-width:0}
+.sender{font-size:14px;font-weight:700;margin-bottom:4px}
+.msg-text{font-size:15px;color:var(--text);line-height:1.6}
+.trace{display:flex;flex-direction:column;gap:0;margin-bottom:12px}
+.trace-block{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:8px;opacity:0;transform:translateY(8px);transition:all .4s ease}
+.trace-block.v{opacity:1;transform:translateY(0)}
+.trace-header{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--border-lt);font-size:14px;font-weight:600;color:var(--text)}
+.trace-icon{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.trace-icon.think{background:#e8e8ed;color:var(--text2)}
+.trace-icon.tool{background:var(--accent);color:#fff}
+.trace-icon.tool-green{background:var(--green);color:#fff}
+.trace-title{flex:1}
+.trace-dur{font-weight:400;color:var(--text3);font-size:13px;margin-left:auto}
+.trace-body{padding:0 16px;font-size:14px;color:var(--text2);line-height:1.6;max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.16,1,.3,1),padding .3s ease}
+.trace-block.expanded .trace-body{max-height:2000px;padding:14px 16px}
+.typewriter{font-size:13px;line-height:1.6;color:var(--text2);white-space:pre-wrap;font-family:'JetBrains Mono',monospace}
+.typewriter .tw-block{opacity:0;transform:translateY(4px);transition:opacity .35s ease,transform .35s ease;display:block;margin-bottom:8px;padding:6px 10px;border-radius:6px}
+.typewriter .tw-block.shown{opacity:1;transform:translateY(0);animation:blockEmerge 2s ease-out}
+@keyframes blockEmerge{0%{background:rgba(124,58,237,.07)}50%{background:rgba(124,58,237,.03)}100%{background:transparent}}
+.tag-bar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;min-height:22px}
+.tag-pill{font-family:'JetBrains Mono',monospace;font-size:11px;padding:2px 10px;border-radius:6px;background:var(--surface);border:1px solid var(--border-lt);color:var(--text3);opacity:0;transform:scale(.85);transition:all .35s cubic-bezier(.16,1,.3,1)}
+.tag-pill.shown{opacity:1;transform:scale(1)}
+.tag-pill.highlight{background:rgba(124,58,237,.12);border-color:rgba(124,58,237,.3);color:var(--purple);font-weight:600}
+.typewriter .block-content{color:var(--text2);padding-left:8px;border-left:2px solid var(--border-lt)}
+.typewriter .hi-green{color:var(--green);font-weight:600}
+.typewriter .hi-orange{color:var(--orange);font-weight:600}
+.typewriter .hi-blue{color:var(--blue);font-weight:600}
+.typewriter .hi-ref{background:rgba(0,102,255,.08);padding:1px 4px;border-radius:3px;color:var(--accent);font-weight:500}
+
+/* Thinking dots */
+.thinking-dots{color:var(--text3);font-size:16px;letter-spacing:3px;margin-left:6px;display:none}
+.trace-block.thinking-active .thinking-dots{display:inline}
+.thinking-dots span{animation:dotPulse 1.4s infinite;opacity:.15}
+.thinking-dots span:nth-child(1){animation-delay:0s}
+.thinking-dots span:nth-child(2){animation-delay:.2s}
+.thinking-dots span:nth-child(3){animation-delay:.4s}
+.thinking-dots span:nth-child(4){animation-delay:.6s}
+.thinking-dots span:nth-child(5){animation-delay:.8s}
+@keyframes dotPulse{0%,100%{opacity:.15}50%{opacity:.9}}
+/* Gap alert */
+.gap-alert{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:8px;margin-bottom:8px;font-size:14px;opacity:0;transform:translateY(6px);transition:all .4s ease}
+.gap-alert.v{opacity:1;transform:translateY(0)}
+.gap-alert.crit{background:var(--orange-lt);border:1px solid #fed7aa}
+.gap-alert.ok{background:var(--green-lt);border:1px solid #bbf7d0}
+.gap-alert.tcrit{background:var(--blue-lt);border:1px solid #bfdbfe}
+.gap-alert .gi{font-size:16px;flex-shrink:0;margin-top:1px}
+.gap-alert .gt{flex:1}
+.gap-alert .gn{font-weight:700;color:var(--text)}
+.gap-alert .gd{color:var(--text2);margin-top:2px}
+/* Action callout */
+.action-callout{display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:8px;margin-bottom:8px;font-size:14px;font-weight:600;opacity:0;transform:translateY(6px);transition:all .4s ease}
+.action-callout.v{opacity:1;transform:translateY(0)}
+.action-callout.skip-action{background:var(--surface);border:1px solid var(--border);color:var(--text2)}
+.action-callout.mode-action{background:var(--green-lt);border:1px solid #bbf7d0;color:var(--green)}
+.action-callout .action-icon{font-size:16px}
+/* Search */
+.search-bar{display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text2);margin-bottom:10px}
+.img-grid{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+.img-slot{width:100px;height:100px;border-radius:8px;flex-shrink:0;position:relative;overflow:hidden;border:1px solid var(--border)}
+.img-slot .shimmer{position:absolute;inset:0;background:linear-gradient(90deg,var(--surface) 25%,#eee 50%,var(--surface) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;z-index:1}
+@keyframes shimmer{to{background-position:-200% 0}}
+.img-slot img{width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s ease;position:relative;z-index:2}
+.img-slot.loaded img{opacity:1}
+.img-slot.loaded .shimmer{display:none}
+.img-slot.sel{border:2px solid var(--accent);box-shadow:0 0 0 3px rgba(0,102,255,.15)}
+.text-result{padding:12px 16px;background:var(--blue-lt);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:14px;color:var(--text2);line-height:1.6}
+/* Results */
+.comparison{display:flex;gap:16px;opacity:0;transform:translateY(10px);transition:all .6s ease}
+.comparison.v{opacity:1;transform:translateY(0)}
+.res-card{flex:1;border-radius:12px;overflow:hidden;border:1px solid var(--border);position:relative}
+.res-card .res-shimmer{width:100%;aspect-ratio:1;background:linear-gradient(90deg,var(--surface) 25%,#eee 50%,var(--surface) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
+.res-card img{width:100%;display:block;aspect-ratio:1;object-fit:cover;opacity:0;transition:opacity .8s ease}
+.res-card.revealed img{opacity:1}
+.res-card.revealed .res-shimmer{display:none}
+.res-card.bad{border-color:var(--red);border-width:2px}
+.res-card.good{border-color:var(--green);border-width:2px}
+.res-card.gold{border-color:var(--gold);border-width:2px}
+.res-foot{padding:10px 14px;display:flex;justify-content:space-between;align-items:center;background:var(--surface);font-size:13px}
+.res-label{font-weight:600;color:var(--text2)}
+.res-score{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;padding:2px 10px;border-radius:100px}
+.res-score.bad{background:var(--red-lt);color:var(--red)}
+.res-score.good{background:var(--green-lt);color:var(--green)}
+.res-score.gold{background:var(--gold-lt);color:var(--gold)}
+.single-res{max-width:420px;opacity:0;transform:translateY(10px);transition:all .6s ease}
+.single-res.v{opacity:1;transform:translateY(0)}
+.lift{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:15px;font-weight:700;opacity:0;transition:opacity .5s ease}
+.lift.v{opacity:1}
+.lift .la{color:var(--green);font-size:18px}.lift .lt{color:var(--green)}.lift .ld{color:var(--text2);font-weight:400}
+.corrections{display:flex;gap:20px;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:14px;opacity:0;transition:opacity .5s ease}
+.corrections.v{opacity:1}
+.cw{color:var(--red);text-decoration:line-through}.ca{color:var(--text3)}.cr{color:var(--green);font-weight:600}
+.metrics{display:flex;gap:12px;margin-top:10px;opacity:0;transition:opacity .5s ease}
+.metrics.v{opacity:1}
+.mchip{display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--surface);border-radius:100px;font-size:13px;font-weight:600}
+.mchip .mv{color:var(--green);font-family:'JetBrains Mono',monospace}.mchip .mv.gv{color:var(--gold)}.mchip .ml{color:var(--text2);font-weight:400}
+.caption{font-size:14px;color:var(--text3);font-style:italic;margin-top:10px;opacity:0;transition:opacity .5s ease}
+.caption.v{opacity:1}
+.outro{max-width:880px;margin:0 auto;padding:40px 24px 100px;text-align:center;opacity:0;transform:translateY(20px);transition:all .8s ease}
+.outro.v{opacity:1;transform:translateY(0)}
+.outro h2{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:var(--text3);margin-bottom:32px}
+.stat-row{display:flex;gap:24px;justify-content:center;margin-bottom:32px}
+.sbox{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 40px;min-width:180px;text-align:center;opacity:0;transform:translateY(16px) scale(.95);transition:all .6s cubic-bezier(.16,1,.3,1)}
+.sbox.v{opacity:1;transform:translateY(0) scale(1)}
+.sbox .sn{font-size:40px;font-weight:800;font-family:'JetBrains Mono',monospace;line-height:1}
+.sbox .sn.green{color:var(--green)}.sbox .sn.orange{color:var(--orange)}.sbox .sn.blue{color:var(--blue)}
+.sbox .sl{font-size:14px;color:var(--text2);margin-top:8px}
+.outro .tag{font-size:22px;font-weight:600;opacity:0;transition:opacity .6s ease}
+.outro .tag.v{opacity:1}
+.outro .tag em{font-style:normal;color:var(--green)}
+</style>
+</head>
+<body>
+<div class="progress" id="prog"></div>
+<div class="hero" id="hero">
+  <h1>What if image generators could <span class="gr">search the internet</span> before drawing?</h1>
+  <p>Three scenarios showing how an adaptive pipeline decides when to search — and when not to.</p>
+</div>
+<div class="demos">
+
+<!-- ===== DEMO 1: VISUAL SEARCH — Hayao Miyazaki ===== -->
+<div>
+  <div class="sec-label" id="d1lab"><span class="badge vis">Example 1 · Visual Search</span><span class="line"></span></div>
+  <div class="msg" id="d1u"><div class="av u">U</div><div class="msg-body"><div class="sender">You</div><div class="msg-text"><strong>宮崎駿</strong> (Hayao Miyazaki, Japanese animation director) sitting at his animation desk in Studio Ghibli, surrounded by hand-drawn sketches and watercolor palettes, warm afternoon light streaming through the window.</div></div></div>
+  <div class="msg" id="d1a"><div class="av a">S</div><div class="msg-body">
+    <div class="trace">
+      <div class="trace-block" id="d1t1">
+        <div class="trace-header"><div class="trace-icon think">💭</div><div class="trace-title">Thinking: Analyzing User Request<span class="thinking-dots"><span>·</span><span>·</span><span>·</span><span>·</span><span>·</span></span></div><div class="trace-dur" id="d1dur1"></div></div>
+        <div class="trace-body"><div class="typewriter" id="d1tw1"></div></div>
+      </div>
+      <div class="gap-alert crit" id="d1gap">
+        <span class="gi">⚠️</span>
+        <div class="gt"><div class="gn">Entity Knowledge Gap: "宮崎駿 (Hayao Miyazaki)"</div><div class="gd">World-famous director, but generators frequently hallucinate his appearance — producing a generic elderly Japanese man instead of his distinctive features (white hair, round glasses, white beard, apron). Image search required.</div></div>
+      </div>
+      <div class="trace-block" id="d1t2">
+        <div class="trace-header"><div class="trace-icon tool">🔧</div><div class="trace-title">Tool: Image Search</div><div class="trace-dur">3.4s</div></div>
+        <div class="trace-body">
+          <div class="search-bar"><span>🔍</span> "宮崎駿 Hayao Miyazaki portrait photo Studio Ghibli"</div>
+          <div class="img-grid" id="d1grid">
+            <div class="img-slot" id="d1img0"><div class="shimmer"></div><img src="assets/miya_1.jpg" alt="r1"></div>
+            <div class="img-slot" id="d1img1"><div class="shimmer"></div><img src="assets/miya_2.jpg" alt="r2"></div>
+            <div class="img-slot" id="d1img2"><div class="shimmer"></div><img src="assets/miya_3.png" alt="r3"></div>
+            <div class="img-slot" id="d1img3"><div class="shimmer"></div><img src="assets/miya_4.png" alt="r4"></div>
+            <div class="img-slot" id="d1img4"><div class="shimmer"></div><img src="assets/miya_5.jpg" alt="r5"></div>
+          </div>
+        </div>
+      </div>
+      <div class="trace-block" id="d1t3">
+        <div class="trace-header"><div class="trace-icon think">💭</div><div class="trace-title">Thinking: Selecting Best Reference<span class="thinking-dots"><span>·</span><span>·</span><span>·</span><span>·</span><span>·</span></span></div><div class="trace-dur" id="d1dur3"></div></div>
+        <div class="trace-body"><div class="typewriter" id="d1tw2"></div></div>
+      </div>
+      <div class="gap-alert crit" id="d1sel" style="background:var(--blue-lt);border-color:#bfdbfe">
+        <span class="gi">📌</span>
+        <div class="gt"><div class="gn">Selected: Image 1 (portrait)</div><div class="gd">Best facial reference — Miyazaki's thick round glasses, full white beard, and white hair are clearly visible. Directly grounds the critical EIK gap.</div></div>
+      </div>
+      <div class="trace-block" id="d1t4">
+        <div class="trace-header"><div class="trace-icon think">💭</div><div class="trace-title">Thinking: Integrating Visual Reference with Prompt<span class="thinking-dots"><span>·</span><span>·</span><span>·</span><span>·</span><span>·</span></span></div><div class="trace-dur" id="d1dur4"></div></div>
+        <div class="trace-body"><div class="typewriter" id="d1tw3"></div></div>
+      </div>
+      <div class="action-callout mode-action" id="d1refine" style="background:var(--green-lt);border-color:#bbf7d0">
+        <span class="action-icon">📝</span> Refined prompt ready — facial features, clothing, and desk environment extracted from reference images
+      </div>
+      <div class="action-callout mode-action" id="d1vref" style="background:var(--blue-lt);border-color:#bfdbfe;color:var(--blue)">
+        <span class="action-icon">🖼</span> 1 visual reference loaded — Miyazaki portrait (index 0) conditioned for facial accuracy
+      </div>
+      <div class="trace-block" id="d1t5">
+        <div class="trace-header"><div class="trace-icon tool-green">🖼</div><div class="trace-title">Tool: Image Generator</div><div class="trace-dur">28.8s</div></div>
+      </div>
+      <div class="action-callout mode-action" id="d1mode"><span class="action-icon">✦</span> Mode: I2I — reference photo conditions the generation for facial accuracy</div>
+    </div>
+    <div class="comparison" id="d1res">
+      <div class="res-card bad" id="d1rc0"><div class="res-shimmer"></div><img src="assets/demo1_none.png" alt="none"><div class="res-foot"><span class="res-label">Without Search</span></div></div>
+      <div class="res-card good" id="d1rc1"><div class="res-shimmer"></div><img src="assets/demo1_oracle.png" alt="oracle"><div class="res-foot"><span class="res-label">With Visual Search</span></div></div>
+    </div>
+    <div class="lift" id="d1lift"><span class="la">↑</span><span class="lt">+1.9</span><span class="ld">— the model saw what the director actually looks like</span></div>
+  </div></div>
+</div>
+
+<!-- ===== DEMO 2: NO SEARCH — Van Gogh Starry Night ===== -->
+<div>
+  <div class="sec-label" id="d2lab"><span class="badge skip">Example 2 · No Search Needed</span><span class="line"></span></div>
+  <div class="msg" id="d2u"><div class="av u">U</div><div class="msg-body"><div class="sender">You</div><div class="msg-text">A modern city skyline reimagined in <strong>Vincent van Gogh's Starry Night</strong> style — swirling cobalt sky, thick impasto brushstrokes, glowing yellow street lights reflected in a river below.</div></div></div>
+  <div class="msg" id="d2a"><div class="av a">S</div><div class="msg-body">
+    <div class="trace">
+      <div class="trace-block" id="d2t1">
+        <div class="trace-header"><div class="trace-icon think">💭</div><div class="trace-title">Thinking: Analyzing User Request<span class="thinking-dots"><span>·</span><span>·</span><span>·</span><span>·</span><span>·</span></span></div><div class="trace-dur" id="d2dur1"></div></div>
+        <div class="trace-body"><div class="typewriter" id="d2tw1"></div></div>
+      </div>
+      <div class="gap-alert ok" id="d2gap">
+        <span class="gi">✓</span>
+        <div class="gt"><div class="gn">All gaps below search threshold</div><div class="gd">2 gaps identified (Starry Night visual style, impasto technique) — both rated moderate severity. All elements are core training data. Search skipped.</div></div>
+      </div>
+      <div class="action-callout skip-action" id="d2skip"><span class="action-icon">⏭</span> Search skipped — "Starry Night" style is core training knowledge for all image generators</div>
+      <div class="trace-block" id="d2t2">
+        <div class="trace-header"><div class="trace-icon think">💭</div><div class="trace-title">Thinking: Composing Prompt from Common Knowledge<span class="thinking-dots"><span>·</span><span>·</span><span>·</span><span>·</span><span>·</span></span></div><div class="trace-dur" id="d2dur2"></div></div>
+        <div class="trace-body"><div class="typewriter" id="d2tw2"></div></div>
+      </div>
+      <div class="action-callout mode-action" id="d2refine" style="background:var(--green-lt);border-color:#bbf7d0">
+        <span class="action-icon">📝</span> Refined prompt ready — composed from model's inherent knowledge of Starry Night visual language
+      </div>
+      <div class="trace-block" id="d2t3">
+        <div class="trace-header"><div class="trace-icon tool-green">🖼</div><div class="trace-title">Tool: Image Generator</div><div class="trace-dur">12.1s</div></div>
+      </div>
+      <div class="action-callout mode-action" id="d2mode"><span class="action-icon">✦</span> Mode: T2I — direct generation, no references needed, zero search overhead</div>
+    </div>
+    <div class="single-res" id="d2res">
+      <div class="res-card gold" id="d2rc0"><div class="res-shimmer"></div><img src="assets/demo2_result.png" alt="result"><div class="res-foot"><span class="res-label">Generated Image</span></div></div>
+    </div>
+    <div class="metrics" id="d2met">
+      <div class="mchip"><span class="mv">0</span><span class="ml">Search calls</span></div>
+      <div class="mchip"><span class="mv">0s</span><span class="ml">Extra latency</span></div>
+    </div>
+    <div class="caption" id="d2cap">When the model already knows enough, the smartest move is to step aside.</div>
+  </div></div>
+</div>
+
+<!-- ===== DEMO 3: TEXT + IMAGE SEARCH — CRISPR-Cas9 ===== -->
+<div>
+  <div class="sec-label" id="d3lab"><span class="badge txt">Example 3 · Image + Text Search</span><span class="line"></span></div>
+  <div class="msg" id="d3u"><div class="av u">U</div><div class="msg-body"><div class="sender">You</div><div class="msg-text">A labeled diagram of the <strong>CRISPR-Cas9 gene editing mechanism</strong> showing guide RNA binding, PAM site recognition, and double-strand DNA break — annotated with correct molecular component names.</div></div></div>
+  <div class="msg" id="d3a"><div class="av a">S</div><div class="msg-body">
+    <div class="trace">
+      <div class="trace-block" id="d3t1">
+        <div class="trace-header"><div class="trace-icon think">💭</div><div class="trace-title">Thinking: Analyzing User Request<span class="thinking-dots"><span>·</span><span>·</span><span>·</span><span>·</span><span>·</span></span></div><div class="trace-dur" id="d3dur1"></div></div>
+        <div class="trace-body"><div class="typewriter" id="d3tw1"></div></div>
+      </div>
+      <div class="gap-alert tcrit" id="d3gap">
+        <span class="gi">⚠️</span>
+        <div class="gt"><div class="gn">Factual Knowledge Gap: Molecular Component Names</div><div class="gd">CRISPR-Cas9 labels (sgRNA, tracrRNA, crRNA, PAM sequence, RuvC/HNH nuclease domains) must be spelled correctly and placed accurately. Models hallucinate these. Text + image search required.</div></div>
+      </div>
+      <div class="trace-block" id="d3t2">
+        <div class="trace-header"><div class="trace-icon tool">🔧</div><div class="trace-title">Tool: Image Search</div><div class="trace-dur">3.1s</div></div>
+        <div class="trace-body">
+          <div class="search-bar"><span>🔍</span> "CRISPR Cas9 gene editing mechanism diagram labeled scientific illustration"</div>
+          <div class="img-grid" id="d3grid">
+            <div class="img-slot" id="d3img0"><div class="shimmer"></div><img src="assets/crispr_1.jpg" alt="r1"></div>
+            <div class="img-slot" id="d3img1"><div class="shimmer"></div><img src="assets/crispr_2.jpg" alt="r2"></div>
+            <div class="img-slot" id="d3img2"><div class="shimmer"></div><img src="assets/crispr_3.jpg" alt="r3"></div>
+            <div class="img-slot" id="d3img3"><div class="shimmer"></div><img src="assets/crispr_4.jpg" alt="r4"></div>
+          </div>
+        </div>
+      </div>
+      <div class="trace-block" id="d3t3">
+        <div class="trace-header"><div class="trace-icon tool">🔧</div><div class="trace-title">Tool: Web Search</div><div class="trace-dur">2.4s</div></div>
+        <div class="trace-body">
+          <div class="search-bar"><span>🔍</span> "CRISPR Cas9 sgRNA PAM RuvC HNH mechanism steps molecular components"</div>
+          <div class="text-result">The CRISPR-Cas9 system uses a <strong>single guide RNA (sgRNA)</strong> — a fusion of crRNA and tracrRNA — to direct the <strong>Cas9 endonuclease</strong> to a target DNA sequence adjacent to a <strong>PAM (5'-NGG-3')</strong> motif. Cas9 unwinds the DNA and its <strong>RuvC</strong> and <strong>HNH</strong> nuclease domains each cleave one strand, creating a <strong>double-strand break (DSB)</strong> 3bp upstream of the PAM.</div>
+        </div>
+      </div>
+      <div class="trace-block" id="d3t4">
+        <div class="trace-header"><div class="trace-icon think">💭</div><div class="trace-title">Thinking: Integrating Multimodal Search Results<span class="thinking-dots"><span>·</span><span>·</span><span>·</span><span>·</span><span>·</span></span></div><div class="trace-dur" id="d3dur4"></div></div>
+        <div class="trace-body"><div class="typewriter" id="d3tw2"></div></div>
+      </div>
+      <div class="gap-alert tcrit" id="d3integ" style="background:var(--blue-lt);border-color:#bfdbfe">
+        <span class="gi">✦</span>
+        <div class="gt"><div class="gn">Prompt enriched with multimodal knowledge</div><div class="gd">Visual layout from diagram references + factual labels (sgRNA, PAM, RuvC, HNH, DSB) from web search → injected into generation prompt.</div></div>
+      </div>
+      <div class="action-callout mode-action" id="d3vref" style="background:var(--blue-lt);border-color:#bfdbfe;color:var(--blue)">
+        <span class="action-icon">🖼</span> Visual references ready — 2 CRISPR diagrams loaded as layout guides
+      </div>
+      <div class="trace-block" id="d3t5">
+        <div class="trace-header"><div class="trace-icon tool-green">🖼</div><div class="trace-title">Tool: Image Generator</div><div class="trace-dur">46.8s</div></div>
+      </div>
+      <div class="action-callout mode-action" id="d3mode"><span class="action-icon">✦</span> Mode: I2I + Text — diagram layout from image refs, labels from web search</div>
+    </div>
+    <div class="comparison" id="d3res">
+      <div class="res-card bad" id="d3rc0"><div class="res-shimmer"></div><img src="assets/demo3_none.png" alt="none"><div class="res-foot"><span class="res-label">Without Search</span></div></div>
+      <div class="res-card good" id="d3rc1"><div class="res-shimmer"></div><img src="assets/demo3_oracle.png" alt="oracle"><div class="res-foot"><span class="res-label">With Image + Text Search</span></div></div>
+    </div>
+    <div class="lift" id="d3lift"><span class="la">↑</span><span class="lt">4× improvement</span><span class="ld">— search fixed the labels and the molecular facts</span></div>
+  </div></div>
+</div>
+</div>
+
+<div class="outro" id="outro">
+  <h2>Evaluated on 647 real-world prompts</h2>
+  <div class="stat-row">
+    <div class="sbox" id="s0"><div class="sn green" data-t="33">0%</div><div class="sl">Overall Quality</div></div>
+    <div class="sbox" id="s1"><div class="sn orange" data-t="69">0%</div><div class="sl">Visual Accuracy</div></div>
+    <div class="sbox" id="s2"><div class="sn blue" data-t="67">0%</div><div class="sl">Factual Accuracy</div></div>
+  </div>
+  <div class="tag" id="otag">Searches when needed. <em>Skips when not.</em></div>
+</div>
+
+<script>
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function stylizeContent(s) {
+  s = s.replace(/critical/g, '<span class="hi-orange">critical</span>');
+  s = s.replace(/important/g, '<span class="hi-blue">important</span>');
+  s = s.replace(/moderate/g, '<span style="color:var(--text3)">moderate</span>');
+  s = s.replace(/PASS_HIGH/g, '<span class="hi-green">PASS_HIGH</span>');
+  s = s.replace(/WELL-KNOWN/g, '<span class="hi-green">WELL-KNOWN</span>');
+  s = s.replace(/search_type="image"/g, 'search_type=<span class="hi-orange">"image"</span>');
+  s = s.replace(/search_type="web"/g, 'search_type=<span class="hi-blue">"web"</span>');
+  s = s.replace(/\(refer to Reference Image[^)]*\)/g, '<span class="hi-ref">$&</span>');
+  return s;
+}
+
+function parseBlocks(text) {
+  var blocks = [];
+  var lines = text.split('\n');
+  var current = null;
+  var buffer = [];
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i];
+    if (!current) {
+      var openMatch = line.match(/^\s*<([\w_]+)[\s>\/]/);
+      var jsonOpen = line.match(/^\{/);
+      if (openMatch) {
+        if (buffer.length) { blocks.push({tag: null, content: buffer.join('\n')}); buffer = []; }
+        current = openMatch[1];
+        buffer.push(line);
+        if (/\/>\s*$/.test(line)) {
+          blocks.push({tag: current, content: buffer.join('\n')});
+          current = null; buffer = [];
+        } else if (new RegExp('</' + current + '>').test(line)) {
+          blocks.push({tag: current, content: buffer.join('\n')});
+          current = null; buffer = [];
+        }
+      } else if (jsonOpen) {
+        if (buffer.length) { blocks.push({tag: null, content: buffer.join('\n')}); buffer = []; }
+        current = '{}';
+        buffer.push(line);
+        if (/\}/.test(line)) { blocks.push({tag: 'json', content: buffer.join('\n')}); current = null; buffer = []; }
+      } else {
+        buffer.push(line);
+      }
+    } else {
+      buffer.push(line);
+      var closed = current === '{}' ? /\}/.test(line) : new RegExp('</' + current + '>').test(line);
+      if (closed) {
+        blocks.push({tag: current === '{}' ? 'json' : current, content: buffer.join('\n')});
+        current = null; buffer = [];
+      }
+    }
+  }
+  if (buffer.length) blocks.push({tag: current || null, content: buffer.join('\n')});
+  return blocks.filter(function(b) { return b.content.trim(); });
+}
+
+function typeHtml(el, html, cpt, ms, cb) {
+  var parts = [], i = 0;
+  while (i < html.length) {
+    if (html[i] === '<') {
+      var e = html.indexOf('>', i);
+      if (e !== -1) { parts.push(html.substring(i, e + 1)); i = e + 1; }
+      else { parts.push(html[i]); i++; }
+    } else if (html[i] === '&') {
+      var s = html.indexOf(';', i);
+      if (s !== -1 && s - i < 8) { parts.push(html.substring(i, s + 1)); i = s + 1; }
+      else { parts.push(html[i]); i++; }
+    } else {
+      parts.push(html[i]); i++;
+    }
+  }
+  var pi = 0, built = '';
+  (function tick() {
+    var c = 0;
+    while (pi < parts.length && c < cpt) {
+      built += parts[pi];
+      if (parts[pi][0] !== '<') c++;
+      pi++;
+    }
+    el.innerHTML = built;
+    if (pi < parts.length) setTimeout(tick, ms);
+    else if (cb) cb();
+  })();
+}
+
+function typewrite(elId, text, speed, cb) {
+  var el = document.getElementById(elId);
+  var blocks = parseBlocks(text);
+  var tagged = blocks.filter(function(b) { return b.tag && b.tag !== 'json'; });
+  if (tagged.length === 1) {
+    var parent = tagged[0];
+    var pLines = parent.content.split('\n');
+    var innerLines = [];
+    var started = false;
+    for (var j = 0; j < pLines.length; j++) {
+      var pl = pLines[j];
+      if (!started && new RegExp('^\\s*<' + parent.tag + '[\\s>]').test(pl)) {
+        started = true;
+      } else if (started && new RegExp('</' + parent.tag + '>').test(pl)) {
+        break;
+      } else if (started) {
+        innerLines.push(pl);
+      }
+    }
+    var childBlocks = parseBlocks(innerLines.join('\n'));
+    var childTagged = childBlocks.filter(function(b) { return b.tag && b.tag !== 'json'; });
+    if (childTagged.length > 1) blocks = childBlocks;
+  }
+  tlPause();
+  el.innerHTML = '';
+  var tagBar = document.createElement('div');
+  tagBar.className = 'tag-bar';
+  var tagPills = [];
+  var tagsSeen = {};
+  blocks.forEach(function(b) {
+    if (b.tag && b.tag !== 'json' && !tagsSeen[b.tag]) {
+      tagsSeen[b.tag] = true;
+      var pill = document.createElement('span');
+      pill.className = 'tag-pill';
+      pill.textContent = b.tag;
+      tagBar.appendChild(pill);
+      tagPills.push({pill: pill, tag: b.tag, revealed: false});
+    }
+  });
+  if (tagPills.length) el.appendChild(tagBar);
+  var blockData = blocks.map(function(b) {
+    var div = document.createElement('div');
+    div.className = 'tw-block';
+    var contentHtml = stylizeContent(escHtml(b.content)).replace(/\n/g, '<br>');
+    var cd = document.createElement('div');
+    cd.className = 'block-content';
+    div.appendChild(cd);
+    el.appendChild(div);
+    return {el: div, cd: cd, html: contentHtml, tag: b.tag};
+  });
+  var bi = 0;
+  function next() {
+    if (bi >= blockData.length) { tlResume(); if (cb) cb(); return; }
+    var bd = blockData[bi];
+    bd.el.classList.add('shown');
+    bd.el.scrollIntoView({behavior:'smooth', block:'center'});
+    if (bd.tag) {
+      for (var i = 0; i < tagPills.length; i++) {
+        if (tagPills[i].tag === bd.tag && !tagPills[i].revealed) {
+          tagPills[i].revealed = true;
+          tagPills[i].pill.classList.add('shown', 'highlight');
+          (function(p) { setTimeout(function() { p.classList.remove('highlight'); }, 1200); })(tagPills[i].pill);
+          break;
+        }
+      }
+    }
+    typeHtml(bd.cd, bd.html, 3, 10, function() {
+      bi++;
+      setTimeout(next, 180);
+    });
+  }
+  next();
+}
+const tl=[]; let t=0;
+var tlPaused=false,tlPauseStart=0,tlOffset=0;
+function tlPause(){tlPaused=true;tlPauseStart=performance.now()}
+function tlResume(){if(tlPaused){tlOffset+=performance.now()-tlPauseStart;tlPaused=false}}
+function at(d,fn){t+=d;tl.push({time:t,fn})}
+function show(id){document.getElementById(id).classList.add('v')}
+function showExpand(id){const e=document.getElementById(id);e.classList.add('v','expanded')}
+function startThinking(id){document.getElementById(id).classList.add('thinking-active')}
+function stopThinking(id){document.getElementById(id).classList.remove('thinking-active')}
+function loadImg(id,dl){setTimeout(()=>document.getElementById(id).classList.add('loaded'),dl)}
+function selectSlot(id){document.getElementById(id).classList.add('sel')}
+function revealResult(id,dl){setTimeout(()=>document.getElementById(id).classList.add('revealed'),dl)}
+function countUp(el,target){const s=performance.now();(function f(n){const p=Math.min((n-s)/800,1);el.textContent='+'+Math.round(target*(1-Math.pow(1-p,3)))+'%';if(p<1)requestAnimationFrame(f)})(performance.now())}
+function scrollTo(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'})}
+
+const TOTAL=85000;
+
+const D1_TW1=`<analysis_reasoning>The prompt centers on 宮崎駿 (Hayao Miyazaki), the Japanese animation director. His name recognition is near-universal, but his visual appearance is underrepresented in training data compared to Western directors. Without visual grounding, models hallucinate a generic elderly Japanese man.</analysis_reasoning>
+
+<knowledge_groups>
+  <gap>
+    <entity>宮崎駿 (Hayao Miyazaki) facial likeness</entity>
+    <category>EIK</category>
+    <search_type>image</search_type>
+    <severity>critical</severity>
+    <reasoning>Miyazaki has distinctive features — thick round black-framed glasses, full white beard, swept-back white hair, beige apron — but generators conflate him with generic elderly Japanese men.</reasoning>
+    <suggested_search>宮崎駿 Hayao Miyazaki portrait photo Studio Ghibli</suggested_search>
+  </gap>
+  <gap>
+    <entity>Studio Ghibli animation workspace</entity>
+    <category>EIK</category>
+    <search_type>image</search_type>
+    <severity>moderate</severity>
+    <reasoning>The cluttered-desk aesthetic of Ghibli's hand-drawn animation studio is distinct from generic art studio imagery.</reasoning>
+    <suggested_search>Miyazaki animation desk workspace Studio Ghibli documentary</suggested_search>
+  </gap>
+</knowledge_groups>
+
+<search_queries>
+  <query search_type="image">宮崎駿 Hayao Miyazaki portrait photo Studio Ghibli</query>
+</search_queries>`;
+
+const D1_TW2=`<reference_selection query="宮崎駿 Hayao Miyazaki portrait photo">
+  <identified_knowledge_gaps>The model lacks specific knowledge of Miyazaki's distinctive appearance — the combination of thick round glasses, full white beard, and his signature beige canvas apron that distinguishes him from generic elderly Japanese men.</identified_knowledge_gaps>
+  <candidates>
+    <image index="0" title="Getty Images / portrait" source="gettyimages.com">Clear frontal portrait, glasses and beard well-lit.</image>
+    <image index="1" title="NHK Documentary / at desk" source="nhk.or.jp">At animation desk wearing apron. Natural light. Shows face AND workspace.</image>
+    <image index="2" title="Studio wide shot" source="ghibli.jp">Interior of Ghibli studio — environment but face too small.</image>
+    <image index="3" title="Digital illustration portrait" source="artstreet.com">Artistic rendering — confirms distinctive look.</image>
+    <image index="4" title="Press photo / event" source="gettyimages.com">Similar angle, captures beard and glasses.</image>
+  </candidates>
+  <selected_index>0</selected_index>
+  <gap_filling_reasoning>Image at index 0 provides the best facial reference: Miyazaki's thick round black-framed glasses, full white beard, and white hair are clearly visible. Directly grounds the critical EIK gap.</gap_filling_reasoning>
+</reference_selection>`;
+
+const D1_TW3=`<visual_planning>Utilize Reference Image 1 (Miyazaki portrait at desk) to ground facial structure, glasses, beard, clothing, and workspace context. The reference provides both identity grounding and environmental setting in a single image.</visual_planning>
+
+<borrow_from_references>
+  <ref index="visual-1" used="true">
+    <reference_focus>Facial likeness (round glasses, white beard, aged skin), clothing (beige apron, dark sweater), environment (paper-covered desk, pencils, natural window light)</reference_focus>
+  </ref>
+</borrow_from_references>
+
+<combine_strategy>Inject reference-grounded physical description into the refined prompt. Replace vague original with precise visual anchors for face, clothing, and workspace drawn directly from the reference image.</combine_strategy>
+
+<refined_prompt>A photorealistic portrait of Hayao Miyazaki (宮崎駿) sitting at his animation desk in Studio Ghibli (refer to Reference Image 1 for facial likeness and environment). He is an elderly Japanese man with thick round black-framed glasses, a full white beard, and swept-back white hair. He wears a beige canvas work apron over a dark navy sweater. The desk is covered with hand-drawn animation sketches, watercolor palettes, and colored pencils. Warm afternoon sunlight streams through a window to his left. Photorealistic, natural lighting, shallow depth of field.</refined_prompt>`;
+
+const D2_TW1=`<analysis_reasoning>The prompt requests a city skyline in Van Gogh's Starry Night style. Starry Night is the #1 most reproduced painting in Western art — all generators are trained on hundreds of thousands of reproductions and style transfers. Impasto technique, cobalt palette, swirling spirals are core training data. No entity requires external grounding.</analysis_reasoning>
+
+<knowledge_groups>
+  <gap>
+    <entity>The Starry Night (1889) visual style</entity>
+    <category>EIK</category>
+    <search_type>image</search_type>
+    <severity>moderate</severity>
+    <reasoning>One of the most reproduced paintings in Western art. Swirling spirals, cobalt/ultramarine palette, thick impasto texture are core training data for all major generators.</reasoning>
+  </gap>
+  <gap>
+    <entity>Post-Impressionist impasto technique</entity>
+    <category>EIK</category>
+    <search_type>image</search_type>
+    <severity>moderate</severity>
+    <reasoning>Thick paint ridges and visible brushwork are among the most common style descriptors in art-generation training data. No visual reference needed.</reasoning>
+  </gap>
+</knowledge_groups>
+
+<search_justification>All knowledge_groups rated moderate — visual elements are core training data. Search would add ~5s latency with no quality gain. Proceed to T2I generation directly.</search_justification>`;
+
+const D2_TW2=`<visual_planning>No reference images — search skipped. Rely on the model's inherent knowledge of Starry Night visual language. Explicitly specify swirling spiral patterns, cobalt/ultramarine palette, thick impasto texture with visible ridges, and cadmium yellow light points.</visual_planning>
+
+<borrow_from_references></borrow_from_references>
+
+<combine_strategy>Enrich the user prompt with precise Post-Impressionist vocabulary derived from the model's knowledge of the original painting. Substitute the generic 'city skyline' with the Starry Night-specific compositional logic: cypress trees → skyscrapers, swirling sky → cobalt impasto spirals.</combine_strategy>
+
+<refined_prompt>A modern metropolitan city skyline reimagined in Vincent van Gogh's The Starry Night (1889) painting style. The sky dominates two-thirds of the composition with swirling cobalt blue and ultramarine spiral patterns, rendered in thick impasto brushstrokes with visible paint ridges. Tall glass skyscrapers replace the original cypress trees as dark silhouettes against the turbulent sky. Glowing cadmium yellow street lamps and lit windows create warm points of light. A river in the lower foreground reflects the swirling sky in broken, shimmering brushstrokes. Oil on canvas texture throughout. Post-Impressionist palette and energy.</refined_prompt>`;
+
+const D3_TW1=`<analysis_reasoning>The prompt requests a labeled CRISPR-Cas9 mechanism diagram. Dual gap: (1) Visual — scientific diagrams use strict conventions (Cas9 bilobed, DNA double helix with R-loop, cleavage arrows) that models get wrong without reference. (2) Factual — molecular labels (sgRNA, PAM 5'-NGG-3', RuvC, HNH, DSB) must be exact; models misspell and scramble these.</analysis_reasoning>
+
+<knowledge_groups>
+  <gap>
+    <entity>CRISPR-Cas9 diagram visual conventions</entity>
+    <category>CSV</category>
+    <search_type>image</search_type>
+    <severity>important</severity>
+    <reasoning>Standard molecular biology illustrations use specific visual idioms — Cas9 as bilobed shape, DNA as double helix with unwound R-loop, directional arrows for cleavage sites. Generator needs layout reference.</reasoning>
+    <suggested_search>CRISPR Cas9 gene editing mechanism diagram labeled scientific illustration</suggested_search>
+  </gap>
+  <gap>
+    <entity>CRISPR molecular component nomenclature</entity>
+    <category>FHA</category>
+    <search_type>web</search_type>
+    <severity>critical</severity>
+    <reasoning>Exact terms required — sgRNA (crRNA + tracrRNA fusion), PAM (5'-NGG-3'), RuvC and HNH nuclease domains, DSB 3bp upstream of PAM. Models hallucinate these labels.</reasoning>
+    <suggested_search>CRISPR Cas9 sgRNA PAM RuvC HNH mechanism steps molecular components</suggested_search>
+  </gap>
+</knowledge_groups>
+
+<search_queries>
+  <query search_type="image">CRISPR Cas9 gene editing mechanism diagram labeled scientific illustration</query>
+  <query search_type="web">CRISPR Cas9 sgRNA PAM RuvC HNH mechanism steps molecular components</query>
+</search_queries>`;
+
+const D3_TW2=`<visual_planning>Integrate image search results (Cas9 bilobed structure, DNA double helix, domain color conventions) with web search results (exact molecular nomenclature: sgRNA=crRNA+tracrRNA, PAM 5'-NGG-3', RuvC, HNH, DSB). Structure follows the three steps the user requested: guide RNA binding → PAM recognition → double-strand break.</visual_planning>
+
+<borrow_from_references>
+  <ref index="visual-1" used="true">
+    <reference_focus>Overall diagram layout, Cas9 protein bilobed shape, DNA double helix representation, cleavage arrow conventions</reference_focus>
+  </ref>
+  <ref index="visual-2" used="true">
+    <reference_focus>sgRNA hairpin binding visualization, REC/NUC lobe labeling, domain color coding</reference_focus>
+  </ref>
+</borrow_from_references>
+
+<combine_strategy>Keep the user's three-step structure (guide RNA binding, PAM recognition, DSB) as the backbone. Inject exact molecular names from web search into each step as explicit labels, preventing hallucinated or misspelled component names. Reference image style grounds the visual layout conventions.</combine_strategy>
+
+<refined_prompt>A clean labeled scientific diagram of the CRISPR-Cas9 gene editing mechanism, in the style of a textbook illustration (refer to Reference Images for layout and visual conventions). Show three key steps left to right: (1) Guide RNA binding — sgRNA (single guide RNA, composed of crRNA + tracrRNA scaffold) bound to Cas9 protein. Label: sgRNA, Cas9, crRNA, tracrRNA. (2) PAM site recognition — Cas9-sgRNA complex locates the PAM sequence (5'-NGG-3') on the non-target DNA strand. Show DNA double helix with the PAM site highlighted. Label: PAM (5'-NGG-3'), target strand, non-target strand. (3) Double-strand DNA break — HNH nuclease domain cleaves the target strand, RuvC nuclease domain cleaves the non-target strand, creating a DSB 3 bp upstream of PAM. Label: HNH domain, RuvC domain, DSB. White background, high-contrast black outlines, color-coded components, arrows showing cleavage sites.</refined_prompt>`;
+
+// ===== DEMO 1: Visual Search — Hayao Miyazaki =====
+at(0,()=>show('hero'));
+at(3000,()=>{show('d1lab');scrollTo('d1lab')});
+at(600,()=>show('d1u'));
+at(1200,()=>show('d1a'));
+at(400,()=>{showExpand('d1t1');startThinking('d1t1')});
+at(200,()=>typewrite('d1tw1',D1_TW1,10,()=>stopThinking('d1t1')));
+at(3500,()=>show('d1gap'));
+at(1200,()=>showExpand('d1t2'));
+at(400,()=>{loadImg('d1img0',400);loadImg('d1img1',800);loadImg('d1img2',1300);loadImg('d1img3',1800);loadImg('d1img4',2200)});
+at(3200,()=>{showExpand('d1t3');startThinking('d1t3')});
+at(200,()=>typewrite('d1tw2',D1_TW2,9,()=>{stopThinking('d1t3')}));
+at(1700,()=>show('d1sel'));
+at(400,()=>selectSlot('d1img0'));
+at(1000,()=>{showExpand('d1t4');startThinking('d1t4')});
+at(200,()=>typewrite('d1tw3',D1_TW3,9,()=>stopThinking('d1t4')));
+at(1400,()=>show('d1refine'));
+at(600,()=>show('d1vref'));
+at(600,()=>show('d1t5'));
+at(800,()=>show('d1mode'));
+at(600,()=>show('d1res'));
+at(100,()=>{revealResult('d1rc0',1200);revealResult('d1rc1',2800)});
+at(3800,()=>show('d1lift'));
+
+// ===== DEMO 2: No Search — Starry Night =====
+at(3500,()=>{show('d2lab');scrollTo('d2lab')});
+at(600,()=>show('d2u'));
+at(1000,()=>show('d2a'));
+at(400,()=>{showExpand('d2t1');startThinking('d2t1')});
+at(200,()=>typewrite('d2tw1',D2_TW1,10,()=>stopThinking('d2t1')));
+at(2200,()=>show('d2gap'));
+at(800,()=>show('d2skip'));
+at(800,()=>{showExpand('d2t2');startThinking('d2t2')});
+at(200,()=>typewrite('d2tw2',D2_TW2,10,()=>stopThinking('d2t2')));
+at(900,()=>show('d2refine'));
+at(800,()=>show('d2t3'));
+at(800,()=>show('d2mode'));
+at(600,()=>show('d2res'));
+at(100,()=>revealResult('d2rc0',1800));
+at(2800,()=>show('d2met'));
+at(800,()=>show('d2cap'));
+
+// ===== DEMO 3: Image + Text Search — CRISPR-Cas9 =====
+at(3500,()=>{show('d3lab');scrollTo('d3lab')});
+at(600,()=>show('d3u'));
+at(1200,()=>show('d3a'));
+at(400,()=>{showExpand('d3t1');startThinking('d3t1')});
+at(200,()=>typewrite('d3tw1',D3_TW1,9,()=>stopThinking('d3t1')));
+at(4700,()=>show('d3gap'));
+// Image search
+at(1200,()=>showExpand('d3t2'));
+at(400,()=>{loadImg('d3img0',400);loadImg('d3img1',800);loadImg('d3img2',1200);loadImg('d3img3',1600)});
+// Web search
+at(2500,()=>showExpand('d3t3'));
+// Thinking: Integrate
+at(1800,()=>{showExpand('d3t4');startThinking('d3t4')});
+at(200,()=>typewrite('d3tw2',D3_TW2,9,()=>stopThinking('d3t4')));
+// Outcome: integration complete
+at(2800,()=>show('d3integ'));
+at(600,()=>show('d3vref'));
+at(600,()=>show('d3t5'));
+at(800,()=>show('d3mode'));
+at(600,()=>show('d3res'));
+at(100,()=>{revealResult('d3rc0',1200);revealResult('d3rc1',2800)});
+at(800,()=>show('d3lift'));
+
+// ===== OUTRO =====
+at(3500,()=>{show('outro');scrollTo('outro')});
+at(800,()=>{const c=document.getElementById('s0');c.classList.add('v');countUp(c.querySelector('.sn'),33)});
+at(300,()=>{const c=document.getElementById('s1');c.classList.add('v');countUp(c.querySelector('.sn'),69)});
+at(300,()=>{const c=document.getElementById('s2');c.classList.add('v');countUp(c.querySelector('.sn'),67)});
+at(1500,()=>show('otag'));
+
+Promise.all([
+  document.fonts.ready,
+  ...Array.from(document.images).map(img=>img.complete?Promise.resolve():new Promise(r=>{img.onload=r;img.onerror=r}))
+]).then(()=>{
+  const s=performance.now();
+  (function tick(){
+    const raw=performance.now()-s;
+    const e=tlPaused?(tlPauseStart-s-tlOffset):(raw-tlOffset);
+    document.getElementById('prog').style.width=Math.min(100,e/TOTAL*100)+'%';
+    if(!tlPaused){while(tl.length&&tl[0].time<=e)tl.shift().fn()}
+    if(tl.length||raw<TOTAL)requestAnimationFrame(tick);
+  })();
+});
+</script>
+</body>
+</html>
