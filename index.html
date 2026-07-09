@@ -3,704 +3,677 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Search-Augmented Visual Generation</title>
+<title>Search Beyond What Can Be Taught: Evolving the Knowledge Boundary in Agentic Visual Generation</title>
+<meta name="description" content="Image generators fabricate what they don't know. SearchGen looks it up first — and knows when not to. Co-training the generator and search agent discovers the knowledge boundary.">
+<meta property="og:title" content="Search Beyond What Can Be Taught — Evolving the Knowledge Boundary in Agentic Visual Generation">
+<meta property="og:description" content="Image generators fabricate what they don't know. This one looks it up first — and knows when not to.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/figures/teaser.png">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#fff;--surface:#f7f7f8;--border:#e5e5ea;--border-lt:#f0f0f0;--text:#1a1a1a;--text2:#6b6b6b;--text3:#999;--accent:#0066ff;--green:#16a34a;--green-lt:#dcfce7;--orange:#ea580c;--orange-lt:#fff7ed;--red:#dc2626;--red-lt:#fef2f2;--blue:#2563eb;--blue-lt:#eff6ff;--gold:#ca8a04;--gold-lt:#fefce8;--purple:#7c3aed}
+:root{--bg:#fff;--surface:#f7f7f8;--border:#e5e5ea;--border-lt:#f0f0f0;--text:#1a1a1a;--text2:#6b6b6b;--text3:#999;--accent:#0066ff;--green:#16a34a;--green-lt:#dcfce7;--orange:#ea580c;--orange-lt:#fff7ed;--red:#dc2626;--red-lt:#fef2f2;--blue:#2563eb;--blue-lt:#eff6ff;--gold:#ca8a04;--gold-lt:#fefce8;--purple:#7c3aed;--maxw:880px}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;line-height:1.6;overflow-x:hidden}
-.progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--purple));z-index:100;transition:width .3s linear}
-.hero{text-align:center;padding:80px 40px 60px;max-width:800px;margin:0 auto;opacity:0;transform:translateY(20px);transition:all .8s ease}
-.hero.v{opacity:1;transform:translateY(0)}
-.hero h1{font-size:42px;font-weight:800;letter-spacing:-1.5px;line-height:1.2;margin-bottom:16px}
-.hero h1 .gr{background:linear-gradient(135deg,var(--accent),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero p{font-size:18px;color:var(--text2);max-width:560px;margin:0 auto}
-.demos{max-width:880px;margin:0 auto;padding:0 24px 80px;display:flex;flex-direction:column;gap:64px}
-.sec-label{display:flex;align-items:center;gap:16px;margin-bottom:24px;opacity:0;transform:translateY(10px);transition:all .5s ease}
-.sec-label.v{opacity:1;transform:translateY(0)}
-.sec-label .badge{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:2px;padding:6px 16px;border-radius:100px;white-space:nowrap}
-.sec-label .badge.vis{background:var(--orange-lt);color:var(--orange)}
-.sec-label .badge.skip{background:var(--green-lt);color:var(--green)}
-.sec-label .badge.txt{background:var(--blue-lt);color:var(--blue)}
-.sec-label .line{flex:1;height:1px;background:var(--border)}
-.msg{display:flex;gap:14px;padding:16px 0;opacity:0;transform:translateY(10px);transition:all .5s ease}
-.msg.v{opacity:1;transform:translateY(0)}
-.av{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
-.av.u{background:var(--surface);border:1px solid var(--border);color:var(--text2)}
-.av.a{background:var(--text);color:#fff}
-.msg-body{flex:1;min-width:0}
-.sender{font-size:14px;font-weight:700;margin-bottom:4px}
-.msg-text{font-size:15px;color:var(--text);line-height:1.6}
-.trace{display:flex;flex-direction:column;gap:0;margin-bottom:12px}
-.trace-block{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:8px;opacity:0;transform:translateY(8px);transition:all .4s ease}
-.trace-block.v{opacity:1;transform:translateY(0)}
-.trace-header{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--surface);border-bottom:1px solid var(--border-lt);font-size:14px;font-weight:600;color:var(--text)}
-.trace-icon{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
-.trace-icon.think{background:#e8e8ed;color:var(--text2)}
-.trace-icon.tool{background:var(--accent);color:#fff}
-.trace-icon.tool-green{background:var(--green);color:#fff}
-.trace-title{flex:1}
-.trace-dur{font-weight:400;color:var(--text3);font-size:13px;margin-left:auto}
-.trace-body{padding:0 16px;font-size:14px;color:var(--text2);line-height:1.6;max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.16,1,.3,1),padding .3s ease}
-.trace-block.expanded .trace-body{max-height:2000px;padding:14px 16px}
-.typewriter{font-size:13px;line-height:1.6;color:var(--text2);white-space:pre-wrap;font-family:'JetBrains Mono',monospace}
-.typewriter .tw-block{opacity:0;transform:translateY(4px);transition:opacity .35s ease,transform .35s ease;display:block;margin-bottom:8px;padding:6px 10px;border-radius:6px}
-.typewriter .tw-block.shown{opacity:1;transform:translateY(0);animation:blockEmerge 2s ease-out}
-@keyframes blockEmerge{0%{background:rgba(124,58,237,.07)}50%{background:rgba(124,58,237,.03)}100%{background:transparent}}
-.tag-bar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;min-height:22px}
-.tag-pill{font-family:'JetBrains Mono',monospace;font-size:11px;padding:2px 10px;border-radius:6px;background:var(--surface);border:1px solid var(--border-lt);color:var(--text3);opacity:0;transform:scale(.85);transition:all .35s cubic-bezier(.16,1,.3,1)}
-.tag-pill.shown{opacity:1;transform:scale(1)}
-.tag-pill.highlight{background:rgba(124,58,237,.12);border-color:rgba(124,58,237,.3);color:var(--purple);font-weight:600}
-.typewriter .block-content{color:var(--text2);padding-left:8px;border-left:2px solid var(--border-lt)}
-.typewriter .hi-green{color:var(--green);font-weight:600}
-.typewriter .hi-orange{color:var(--orange);font-weight:600}
-.typewriter .hi-blue{color:var(--blue);font-weight:600}
-.typewriter .hi-ref{background:rgba(0,102,255,.08);padding:1px 4px;border-radius:3px;color:var(--accent);font-weight:500}
+body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+code,pre,.mono{font-family:'JetBrains Mono',monospace}
 
-/* Thinking dots */
-.thinking-dots{color:var(--text3);font-size:16px;letter-spacing:3px;margin-left:6px;display:none}
-.trace-block.thinking-active .thinking-dots{display:inline}
-.thinking-dots span{animation:dotPulse 1.4s infinite;opacity:.15}
-.thinking-dots span:nth-child(1){animation-delay:0s}
-.thinking-dots span:nth-child(2){animation-delay:.2s}
-.thinking-dots span:nth-child(3){animation-delay:.4s}
-.thinking-dots span:nth-child(4){animation-delay:.6s}
-.thinking-dots span:nth-child(5){animation-delay:.8s}
-@keyframes dotPulse{0%,100%{opacity:.15}50%{opacity:.9}}
-/* Gap alert */
-.gap-alert{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:8px;margin-bottom:8px;font-size:14px;opacity:0;transform:translateY(6px);transition:all .4s ease}
-.gap-alert.v{opacity:1;transform:translateY(0)}
-.gap-alert.crit{background:var(--orange-lt);border:1px solid #fed7aa}
-.gap-alert.ok{background:var(--green-lt);border:1px solid #bbf7d0}
-.gap-alert.tcrit{background:var(--blue-lt);border:1px solid #bfdbfe}
-.gap-alert .gi{font-size:16px;flex-shrink:0;margin-top:1px}
-.gap-alert .gt{flex:1}
-.gap-alert .gn{font-weight:700;color:var(--text)}
-.gap-alert .gd{color:var(--text2);margin-top:2px}
-/* Action callout */
-.action-callout{display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:8px;margin-bottom:8px;font-size:14px;font-weight:600;opacity:0;transform:translateY(6px);transition:all .4s ease}
-.action-callout.v{opacity:1;transform:translateY(0)}
-.action-callout.skip-action{background:var(--surface);border:1px solid var(--border);color:var(--text2)}
-.action-callout.mode-action{background:var(--green-lt);border:1px solid #bbf7d0;color:var(--green)}
-.action-callout .action-icon{font-size:16px}
-/* Search */
-.search-bar{display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text2);margin-bottom:10px}
-.img-grid{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
-.img-slot{width:100px;height:100px;border-radius:8px;flex-shrink:0;position:relative;overflow:hidden;border:1px solid var(--border)}
-.img-slot .shimmer{position:absolute;inset:0;background:linear-gradient(90deg,var(--surface) 25%,#eee 50%,var(--surface) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;z-index:1}
-@keyframes shimmer{to{background-position:-200% 0}}
-.img-slot img{width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .4s ease;position:relative;z-index:2}
-.img-slot.loaded img{opacity:1}
-.img-slot.loaded .shimmer{display:none}
-.img-slot.sel{border:2px solid var(--accent);box-shadow:0 0 0 3px rgba(0,102,255,.15)}
-.text-result{padding:12px 16px;background:var(--blue-lt);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;font-size:14px;color:var(--text2);line-height:1.6}
-/* Results */
-.comparison{display:flex;gap:16px;opacity:0;transform:translateY(10px);transition:all .6s ease}
-.comparison.v{opacity:1;transform:translateY(0)}
-.res-card{flex:1;border-radius:12px;overflow:hidden;border:1px solid var(--border);position:relative}
-.res-card .res-shimmer{width:100%;aspect-ratio:1;background:linear-gradient(90deg,var(--surface) 25%,#eee 50%,var(--surface) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
-.res-card img{width:100%;display:block;aspect-ratio:1;object-fit:cover;opacity:0;transition:opacity .8s ease}
-.res-card.revealed img{opacity:1}
-.res-card.revealed .res-shimmer{display:none}
-.res-card.bad{border-color:var(--red);border-width:2px}
-.res-card.good{border-color:var(--green);border-width:2px}
-.res-card.gold{border-color:var(--gold);border-width:2px}
-.res-foot{padding:10px 14px;display:flex;justify-content:space-between;align-items:center;background:var(--surface);font-size:13px}
-.res-label{font-weight:600;color:var(--text2)}
-.res-score{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;padding:2px 10px;border-radius:100px}
-.res-score.bad{background:var(--red-lt);color:var(--red)}
-.res-score.good{background:var(--green-lt);color:var(--green)}
-.res-score.gold{background:var(--gold-lt);color:var(--gold)}
-.single-res{max-width:420px;opacity:0;transform:translateY(10px);transition:all .6s ease}
-.single-res.v{opacity:1;transform:translateY(0)}
-.lift{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:15px;font-weight:700;opacity:0;transition:opacity .5s ease}
-.lift.v{opacity:1}
-.lift .la{color:var(--green);font-size:18px}.lift .lt{color:var(--green)}.lift .ld{color:var(--text2);font-weight:400}
-.corrections{display:flex;gap:20px;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:14px;opacity:0;transition:opacity .5s ease}
-.corrections.v{opacity:1}
-.cw{color:var(--red);text-decoration:line-through}.ca{color:var(--text3)}.cr{color:var(--green);font-weight:600}
-.metrics{display:flex;gap:12px;margin-top:10px;opacity:0;transition:opacity .5s ease}
-.metrics.v{opacity:1}
-.mchip{display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--surface);border-radius:100px;font-size:13px;font-weight:600}
-.mchip .mv{color:var(--green);font-family:'JetBrains Mono',monospace}.mchip .mv.gv{color:var(--gold)}.mchip .ml{color:var(--text2);font-weight:400}
-.caption{font-size:14px;color:var(--text3);font-style:italic;margin-top:10px;opacity:0;transition:opacity .5s ease}
-.caption.v{opacity:1}
-.outro{max-width:880px;margin:0 auto;padding:40px 24px 100px;text-align:center;opacity:0;transform:translateY(20px);transition:all .8s ease}
-.outro.v{opacity:1;transform:translateY(0)}
-.outro h2{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:var(--text3);margin-bottom:32px}
-.stat-row{display:flex;gap:24px;justify-content:center;margin-bottom:32px}
-.sbox{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 40px;min-width:180px;text-align:center;opacity:0;transform:translateY(16px) scale(.95);transition:all .6s cubic-bezier(.16,1,.3,1)}
-.sbox.v{opacity:1;transform:translateY(0) scale(1)}
-.sbox .sn{font-size:40px;font-weight:800;font-family:'JetBrains Mono',monospace;line-height:1}
-.sbox .sn.green{color:var(--green)}.sbox .sn.orange{color:var(--orange)}.sbox .sn.blue{color:var(--blue)}
-.sbox .sl{font-size:14px;color:var(--text2);margin-top:8px}
-.outro .tag{font-size:22px;font-weight:600;opacity:0;transition:opacity .6s ease}
-.outro .tag.v{opacity:1}
-.outro .tag em{font-style:normal;color:var(--green)}
+/* scroll progress */
+.progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--accent),var(--purple));z-index:200;transition:width .15s linear}
+
+/* sticky demo launcher (top-right) */
+.demo-fab{position:fixed;top:16px;right:16px;z-index:150;display:inline-flex;align-items:center;gap:9px;padding:9px 16px 9px 12px;border-radius:100px;background:linear-gradient(135deg,var(--accent),var(--purple));color:#fff;font-size:14px;font-weight:700;border:none;cursor:pointer;box-shadow:0 6px 20px rgba(80,40,200,.28);transition:transform .2s ease,box-shadow .2s ease}
+.demo-fab:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(80,40,200,.36);text-decoration:none;color:#fff}
+.demo-fab svg{width:20px;height:20px;display:block}
+
+/* hero */
+header.hero{text-align:center;padding:76px 24px 40px;max-width:940px;margin:0 auto}
+.hero .kicker{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--purple);margin-bottom:18px}
+.hero h1{font-size:40px;font-weight:800;letter-spacing:-1.2px;line-height:1.15;margin-bottom:14px;max-width:860px;margin-left:auto;margin-right:auto}
+.hero h1 .gr{background:linear-gradient(135deg,var(--accent),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .sub{display:block;font-size:20px;font-weight:500;color:var(--text2);letter-spacing:-.4px;margin-top:8px}
+.authors{font-size:16px;color:var(--text);margin:22px auto 6px;max-width:820px;line-height:1.9}
+.authors .au{white-space:nowrap}
+.authors sup{color:var(--purple);font-weight:700;font-size:11px}
+.affil{font-size:14px;color:var(--text2);max-width:760px;margin:0 auto 4px}
+.affil sup{color:var(--purple);font-weight:700}
+.corr{font-size:13px;color:var(--text3);margin-bottom:22px}
+.tagline{font-size:18px;font-weight:600;color:var(--text);max-width:620px;margin:0 auto 26px;line-height:1.5}
+.tagline em{font-style:normal;background:linear-gradient(135deg,var(--accent),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* badge rows */
+.badges{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:14px}
+.badge-link{display:inline-flex;align-items:center;gap:7px;padding:9px 16px;border-radius:100px;background:var(--text);color:#fff;font-size:14px;font-weight:600;border:1px solid var(--text);transition:opacity .2s}
+.badge-link:hover{opacity:.85;text-decoration:none;color:#fff}
+.badge-link.alt{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.badge-link.alt:hover{color:var(--text);background:#eee}
+.badge-link .ic{font-size:15px}
+/* hero demo launcher badge (mirrored) */
+.badge-demo{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:100px;background:linear-gradient(135deg,var(--accent),var(--purple));color:#fff;font-size:14px;font-weight:700;border:none;cursor:pointer}
+.badge-demo:hover{opacity:.9;text-decoration:none;color:#fff}
+.badge-demo svg{width:18px;height:18px}
+
+/* hero teaser figure */
+.hero-teaser{max-width:var(--maxw);margin:34px auto 0;padding:0 24px}
+.hero-teaser figure{border:1px solid var(--border);border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 4px 24px rgba(0,0,0,.05)}
+.hero-teaser img{width:100%;display:block}
+.hero-teaser figcaption{padding:14px 20px;font-size:13.5px;color:var(--text2);text-align:left;line-height:1.55;background:var(--surface);border-top:1px solid var(--border-lt)}
+
+/* main content */
+main{max-width:var(--maxw);margin:0 auto;padding:0 24px 40px}
+section.card{margin:56px 0}
+/* fade-in is a pure enhancement: only hidden once JS confirms it can reveal them */
+html.js-anim section.card{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+html.js-anim section.card.v{opacity:1;transform:translateY(0)}
+section.narrow{max-width:640px;margin-left:auto;margin-right:auto}
+.eyebrow{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:var(--purple);margin-bottom:10px}
+section h2{font-size:27px;font-weight:800;letter-spacing:-.6px;line-height:1.2;margin-bottom:16px}
+section p{font-size:16.5px;color:var(--text);margin-bottom:16px;line-height:1.7}
+section p .em{font-style:italic}
+section p strong{font-weight:700}
+.pull{font-size:19px;font-weight:600;line-height:1.5;color:var(--text);border-left:3px solid var(--purple);padding:4px 0 4px 18px;margin:22px 0}
+.bridge{font-size:15px;color:var(--text2);font-style:italic;margin-top:18px;padding-top:12px;border-top:1px dashed var(--border)}
+.bridge .ar{color:var(--purple);font-style:normal;font-weight:700}
+
+/* figures */
+figure.fig{margin:24px 0 4px;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:#fff}
+figure.fig img{width:100%;display:block;background:#fff}
+figure.fig figcaption,.figcap{padding:14px 20px;font-size:13.5px;color:var(--text2);line-height:1.6;background:var(--surface);border-top:1px solid var(--border-lt)}
+.figcap b{color:var(--text)}
+
+/* before/after grid */
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:22px 0}
+.ba-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ba-item{border-radius:12px;overflow:hidden;border:2px solid var(--border);position:relative}
+.ba-item.bad{border-color:var(--red)}
+.ba-item.good{border-color:var(--green)}
+.ba-item img{width:100%;display:block;aspect-ratio:1;object-fit:cover}
+.ba-item .lbl{position:absolute;top:8px;left:8px;font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px;letter-spacing:.3px}
+.ba-item.bad .lbl{background:var(--red-lt);color:var(--red)}
+.ba-item.good .lbl{background:var(--green-lt);color:var(--green)}
+.ba-title{font-size:13px;font-weight:600;color:var(--text2);text-align:center;margin-bottom:8px}
+
+/* gallery scroller */
+.scroller{display:flex;gap:14px;overflow-x:auto;padding:6px 2px 14px;scroll-snap-type:x mandatory}
+.scroller figure{scroll-snap-align:start;flex:0 0 auto;margin:0}
+.scroller-strip{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:#fff}
+.scroller-strip img{display:block;max-width:none;height:360px;width:auto}
+
+/* callout cards (Findings + Insight) */
+.callout{border:1px solid var(--border);border-left-width:5px;border-radius:12px;padding:20px 24px;margin:24px 0;background:var(--surface)}
+.callout .tag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.callout p{font-size:16px;margin:0}
+.callout.finding{border-left-color:var(--green);background:#f4fbf6}
+.callout.finding .tag{color:var(--green)}
+.callout.insight{border-left-color:var(--purple);background:#f9f6ff}
+.callout.insight .tag{color:var(--purple)}
+.callout .lead{font-weight:700;font-size:16.5px}
+.card-line{font-size:16px;font-weight:600;color:var(--text);border-left:3px solid var(--green);background:var(--green-lt);padding:12px 18px;border-radius:0 10px 10px 0;margin:20px 0}
+.card-line.o{border-left-color:var(--orange);background:var(--orange-lt)}
+.card-line.p{border-left-color:var(--purple);background:#f3ecfe}
+
+/* method gate/filter/integrate + phases */
+.gfi{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:20px 0}
+.gfi .g{border:1px solid var(--border);border-radius:12px;padding:16px;background:#fff}
+.gfi .g h4{font-size:15px;font-weight:800;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.gfi .g p{font-size:14px;color:var(--text2);margin:0}
+.gfi .g .ico{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.gfi .g.gate .ico{background:var(--orange-lt);color:var(--orange)}
+.gfi .g.filter .ico{background:var(--blue-lt);color:var(--blue)}
+.gfi .g.integ .ico{background:var(--green-lt);color:var(--green)}
+.phases{display:flex;flex-direction:column;gap:12px;margin:20px 0}
+.phase{display:grid;grid-template-columns:auto 1fr;gap:16px;border:1px solid var(--border);border-radius:12px;padding:16px 18px;background:#fff}
+.phase .pnum{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#fff;flex-shrink:0;text-align:center;line-height:1.1}
+.phase.p0 .pnum{background:var(--text3)}
+.phase.p1 .pnum{background:var(--green)}
+.phase.p2 .pnum{background:var(--orange)}
+.phase h4{font-size:15px;font-weight:800;margin-bottom:4px}
+.phase p{font-size:14.5px;color:var(--text2);margin:0}
+
+/* results table */
+.tbl-wrap{overflow-x:auto;margin:22px 0 8px;border:1px solid var(--border);border-radius:12px}
+table.results{width:100%;border-collapse:collapse;font-size:14px;min-width:640px}
+table.results th,table.results td{padding:11px 14px;text-align:center;border-bottom:1px solid var(--border-lt)}
+table.results thead th{background:var(--surface);font-weight:700;font-size:12.5px;letter-spacing:.3px;color:var(--text2);text-transform:uppercase;border-bottom:2px solid var(--border)}
+table.results td.cfg,table.results th.cfg{text-align:left;font-weight:600}
+table.results td.phase-lbl{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text3);text-align:left}
+table.results tr.head-row td{background:var(--green-lt);font-weight:800}
+table.results tr.head-row td .big{color:var(--green);font-size:16px}
+table.results tr.ref td{color:var(--text2)}
+table.results td .overall{font-weight:800}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--green);background:var(--green-lt);border:1px solid #bbf7d0;padding:5px 12px;border-radius:100px;margin:6px 0 2px}
+.naming-note{font-size:13px;color:var(--text2);background:var(--blue-lt);border-left:3px solid var(--blue);padding:12px 16px;border-radius:0 10px 10px 0;margin:16px 0;line-height:1.6}
+.naming-note b{color:var(--text)}
+
+/* stat tiles (reuse .sbox look) */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:22px 0}
+.sbox{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px 16px;text-align:center}
+.sbox .sn{font-size:30px;font-weight:800;font-family:'JetBrains Mono',monospace;line-height:1}
+.sbox .sn.green{color:var(--green)}.sbox .sn.orange{color:var(--orange)}.sbox .sn.blue{color:var(--blue)}.sbox .sn.purple{color:var(--purple)}
+.sbox .sl{font-size:13px;color:var(--text2);margin-top:10px;line-height:1.4}
+
+/* knowledge boundary SVG */
+.kb-wrap{border:1px solid var(--border);border-radius:14px;background:#fff;padding:8px 8px 0;margin:24px 0 4px}
+.kb-wrap svg{width:100%;height:auto;display:block}
+.kb-legend{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;padding:12px 8px 14px;font-size:13px;color:var(--text2)}
+.kb-legend .li{display:inline-flex;align-items:center;gap:7px}
+.kb-legend .dot{width:14px;height:14px;border-radius:50%;display:inline-block}
+.kb-legend .dot.solid{background:var(--green)}
+.kb-legend .dot.hollow{background:#fff;border:2px solid var(--orange);box-sizing:border-box}
+.kb-legend .dash{width:20px;height:0;border-top:2px dashed var(--green);display:inline-block}
+.kb-replay{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--purple);background:#f3ecfe;border:1px solid #e2d3fb;padding:5px 12px;border-radius:100px;cursor:pointer}
+.kb-note{text-align:center;font-size:12.5px;color:var(--text3);font-style:italic;padding:0 8px 12px}
+
+/* citation */
+.cite-card{border:1px solid var(--border);border-radius:14px;background:var(--surface);overflow:hidden}
+.cite-head{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border);background:#fff}
+.cite-head .t{font-size:13px;font-weight:700;color:var(--text2)}
+.copy-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 12px;cursor:pointer}
+.copy-btn:hover{background:#eee}
+.cite-card pre{padding:18px;overflow-x:auto;font-size:12.5px;line-height:1.6;color:var(--text)}
+
+/* footer */
+footer{text-align:center;padding:44px 24px 60px;color:var(--text3);font-size:13.5px;border-top:1px solid var(--border);margin-top:40px}
+footer a{color:var(--text2)}
+
+/* demo modal */
+.modal{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;padding:24px}
+.modal.open{display:flex}
+.modal .scrim{position:absolute;inset:0;background:rgba(10,10,20,.78);backdrop-filter:blur(3px)}
+.modal .frame-wrap{position:relative;width:min(1100px,100%);height:min(88vh,900px);background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.5);z-index:1}
+.modal iframe{width:100%;height:100%;border:0;display:block}
+.modal .close-x{position:absolute;top:14px;right:14px;z-index:2;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.92);border:1px solid var(--border);color:var(--text);font-size:22px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+.modal .close-x:hover{background:#fff}
+.modal .m-hint{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);z-index:2;font-size:12px;color:#fff;background:rgba(0,0,0,.5);padding:5px 14px;border-radius:100px}
+body.modal-open{overflow:hidden}
+
+@media (max-width:760px){
+  .hero h1{font-size:30px}
+  .hero .sub{font-size:16px}
+  section h2{font-size:22px}
+  .ba-grid{grid-template-columns:1fr}
+  .gfi{grid-template-columns:1fr}
+  .stat-row{grid-template-columns:1fr 1fr}
+  .demo-fab span.lbl{display:none}
+  .demo-fab{padding:10px}
+  .modal{padding:0}
+  .modal .frame-wrap{height:100vh;border-radius:0;width:100%}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  section.card{opacity:1;transform:none}
+}
 </style>
 </head>
 <body>
-<div class="progress" id="prog"></div>
-<div class="hero" id="hero">
-  <h1>What if image generators could <span class="gr">search the internet</span> before drawing?</h1>
-  <p>Three scenarios showing how an adaptive pipeline decides when to search — and when not to.</p>
-</div>
-<div class="demos">
+<div class="progress" id="progress"></div>
 
-<!-- ===== DEMO 1: VISUAL SEARCH — Hayao Miyazaki ===== -->
-<div>
-  <div class="sec-label" id="d1lab"><span class="badge vis">Example 1 · Visual Search</span><span class="line"></span></div>
-  <div class="msg" id="d1u"><div class="av u">U</div><div class="msg-body"><div class="sender">You</div><div class="msg-text"><strong>宮崎駿</strong> (Hayao Miyazaki, Japanese animation director) sitting at his animation desk in Studio Ghibli, surrounded by hand-drawn sketches and watercolor palettes, warm afternoon light streaming through the window.</div></div></div>
-  <div class="msg" id="d1a"><div class="av a">S</div><div class="msg-body">
-    <div class="trace">
-      <div class="trace-block" id="d1t1">
-        <div class="trace-header"><div class="trace-icon think">💭</div><div class="trace-title">Thinking: Analyzing User Request<span class="thinking-dots"><span>·</span><span>·</span><span>·</span><span>·</span><span>·</span></span></div><div class="trace-dur" id="d1dur1"></div></div>
-        <div class="trace-body"><div class="typewriter" id="d1tw1"></div></div>
-      </div>
-      <div class="gap-alert crit" id="d1gap">
-        <span class="gi">⚠️</span>
-        <div class="gt"><div class="gn">Entity Knowledge Gap: "宮崎駿 (Hayao Miyazaki)"</div><div class="gd">World-famous director, but generators frequently hallucinate his appearance — producing a generic elderly Japanese man instead of his distinctive features (white hair, round glasses, white beard, apron). Image search required.</div></div>
-      </div>
-      <div class="trace-block" id="d1t2">
-        <div class="trace-header"><div class="trace-icon tool">🔧</div><div class="trace-title">Tool: Image Search</div><div class="trace-dur">3.4s</div></div>
-        <div class="trace-body">
-          <div class="search-bar"><span>🔍</span> "宮崎駿 Hayao Miyazaki portrait photo Studio Ghibli"</div>
-          <div class="img-grid" id="d1grid">
-            <div class="img-slot" id="d1img0"><div class="shimmer"></div><img src="assets/miya_1.jpg" alt="r1"></div>
-            <div class="img-slot" id="d1img1"><div class="shimmer"></div><img src="assets/miya_2.jpg" alt="r2"></div>
-            <div class="img-slot" id="d1img2"><div class="shimmer"></div><img src="assets/miya_3.png" alt="r3"></div>
-            <div class="img-slot" id="d1img3"><div class="shimmer"></div><img src="assets/miya_4.png" alt="r4"></div>
-            <div class="img-slot" id="d1img4"><div class="shimmer"></div><img src="assets/miya_5.jpg" alt="r5"></div>
-          </div>
-        </div>
-      </div>
-      <div class="trace-block" id="d1t3">
-        <div class="trace-header"><div class="trace-icon think">💭</div><div class="trace-title">Thinking: Selecting Best Reference<span class="thinking-dots"><span>·</span><span>·</span><span>·</span><span>·</span><span>·</span></span></div><div class="trace-dur" id="d1dur3"></div></div>
-        <div class="trace-body"><div class="typewriter" id="d1tw2"></div></div>
-      </div>
-      <div class="gap-alert crit" id="d1sel" style="background:var(--blue-lt);border-color:#bfdbfe">
-        <span class="gi">📌</span>
-        <div class="gt"><div class="gn">Selected: Image 1 (portrait)</div><div class="gd">Best facial reference — Miyazaki's thick round glasses, full white beard, and white hair are clearly visible. Directly grounds the critical EIK gap.</div></div>
-      </div>
-      <div class="trace-block" id="d1t4">
-        <div class="trace-header"><div class="trace-icon think">💭</div><div class="trace-title">Thinking: Integrating Visual Reference with Prompt<span class="thinking-dots"><span>·</span><span>·</span><span>·</span><span>·</span><span>·</span></span></div><div class="trace-dur" id="d1dur4"></div></div>
-        <div class="trace-body"><div class="typewriter" id="d1tw3"></div></div>
-      </div>
-      <div class="action-callout mode-action" id="d1refine" style="background:var(--green-lt);border-color:#bbf7d0">
-        <span class="action-icon">📝</span> Refined prompt ready — facial features, clothing, and desk environment extracted from reference images
-      </div>
-      <div class="action-callout mode-action" id="d1vref" style="background:var(--blue-lt);border-color:#bfdbfe;color:var(--blue)">
-        <span class="action-icon">🖼</span> 1 visual reference loaded — Miyazaki portrait (index 0) conditioned for facial accuracy
-      </div>
-      <div class="trace-block" id="d1t5">
-        <div class="trace-header"><div class="trace-icon tool-green">🖼</div><div class="trace-title">Tool: Image Generator</div><div class="trace-dur">28.8s</div></div>
-      </div>
-      <div class="action-callout mode-action" id="d1mode"><span class="action-icon">✦</span> Mode: I2I — reference photo conditions the generation for facial accuracy</div>
-    </div>
-    <div class="comparison" id="d1res">
-      <div class="res-card bad" id="d1rc0"><div class="res-shimmer"></div><img src="assets/demo1_none.png" alt="none"><div class="res-foot"><span class="res-label">Without Search</span></div></div>
-      <div class="res-card good" id="d1rc1"><div class="res-shimmer"></div><img src="assets/demo1_oracle.png" alt="oracle"><div class="res-foot"><span class="res-label">With Visual Search</span></div></div>
-    </div>
-    <div class="lift" id="d1lift"><span class="la">↑</span><span class="lt">+1.9</span><span class="ld">— the model saw what the director actually looks like</span></div>
-  </div></div>
-</div>
+<!-- Sticky demo launcher (top-right) -->
+<button class="demo-fab" id="demoFabTop" aria-label="Open live demo">
+  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="rgba(255,255,255,.18)" stroke="#fff" stroke-width="1.6"/><path d="M10 8.5l6 3.5-6 3.5z" fill="#fff"/></svg>
+  <span class="lbl">Live Demo</span>
+</button>
 
-<!-- ===== DEMO 2: NO SEARCH — Van Gogh Starry Night ===== -->
-<div>
-  <div class="sec-label" id="d2lab"><span class="badge skip">Example 2 · No Search Needed</span><span class="line"></span></div>
-  <div class="msg" id="d2u"><div class="av u">U</div><div class="msg-body"><div class="sender">You</div><div class="msg-text">A modern city skyline reimagined in <strong>Vincent van Gogh's Starry Night</strong> style — swirling cobalt sky, thick impasto brushstrokes, glowing yellow street lights reflected in a river below.</div></div></div>
-  <div class="msg" id="d2a"><div class="av a">S</div><div class="msg-body">
-    <div class="trace">
-      <div class="trace-block" id="d2t1">
-        <div class="trace-header"><div class="trace-icon think">💭</div><div class="trace-title">Thinking: Analyzing User Request<span class="thinking-dots"><span>·</span><span>·</span><span>·</span><span>·</span><span>·</span></span></div><div class="trace-dur" id="d2dur1"></div></div>
-        <div class="trace-body"><div class="typewriter" id="d2tw1"></div></div>
-      </div>
-      <div class="gap-alert ok" id="d2gap">
-        <span class="gi">✓</span>
-        <div class="gt"><div class="gn">All gaps below search threshold</div><div class="gd">2 gaps identified (Starry Night visual style, impasto technique) — both rated moderate severity. All elements are core training data. Search skipped.</div></div>
-      </div>
-      <div class="action-callout skip-action" id="d2skip"><span class="action-icon">⏭</span> Search skipped — "Starry Night" style is core training knowledge for all image generators</div>
-      <div class="trace-block" id="d2t2">
-        <div class="trace-header"><div class="trace-icon think">💭</div><div class="trace-title">Thinking: Composing Prompt from Common Knowledge<span class="thinking-dots"><span>·</span><span>·</span><span>·</span><span>·</span><span>·</span></span></div><div class="trace-dur" id="d2dur2"></div></div>
-        <div class="trace-body"><div class="typewriter" id="d2tw2"></div></div>
-      </div>
-      <div class="action-callout mode-action" id="d2refine" style="background:var(--green-lt);border-color:#bbf7d0">
-        <span class="action-icon">📝</span> Refined prompt ready — composed from model's inherent knowledge of Starry Night visual language
-      </div>
-      <div class="trace-block" id="d2t3">
-        <div class="trace-header"><div class="trace-icon tool-green">🖼</div><div class="trace-title">Tool: Image Generator</div><div class="trace-dur">12.1s</div></div>
-      </div>
-      <div class="action-callout mode-action" id="d2mode"><span class="action-icon">✦</span> Mode: T2I — direct generation, no references needed, zero search overhead</div>
-    </div>
-    <div class="single-res" id="d2res">
-      <div class="res-card gold" id="d2rc0"><div class="res-shimmer"></div><img src="assets/demo2_result.png" alt="result"><div class="res-foot"><span class="res-label">Generated Image</span></div></div>
-    </div>
-    <div class="metrics" id="d2met">
-      <div class="mchip"><span class="mv">0</span><span class="ml">Search calls</span></div>
-      <div class="mchip"><span class="mv">0s</span><span class="ml">Extra latency</span></div>
-    </div>
-    <div class="caption" id="d2cap">When the model already knows enough, the smartest move is to step aside.</div>
-  </div></div>
-</div>
+<!-- ========================= §0 HERO (static) ========================= -->
+<header class="hero">
+  <div class="kicker">Agentic Visual Generation</div>
+  <h1><span class="gr">Search Beyond What Can Be Taught</span>
+    <span class="sub">Evolving the Knowledge Boundary in Agentic Visual Generation</span>
+  </h1>
 
-<!-- ===== DEMO 3: TEXT + IMAGE SEARCH — CRISPR-Cas9 ===== -->
-<div>
-  <div class="sec-label" id="d3lab"><span class="badge txt">Example 3 · Image + Text Search</span><span class="line"></span></div>
-  <div class="msg" id="d3u"><div class="av u">U</div><div class="msg-body"><div class="sender">You</div><div class="msg-text">A labeled diagram of the <strong>CRISPR-Cas9 gene editing mechanism</strong> showing guide RNA binding, PAM site recognition, and double-strand DNA break — annotated with correct molecular component names.</div></div></div>
-  <div class="msg" id="d3a"><div class="av a">S</div><div class="msg-body">
-    <div class="trace">
-      <div class="trace-block" id="d3t1">
-        <div class="trace-header"><div class="trace-icon think">💭</div><div class="trace-title">Thinking: Analyzing User Request<span class="thinking-dots"><span>·</span><span>·</span><span>·</span><span>·</span><span>·</span></span></div><div class="trace-dur" id="d3dur1"></div></div>
-        <div class="trace-body"><div class="typewriter" id="d3tw1"></div></div>
-      </div>
-      <div class="gap-alert tcrit" id="d3gap">
-        <span class="gi">⚠️</span>
-        <div class="gt"><div class="gn">Factual Knowledge Gap: Molecular Component Names</div><div class="gd">CRISPR-Cas9 labels (sgRNA, tracrRNA, crRNA, PAM sequence, RuvC/HNH nuclease domains) must be spelled correctly and placed accurately. Models hallucinate these. Text + image search required.</div></div>
-      </div>
-      <div class="trace-block" id="d3t2">
-        <div class="trace-header"><div class="trace-icon tool">🔧</div><div class="trace-title">Tool: Image Search</div><div class="trace-dur">3.1s</div></div>
-        <div class="trace-body">
-          <div class="search-bar"><span>🔍</span> "CRISPR Cas9 gene editing mechanism diagram labeled scientific illustration"</div>
-          <div class="img-grid" id="d3grid">
-            <div class="img-slot" id="d3img0"><div class="shimmer"></div><img src="assets/crispr_1.jpg" alt="r1"></div>
-            <div class="img-slot" id="d3img1"><div class="shimmer"></div><img src="assets/crispr_2.jpg" alt="r2"></div>
-            <div class="img-slot" id="d3img2"><div class="shimmer"></div><img src="assets/crispr_3.jpg" alt="r3"></div>
-            <div class="img-slot" id="d3img3"><div class="shimmer"></div><img src="assets/crispr_4.jpg" alt="r4"></div>
-          </div>
-        </div>
-      </div>
-      <div class="trace-block" id="d3t3">
-        <div class="trace-header"><div class="trace-icon tool">🔧</div><div class="trace-title">Tool: Web Search</div><div class="trace-dur">2.4s</div></div>
-        <div class="trace-body">
-          <div class="search-bar"><span>🔍</span> "CRISPR Cas9 sgRNA PAM RuvC HNH mechanism steps molecular components"</div>
-          <div class="text-result">The CRISPR-Cas9 system uses a <strong>single guide RNA (sgRNA)</strong> — a fusion of crRNA and tracrRNA — to direct the <strong>Cas9 endonuclease</strong> to a target DNA sequence adjacent to a <strong>PAM (5'-NGG-3')</strong> motif. Cas9 unwinds the DNA and its <strong>RuvC</strong> and <strong>HNH</strong> nuclease domains each cleave one strand, creating a <strong>double-strand break (DSB)</strong> 3bp upstream of the PAM.</div>
-        </div>
-      </div>
-      <div class="trace-block" id="d3t4">
-        <div class="trace-header"><div class="trace-icon think">💭</div><div class="trace-title">Thinking: Integrating Multimodal Search Results<span class="thinking-dots"><span>·</span><span>·</span><span>·</span><span>·</span><span>·</span></span></div><div class="trace-dur" id="d3dur4"></div></div>
-        <div class="trace-body"><div class="typewriter" id="d3tw2"></div></div>
-      </div>
-      <div class="gap-alert tcrit" id="d3integ" style="background:var(--blue-lt);border-color:#bfdbfe">
-        <span class="gi">✦</span>
-        <div class="gt"><div class="gn">Prompt enriched with multimodal knowledge</div><div class="gd">Visual layout from diagram references + factual labels (sgRNA, PAM, RuvC, HNH, DSB) from web search → injected into generation prompt.</div></div>
-      </div>
-      <div class="action-callout mode-action" id="d3vref" style="background:var(--blue-lt);border-color:#bfdbfe;color:var(--blue)">
-        <span class="action-icon">🖼</span> Visual references ready — 2 CRISPR diagrams loaded as layout guides
-      </div>
-      <div class="trace-block" id="d3t5">
-        <div class="trace-header"><div class="trace-icon tool-green">🖼</div><div class="trace-title">Tool: Image Generator</div><div class="trace-dur">46.8s</div></div>
-      </div>
-      <div class="action-callout mode-action" id="d3mode"><span class="action-icon">✦</span> Mode: I2I + Text — diagram layout from image refs, labels from web search</div>
-    </div>
-    <div class="comparison" id="d3res">
-      <div class="res-card bad" id="d3rc0"><div class="res-shimmer"></div><img src="assets/demo3_none.png" alt="none"><div class="res-foot"><span class="res-label">Without Search</span></div></div>
-      <div class="res-card good" id="d3rc1"><div class="res-shimmer"></div><img src="assets/demo3_oracle.png" alt="oracle"><div class="res-foot"><span class="res-label">With Image + Text Search</span></div></div>
-    </div>
-    <div class="lift" id="d3lift"><span class="la">↑</span><span class="lt">4× improvement</span><span class="ld">— search fixed the labels and the molecular facts</span></div>
-  </div></div>
-</div>
-</div>
-
-<div class="outro" id="outro">
-  <h2>Evaluated on 647 real-world prompts</h2>
-  <div class="stat-row">
-    <div class="sbox" id="s0"><div class="sn green" data-t="33">0%</div><div class="sl">Overall Quality</div></div>
-    <div class="sbox" id="s1"><div class="sn orange" data-t="69">0%</div><div class="sl">Visual Accuracy</div></div>
-    <div class="sbox" id="s2"><div class="sn blue" data-t="67">0%</div><div class="sl">Factual Accuracy</div></div>
+  <div class="authors">
+    <span class="au">Haozhe Wang<sup>1</sup></span> ·
+    <span class="au">Weijia Feng<sup>3</sup></span> ·
+    <span class="au">Jinpeng Yu<sup>3</sup></span> ·
+    <span class="au">Che Liu<sup>4</sup></span> ·
+    <span class="au">Ping Nie<sup>2</sup></span> ·
+    <span class="au">Fangzhen Lin<sup>1</sup></span> ·
+    <span class="au">Jiaming Liu<sup>3</sup>&#9993;</span> ·
+    <span class="au">Ruihua Huang<sup>3</sup></span> ·
+    <span class="au">Jimmy Lin<sup>2</sup></span> ·
+    <span class="au">Wenhu Chen<sup>2</sup></span> ·
+    <span class="au">Cong Wei<sup>2</sup>&#9993;</span>
   </div>
-  <div class="tag" id="otag">Searches when needed. <em>Skips when not.</em></div>
+  <div class="affil"><sup>1</sup> Hong Kong University of Science and Technology · <sup>2</sup> University of Waterloo · <sup>3</sup> Qwen Applications · <sup>4</sup> Imperial College London</div>
+  <div class="corr">&#9993; Corresponding authors: Jiaming Liu, Cong Wei</div>
+
+  <p class="tagline">Image generators fabricate what they don't know. <em>This one looks it up first — and knows when not to.</em></p>
+
+  <!-- badge links -->
+  <div class="badges">
+    <a class="badge-link" href="https://arxiv.org/abs/2607.05382" target="_blank" rel="noopener"><span class="ic">&#128196;</span> arXiv</a>
+    <a class="badge-link alt" href="#" ><span class="ic">&#127760;</span> Project Page</a>
+    <a class="badge-link" href="https://github.com/HaozheH3/SearchGen" target="_blank" rel="noopener"><span class="ic">&#128187;</span> GitHub</a>
+  </div>
+  <div class="badges">
+    <a class="badge-link alt" href="#" target="_blank" rel="noopener">&#129303; SearchGen-20K</a>
+    <a class="badge-link alt" href="#" target="_blank" rel="noopener">&#129303; SearchGen-Corpus-1M</a>
+    <a class="badge-link alt" href="#" target="_blank" rel="noopener">&#129303; SearchGen-Bench</a>
+  </div>
+  <!-- mirrored demo launcher -->
+  <div class="badges" style="margin-top:8px">
+    <button class="badge-demo" id="demoFabHero">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="rgba(255,255,255,.18)" stroke="#fff" stroke-width="1.6"/><path d="M10 8.5l6 3.5-6 3.5z" fill="#fff"/></svg>
+      Watch the Live Demo
+    </button>
+    <noscript><a class="badge-link alt" href="demo.html" target="_blank" rel="noopener">▶ Open demo (new tab)</a></noscript>
+  </div>
+  <!-- interactive demo (temporarily offline) -->
+  <div class="badges" style="margin-top:8px">
+    <span class="badge-link alt" aria-disabled="true" title="The interactive demo is temporarily offline" style="opacity:.55;cursor:not-allowed"><span class="ic">&#127918;</span> Play with the Interactive Demo <span style="font-weight:600;color:var(--text3)">(off-service now)</span></span>
+  </div>
+</header>
+
+<div class="hero-teaser">
+  <figure>
+    <img src="assets/figures/teaser.png" alt="Two paradigms for knowledge-hungry prompts: prompt rewrite vs SearchGen agentic retrieval.">
+    <figcaption>Two paradigms for knowledge-hungry prompts. <b>Left:</b> prompt-rewriting inflates the text but still generates from stale weights. <b>Right:</b> SearchGen's agent fetches live web + visual context, then conditions the generator — grounding facts a model cannot know. (The animated agent trace is behind the <b>Live Demo</b> button above.)</figcaption>
+  </figure>
+</div>
+
+<main>
+
+<!-- ========================= §1 TL;DR ========================= -->
+<section class="card narrow" id="tldr">
+  <span class="eyebrow">TL;DR</span>
+  <h2>The short version — teach what you can, search the rest</h2>
+  <p>Modern image generators render gorgeously and lie fluently. Ask for the 2025 Osaka Expo mascot and you get a confident, wrong invention. The failure isn't the pixels — it's the <span class="em">knowledge</span>. On <strong>SearchGen-Bench</strong>, frontier open generators score just <strong>21–28 out of 100</strong> on search-intensive prompts — up to a ~40-point collapse that standard benchmarks never register.</p>
+  <p>Search is the obvious fix, the way an illustrator consults references. But naive search backfires: it corrupts prompts the generator already handled. The real problem is a <strong>knowledge boundary</strong> — the line between what a generator can learn and what it must look up. That line is generator-specific, it moves during training, and it can't be hand-drawn. It has to be <span class="em">discovered</span>.</p>
+  <p>So we discover it, by <strong>co-training the generator and the search agent together</strong>. Below: how the collapse works, why naive search fails, what the knowledge boundary is, and how a co-trained 8B reasoner on a 4B generator matches a frontier <span class="em">reasoner</span> on the same generator — jump to the finding cards. ↓</p>
+</section>
+
+<!-- ========================= §2 The Hook ========================= -->
+<section class="card" id="hook">
+  <span class="eyebrow">The Hook</span>
+  <h2>They render beautifully. They just make things up.</h2>
+  <p>Ask a frontier image model for the mascot of the 2025 Osaka Expo. You get a polished, confident fabrication. Ask for a historically accurate Spartan phalanx and you get anachronistic armor, rendered in exquisite detail.</p>
+  <p>The lighting is right. The composition is right. The <span class="em">world</span> is wrong.</p>
+  <p>This is not a rendering failure. It's a <strong>world-knowledge bottleneck</strong>. Generators train on fixed corpora with hard knowledge cutoffs; user requests draw on new characters, regional symbols, niche typography, historical artifacts, and events that postdate training.</p>
+  <p>Worse, generators have no way to flag their own ignorance. They're trained to always output an image — never to say "I don't know what this looks like." So they guess, beautifully, every time.</p>
+
+  <div class="card-line o">The lighting is right. The composition is right. The world is wrong.</div>
+
+  <div class="ba-grid">
+    <div>
+      <div class="ba-title">Miyazaki portrait</div>
+      <div class="ba-pair">
+        <div class="ba-item bad"><span class="lbl">Without Search</span><img src="assets/demo1_none.png" alt="Generated portrait without search — a generic, wrong face."></div>
+        <div class="ba-item good"><span class="lbl">With Search</span><img src="assets/demo1_oracle.png" alt="Generated portrait with search-augmented grounding."></div>
+      </div>
+    </div>
+    <div>
+      <div class="ba-title">CRISPR diagram</div>
+      <div class="ba-pair">
+        <div class="ba-item bad"><span class="lbl">Without Search</span><img src="assets/demo3_none.png" alt="Gene-editing diagram without search — misspelled labels."></div>
+        <div class="ba-item good"><span class="lbl">With Search</span><img src="assets/demo3_oracle.png" alt="Gene-editing diagram with search-augmented grounding."></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroller">
+    <figure class="scroller-strip"><img src="assets/figures/examples.png" alt="Gallery of failure examples across the 12 failure categories."></figure>
+  </div>
+  <div class="figcap"><b>Ask for a specific person, a labeled scientific diagram, or live data</b> and today's best generators confidently fabricate. Left of each pair: no search — a generic face, misspelled gene-editing labels. Right: the same generator, this time with search-augmented grounding. Gallery: representative cases spanning the 12 failure categories.</div>
+
+  <div class="bridge"><span class="ar">→</span> So the obvious move is to let the model look things up. First, let's measure exactly how far it falls without help. ↓</div>
+</section>
+
+<!-- ========================= §3 Finding 1 ========================= -->
+<section class="card" id="finding1">
+  <span class="eyebrow">Finding 1</span>
+  <h2>A 40-point gap that no benchmark shows</h2>
+
+  <div class="callout finding">
+    <div class="tag">&#9679; Finding 1</div>
+    <p class="lead">Generators that score comparably on standard prompts diverge by nearly 40 points when search-intensive world knowledge is required.</p>
+  </div>
+
+  <p>On prompts that need only what a model already learned, open and commercial generators land in the same band (67–75 out of 100). Turn to prompts that need live world knowledge, and the field splits: open generators crater to <strong>21–28</strong>, while commercial systems with built-in search barely move. Existing benchmarks test rendering inside known concepts, so they never see this gap at all.</p>
+  <p>To surface it, we built <strong>SearchGen-Bench</strong>: 751 test prompts scored by a 9-component judge on a 0–100 scale, with separate dimensions for <span class="em">knowledge</span> and for <span class="em">rendering</span>. The split is the whole point. When Flux.2-Klein-9B scores 24.2 on knowledge checklists but stays high on image quality, the diagnosis is unambiguous — it can draw, it just doesn't know.</p>
+
+  <figure class="fig">
+    <img src="assets/figures/b1.png" alt="Per-generator quality on NoSearch vs Search-Intensive strata across nine generators.">
+    <figcaption><b>Generators score well on prompts they can answer from memory (gray).</b> On prompts that require external knowledge (orange), every open generator collapses — up to a 40-point drop — while commercial systems with built-in search hold. The bottleneck is missing knowledge, not rendering skill.</figcaption>
+  </figure>
+
+  <div class="bridge"><span class="ar">→</span> If the disease is missing knowledge, the cure is search. Except the cure has a side effect. ↓</div>
+</section>
+
+<!-- ========================= §4 Finding 2 ========================= -->
+<section class="card" id="finding2">
+  <span class="eyebrow">The Obvious Fix — and Why It Backfires</span>
+  <h2>Search should help. Often it hurts.</h2>
+  <p>An illustrator handed an unfamiliar brief looks up references before drawing. Give the generator the same move — a reasoner spots knowledge gaps, search fills them, the results feed generation — and you have <span class="em">agentic visual generation</span>. Natural. And, done naively, harmful.</p>
+
+  <div class="callout finding">
+    <div class="tag">&#9679; Finding 2</div>
+    <p class="lead">Naive search actively degrades prompts the generator already handles.</p>
+  </div>
+
+  <p>Search everything, blindly, and every generator gets <span class="em">worse</span> on prompts that never needed help. Qwen-Image-2 drops from <strong>70.7 to 60.4</strong> on the no-search stratum — a <strong>14.6% relative loss</strong> on prompts it already aced.</p>
+  <p>Two distinct failures explain it. <strong>Concept corruption</strong>: search fires on something the model already knew, and the retrieved reference overrides correct internal knowledge — a <span class="em">gating</span> failure, searching when it shouldn't. <strong>Copy effect</strong>: a reference carries so much detail that the generator copies it wholesale instead of borrowing the one missing fact — a <span class="em">filtering</span> failure, keeping too much.</p>
+
+  <div class="card-line o">The cure and the disease depend entirely on the patient. Search helps only when the generator is actually missing something.</div>
+
+  <figure class="fig">
+    <img src="assets/figures/search_hurt.png" alt="Blind retrieval leaking into outputs: a copied reference boat and a pasted search-result caption.">
+    <figcaption><b>Search is not free.</b> Fed raw, retrieved content leaks into the image — the model copies a reference boat verbatim (<span style="color:var(--orange);font-weight:700">copy effect</span>), or pastes a search-result's caption as the artwork's text (<span style="color:var(--orange);font-weight:700">concept corruption</span>). Naive retrieval corrupts the very prompts a model could have answered alone.</figcaption>
+  </figure>
+
+  <div class="bridge"><span class="ar">→</span> So why does the same tool rescue one prompt and wreck another? Because of a line most pipelines never see. ↓</div>
+</section>
+
+<!-- ========================= §5 The Key Idea (hinge) ========================= -->
+<section class="card" id="boundary">
+  <span class="eyebrow">The Key Idea — the hinge</span>
+  <h2>The line between what a model learns and what it must look up</h2>
+  <p>Some knowledge belongs <span class="em">inside</span> the model. A character's canonical look, a flag's fixed geometry — stable, low-dimensional, learnable once and for all. Fire search for it and you only add noise.</p>
+  <p>Other knowledge belongs <span class="em">outside</span>. It changes faster than retraining cycles, sits too deep in the long tail to ever learn reliably, or needs per-request reasoning. For this, search isn't a nice-to-have — it's structurally necessary. And the tail is enormous: <strong>93.1% of the 31,537 entities</strong> in our data appear in just a single prompt. No feasible training set covers that.</p>
+
+  <div class="callout insight">
+    <div class="tag">&#10022; Insight</div>
+    <p class="lead">Some knowledge is internalizable and search should not fire for it; other knowledge is contextual and search is structurally necessary.</p>
+  </div>
+
+  <p>We call the divide between those two sets the <strong>knowledge boundary</strong>. Here's the twist that organizes the entire paper: the boundary is <span class="em">generator-specific</span>, and it <span class="em">moves</span>. As a generator learns, concepts migrate from "must search" to "already knows." A search policy tuned for a weak generator is wrong for a strong one.</p>
+  <p>So you can't hand-specify it. And you don't have to. The boundary is <strong>discoverable</strong> — it falls out of training the generator and the searcher together.</p>
+
+  <div class="pull">For a given generator, world knowledge splits in two: what it can absorb into its own weights (internalizable), and what must stay in the prompt as retrieved context (contextual). That split is the knowledge boundary — and it shifts every time the generator improves.</div>
+
+  <!-- Knowledge Boundary SVG -->
+  <div class="kb-wrap">
+    <svg id="kbSvg" viewBox="0 0 640 440" role="img" aria-label="Knowledge boundary diagram: an inner green region of internalizable knowledge inside a dashed frontier, surrounded by an orange band of contextual knowledge that must be searched. Co-training expands the frontier.">
+      <defs>
+        <marker id="arrowhead" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#7c3aed"/></marker>
+      </defs>
+      <!-- all world knowledge disc -->
+      <circle cx="300" cy="220" r="200" fill="#f4f4f6" stroke="#e5e5ea" stroke-width="1"/>
+      <text x="300" y="38" text-anchor="middle" font-size="13" font-weight="700" fill="#999">All world knowledge</text>
+      <!-- outer contextual band label -->
+      <text x="300" y="406" text-anchor="middle" font-size="12" font-weight="600" fill="#ea580c">always needs search: fresh facts · rare entities · live data</text>
+      <!-- internalizable disc (animates r) -->
+      <circle id="kbInner" cx="300" cy="220" r="152" fill="#dcfce7" fill-opacity="0.75"/>
+      <!-- dashed frontier -->
+      <circle id="kbFrontier" cx="300" cy="220" r="152" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-dasharray="7 6"/>
+      <text id="kbInnerLbl" x="300" y="150" text-anchor="middle" font-size="14" font-weight="700" fill="#16a34a">internalizable</text>
+      <text x="300" y="168" text-anchor="middle" font-size="11.5" fill="#16a34a">generate correctly · no search</text>
+      <!-- co-training arrow -->
+      <g id="kbArrow" opacity="1">
+        <line x1="454" y1="220" x2="502" y2="220" stroke="#7c3aed" stroke-width="2.5" marker-end="url(#arrowhead)"/>
+        <text x="478" y="208" text-anchor="middle" font-size="12" font-weight="700" fill="#7c3aed">+ co-training →</text>
+      </g>
+      <!-- dots: filled programmatically -->
+      <g id="kbDots"></g>
+    </svg>
+  </div>
+  <div class="kb-legend">
+    <span class="li"><span class="dot solid"></span> green = internalized · no search</span>
+    <span class="li"><span class="dot hollow"></span> orange = fetched · agentic search</span>
+    <span class="li"><span class="dash"></span> dashed = knowledge boundary (moves with training)</span>
+    <button class="kb-replay" id="kbReplay">▸ replay</button>
+  </div>
+  <div class="kb-note">The boundary moves outward — measured proof in the results ↓</div>
+  <div class="figcap"><b>A generator's knowledge has a boundary.</b> Inside it (green) lives what the model can internalize — generate correctly with no search. Outside (orange) lies contextual knowledge that must be fetched. Co-training pushes the boundary outward, converting fetch-only prompts into internalizable ones; whatever remains outside is handled by the agent.</div>
+</section>
+
+<!-- ========================= §6 Method ========================= -->
+<section class="card" id="method">
+  <span class="eyebrow">Method</span>
+  <h2>Build a searcher that resists noise. Then move the boundary.</h2>
+  <p>The method has two halves. First, a searcher that doesn't poison the generator. Second, a training loop that finds — and expands — the boundary.</p>
+
+  <p><strong>The noise-resistant reasoner: gate, filter, integrate.</strong></p>
+  <div class="gfi">
+    <div class="g gate"><h4><span class="ico">&#9095;</span> Gate</h4><p>Decide <span class="em">whether</span> to search. Only gaps rated <span class="em">critical</span> or <span class="em">important</span> trigger a query; the rest are dropped. At most three queries per prompt, or <span class="em">skip</span> entirely. The defense against concept corruption.</p></div>
+    <div class="g filter"><h4><span class="ico">&#9776;</span> Filter</h4><p>Decide <span class="em">what to keep</span>. Choose the reference that fills the specific gap with the least extraneous baggage. The defense against the copy effect.</p></div>
+    <div class="g integ"><h4><span class="ico">&#10022;</span> Integrate</h4><p>Decide <span class="em">how it enters</span>. Route visual references through language, not raw pixels: "following Image 1, render the robe in teal and gold." The generator borrows exactly what's named — nothing else leaks in.</p></div>
+  </div>
+
+  <p><strong>Teach-then-search co-training.</strong> The boundary only moves when the generator's weights change, so we act on both sides, in order.</p>
+  <div class="phases">
+    <div class="phase p0"><div class="pnum">Phase 0</div><div><h4>Warm-start</h4><p>Supervised finetuning gives an 8B reasoner (Qwen3-VL-8B) the gate–filter–integrate protocol. Competent, but generator-agnostic: it searches for anything that <span class="em">might</span> be hard.</p></div></div>
+    <div class="phase p1"><div class="pnum">Phase 1</div><div><h4>Teach the generator</h4><p>Online iterative Diffusion-DPO feeds it search-augmented examples and reinforces its own best outputs. Two things happen at once: it <span class="em">internalizes</span> stable knowledge (the boundary pushes outward), and it learns to use imperfect references without being dominated by them (noise-robustness).</p></div></div>
+    <div class="phase p2"><div class="pnum">Phase 2</div><div><h4>Recalibrate the searcher</h4><p>The generator is now stronger, so the search policy is stale. Rejection-sampling finetuning rewards trajectories where search actually helped the <span class="em">new</span> generator and discards the rest. Search fires only for what remains genuinely contextual.</p></div></div>
+  </div>
+
+  <div class="card-line p">Phase 1 moves the boundary outward; Phase 2 moves the search policy inward to match. The model is never told where the line is — it learns it from which searches actually helped.</div>
+
+  <figure class="fig">
+    <img src="assets/figures/approach.png" alt="Two coupled training loops: a teach/internalize loop and a search/fetch loop.">
+    <figcaption><b>Two coupled loops.</b> Bottom: an agent gates each prompt, fetches and filters references only when a knowledge gap warrants it, then integrates them into an enriched prompt. Top: online DPO teaches the generator what it can internalize — expanding the knowledge boundary so the agent has less to fetch over time.</figcaption>
+  </figure>
+</section>
+
+<!-- ========================= §7 Finding 3 + results ========================= -->
+<section class="card" id="finding3">
+  <span class="eyebrow">Finding 3 — the boundary is discoverable</span>
+  <h2>Co-training discovers the boundary — an 8B reasoner matches a frontier oracle</h2>
+
+  <div class="callout finding">
+    <div class="tag">&#9679; Finding 3</div>
+    <p class="lead">Co-training discovers the knowledge boundary: a calibrated 8B reasoner matches a frontier oracle on the same generator.</p>
+  </div>
+
+  <p>On Klein-4B, the full co-training progression climbs monotonically to <strong>31.8 overall</strong> — matching the frontier Gemini oracle on the very same generator (<strong>31.2</strong>). Both phases pull their weight: teaching the generator adds <strong>+2.8</strong>, recalibrating the searcher adds <strong>+2.6</strong>.</p>
+  <p>It's also <span class="em">selective</span>, which is the hard part. On prompts that don't need search, the calibrated reasoner lifts the no-search baseline from <strong>49.9 to 56.9</strong> — it learned when to stay quiet, exactly where naive search did damage. And it's <span class="em">generator-specific</span>: a policy tuned for the strengthened generator scores worse on the base one, confirming the boundary is a joint property of the pair, not a fixed property of the prompt.</p>
+  <p>The headline is the calibration-per-dollar. An 8B reasoner on a 4B generator reaches the same quality as a frontier commercial reasoner on that generator — and the full recalibration cycle fits in <strong>4×8 GPU-hours</strong>.</p>
+  <p>One honest caveat: this is a comparison of <span class="em">reasoners on a fixed 4B generator</span>, not a claim of frontier image quality. In absolute terms, 31.8 still trails a search-integrated commercial system like GPT-Image-2 (<strong>71.0</strong>) by ~39 points — that gap is generator capacity at the 4B scale, and closing it means scaling the generator, not the recipe.</p>
+
+  <div class="card-line">Frontier-reasoner calibration on the same generator — at a fraction of the reasoner's size and training cost.</div>
+
+  <figure class="fig">
+    <img src="assets/figures/e1.png" alt="Co-training progression chart (panel a) and no-search quality distribution shift (panel b).">
+    <figcaption><b>(a) Co-training compounds.</b> Each round — reasoner SFT, generator DPO, reasoner RFT — lifts quality across all three difficulty tiers, for both Klein-4B and Bagel-7B. <b>(b) Proof the boundary moved:</b> after co-training, the distribution of per-prompt no-search quality shifts right — more prompts now clear a given quality bar without any search. The shift holds for both Klein-4B and Bagel-7B.</figcaption>
+  </figure>
+
+  <!-- main results table -->
+  <div class="chip">&#9679; same generator · ⅟ reasoner cost</div>
+  <div class="tbl-wrap">
+    <table class="results">
+      <thead>
+        <tr><th class="cfg">Phase</th><th class="cfg">Config</th><th>NoSearch</th><th>Set I</th><th>Set II</th><th>Set III</th><th>Overall</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="phase-lbl">Phase 0</td><td class="cfg">Gen-Agnostic (SFT-8B) + Klein-4B</td><td>54.6</td><td>28.9</td><td>29.2</td><td>21.2</td><td class="overall">26.4</td></tr>
+        <tr><td class="phase-lbl">Phase 1</td><td class="cfg">Gen-Agnostic (SFT-8B) + Klein-4B-DPO</td><td>54.0</td><td>31.8</td><td>31.1</td><td>24.7</td><td class="overall">29.2</td></tr>
+        <tr class="head-row"><td class="phase-lbl"><b>Phase 2</b></td><td class="cfg">Gen-Adaptive (RFT-8B) + Klein-4B-DPO</td><td>56.9</td><td>34.1</td><td>33.6</td><td>27.4</td><td class="overall"><span class="big">31.8</span></td></tr>
+        <tr class="ref"><td class="phase-lbl">ref</td><td class="cfg">Oracle (frontier API) + Klein-4B-DPO</td><td>55.7</td><td>33.7</td><td>33.9</td><td>26.0</td><td class="overall">31.2</td></tr>
+        <tr class="ref"><td class="phase-lbl">ref</td><td class="cfg">No-Search + Klein-4B-DPO</td><td>49.9</td><td>28.2</td><td>26.3</td><td>20.6</td><td class="overall">25.0</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="figcap"><b>On a fixed Klein-4B-DPO generator, the co-trained 8B reasoner (31.8) matches the frontier oracle reasoner (31.2)</b> — at a fraction of the reasoner cost. Training moved most of the knowledge inside the boundary.</div>
+
+  <div class="naming-note"><b>Naming note</b> (maps to the paper): the paper's condition macros render as <b>No Search → Blind Search (SFT-8B, generator-agnostic) → Generator-Adaptive Search (RFT-8B)</b>. We relabel "Blind Search" → "Gen-Agnostic" <span class="em">on the site only</span>, because the paper reuses "blind" for the harmful search-everything policy in the Hook — two different meanings that must not collide on one page. The SFT-8B reasoner is generator-agnostic; it gates like any reasoner but is not calibrated to a specific generator, and is <b>not</b> the naive "search-everything" policy from Finding 2.</div>
+
+  <div class="bridge"><span class="ar">→</span> None of this is reproducible if you can't replay the searches. So we released them. ↓</div>
+</section>
+
+<!-- ========================= §8 The harness ========================= -->
+<section class="card" id="harness">
+  <span class="eyebrow">The Harness — released, and replayable offline</span>
+  <h2>Search-augmented generation you can reproduce without an API key</h2>
+  <p>Reproducing this kind of work usually means paying for a search engine <span class="em">and</span> a fleet of generators — and watching your results drift as those services change underneath you. We froze the whole thing.</p>
+  <p>We release <strong>SearchGen-20K</strong> (20,839 world-knowledge-grounded prompts across 12 failure categories and 22 domains, a mean of 5.2 knowledge gaps per prompt), the co-training corpus (<strong>90,452 reasoning traces</strong>, <strong>281,925 generations</strong>), and <strong>SearchGen-Corpus-1M</strong> — <strong>145,642 archived image and web search sessions</strong>, <strong>559,973 unique URLs</strong>, and <strong>370,733 cached downloads</strong>.</p>
+  <p>Because every search is pre-executed and frozen, you can replay the entire pipeline offline. No live API keys. No result drift. An expensive research workflow becomes a stable substrate for preference learning, reward modeling, search-policy design, and retrieval studies.</p>
+
+  <div class="stat-row">
+    <div class="sbox"><div class="sn green">20,839</div><div class="sl">prompts</div></div>
+    <div class="sbox"><div class="sn blue">145,642</div><div class="sl">search sessions</div></div>
+    <div class="sbox"><div class="sn purple">90,452</div><div class="sl">agentic traces</div></div>
+    <div class="sbox"><div class="sn orange">281,925</div><div class="sl">generations</div></div>
+  </div>
+  <div class="figcap"><b>Everything released:</b> the prompts, the searches the agent ran, its full reasoning traces, and every generation used for training and evaluation.</div>
+
+  <div class="card-line">A frozen web. Same query, same result, every run.</div>
+
+  <figure class="fig">
+    <img src="assets/figures/treemap.png" alt="Treemap of 22 real-world domains covered by SearchGen-20K.">
+    <figcaption><b>SearchGen-20K spans 22 real-world domains</b> — from People &amp; Professions and Screen &amp; Performance Media down a long tail through Science, Fashion, and Infrastructure — mirroring how people actually prompt.</figcaption>
+  </figure>
+</section>
+
+<!-- ========================= §9 Looking forward ========================= -->
+<section class="card narrow" id="forward">
+  <span class="eyebrow">Looking Forward</span>
+  <h2>A flywheel — and a principle bigger than search</h2>
+  <p>Our recipe is deliberately minimal: one teaching pass, one recalibration pass. Even so, it improves monotonically — which means it can <span class="em">repeat</span>. Each cycle pushes the generator's boundary further out and tightens the search policy further in, converging toward a system where only genuinely contextual knowledge ever triggers a lookup. That's a recursive self-improvement flywheel for world-knowledge-grounded generation.</p>
+  <p>The tempting objection is that bigger models will simply learn everything. They won't. Training data is finite; the world is not. No model, at any scale, can hold events after its cutoff, entities too rare for any dataset, or culture that keeps evolving. The boundary shifts outward with scale — it never disappears. Co-training finds where it lies for <span class="em">any</span> generator, at <span class="em">any</span> scale.</p>
+  <p>And search is only the first tool. The same gate–filter–integrate discipline governs <span class="em">when to invoke any tool</span> — image editing, render-as-code, 3D-asset retrieval, structural control. Each fills a different slice of what a generator can't be taught. The knowledge boundary is a general principle for tool use, and the released harness is built to explore it.</p>
+
+  <div class="card-line p">The question isn't how to build a model that knows everything. It's how to build one that knows what it doesn't know.</div>
+</section>
+
+<!-- ========================= §10 Citation ========================= -->
+<section class="card narrow" id="cite">
+  <span class="eyebrow">Citation</span>
+  <h2>Cite this work</h2>
+  <div class="cite-card">
+    <div class="cite-head">
+      <span class="t">BibTeX</span>
+      <button class="copy-btn" id="copyBtn"><span>&#128203;</span> <span id="copyLbl">Copy</span></button>
+    </div>
+    <pre><code id="bibtex">@article{wang2026searchgen,
+  title   = {Search Beyond What Can Be Taught: Evolving the Knowledge
+             Boundary in Agentic Visual Generation},
+  author  = {Wang, Haozhe and Feng, Weijia and Yu, Jinpeng and Liu, Che and
+             Nie, Ping and Lin, Fangzhen and Liu, Jiaming and Huang, Ruihua and
+             Lin, Jimmy and Chen, Wenhu and Wei, Cong},
+  journal = {arXiv preprint},
+  year    = {2026},
+  url     = {https://haozheh3.github.io/SearchGen}
+}</code></pre>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  SearchGen © 2026 · HKUST · University of Waterloo · Qwen Applications · Imperial College London
+</footer>
+
+<!-- ========================= DEMO MODAL ========================= -->
+<div class="modal" id="demoModal" role="dialog" aria-modal="true" aria-label="SearchGen live demo">
+  <div class="scrim" id="demoScrim"></div>
+  <div class="frame-wrap">
+    <button class="close-x" id="demoClose" aria-label="Close demo">&times;</button>
+    <iframe id="demoFrame" title="SearchGen live demo" src="about:blank" allow="autoplay"></iframe>
+    <div class="m-hint">Press Esc or click outside to close</div>
+  </div>
 </div>
 
 <script>
-function escHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
+// scroll progress
+var progress=document.getElementById('progress');
+function updProgress(){var h=document.documentElement;var st=h.scrollTop||document.body.scrollTop;var sh=(h.scrollHeight-h.clientHeight)||1;progress.style.width=(st/sh*100)+'%';}
+window.addEventListener('scroll',updProgress,{passive:true});updProgress();
 
-function stylizeContent(s) {
-  s = s.replace(/critical/g, '<span class="hi-orange">critical</span>');
-  s = s.replace(/important/g, '<span class="hi-blue">important</span>');
-  s = s.replace(/moderate/g, '<span style="color:var(--text3)">moderate</span>');
-  s = s.replace(/PASS_HIGH/g, '<span class="hi-green">PASS_HIGH</span>');
-  s = s.replace(/WELL-KNOWN/g, '<span class="hi-green">WELL-KNOWN</span>');
-  s = s.replace(/search_type="image"/g, 'search_type=<span class="hi-orange">"image"</span>');
-  s = s.replace(/search_type="web"/g, 'search_type=<span class="hi-blue">"web"</span>');
-  s = s.replace(/\(refer to Reference Image[^)]*\)/g, '<span class="hi-ref">$&</span>');
-  return s;
-}
+// reveal on scroll — progressive enhancement; content stays visible if any of this fails
+(function(){
+  var cards=[].slice.call(document.querySelectorAll('section.card'));
+  function reveal(s){s.classList.add('v');if(s.id==='boundary'){try{kbAnimate();}catch(e){}}}
+  function revealAll(){cards.forEach(reveal);}
+  document.documentElement.classList.add('js-anim'); // enable the fade only now
+  if(!('IntersectionObserver' in window)){revealAll();return;}
+  try{
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){reveal(e.target);io.unobserve(e.target);}});},{threshold:0,rootMargin:'0px 0px -6% 0px'});
+    cards.forEach(function(s){io.observe(s);});
+    // hard backstop: never allow content to remain hidden
+    setTimeout(revealAll,2500);
+  }catch(e){revealAll();}
+})();
 
-function parseBlocks(text) {
-  var blocks = [];
-  var lines = text.split('\n');
-  var current = null;
-  var buffer = [];
-  for (var i = 0; i < lines.length; i++) {
-    var line = lines[i];
-    if (!current) {
-      var openMatch = line.match(/^\s*<([\w_]+)[\s>\/]/);
-      var jsonOpen = line.match(/^\{/);
-      if (openMatch) {
-        if (buffer.length) { blocks.push({tag: null, content: buffer.join('\n')}); buffer = []; }
-        current = openMatch[1];
-        buffer.push(line);
-        if (/\/>\s*$/.test(line)) {
-          blocks.push({tag: current, content: buffer.join('\n')});
-          current = null; buffer = [];
-        } else if (new RegExp('</' + current + '>').test(line)) {
-          blocks.push({tag: current, content: buffer.join('\n')});
-          current = null; buffer = [];
-        }
-      } else if (jsonOpen) {
-        if (buffer.length) { blocks.push({tag: null, content: buffer.join('\n')}); buffer = []; }
-        current = '{}';
-        buffer.push(line);
-        if (/\}/.test(line)) { blocks.push({tag: 'json', content: buffer.join('\n')}); current = null; buffer = []; }
-      } else {
-        buffer.push(line);
-      }
-    } else {
-      buffer.push(line);
-      var closed = current === '{}' ? /\}/.test(line) : new RegExp('</' + current + '>').test(line);
-      if (closed) {
-        blocks.push({tag: current === '{}' ? 'json' : current, content: buffer.join('\n')});
-        current = null; buffer = [];
-      }
-    }
-  }
-  if (buffer.length) blocks.push({tag: current || null, content: buffer.join('\n')});
-  return blocks.filter(function(b) { return b.content.trim(); });
+// ---------- demo modal ----------
+var modal=document.getElementById('demoModal');
+var frame=document.getElementById('demoFrame');
+var DEMO_SRC='demo.html';
+function openDemo(){
+  frame.src=DEMO_SRC;               // (re)load so the timed animation replays from start
+  modal.classList.add('open');
+  document.body.classList.add('modal-open');
+  document.getElementById('demoClose').focus();
 }
-
-function typeHtml(el, html, cpt, ms, cb) {
-  var parts = [], i = 0;
-  while (i < html.length) {
-    if (html[i] === '<') {
-      var e = html.indexOf('>', i);
-      if (e !== -1) { parts.push(html.substring(i, e + 1)); i = e + 1; }
-      else { parts.push(html[i]); i++; }
-    } else if (html[i] === '&') {
-      var s = html.indexOf(';', i);
-      if (s !== -1 && s - i < 8) { parts.push(html.substring(i, s + 1)); i = s + 1; }
-      else { parts.push(html[i]); i++; }
-    } else {
-      parts.push(html[i]); i++;
-    }
-  }
-  var pi = 0, built = '';
-  (function tick() {
-    var c = 0;
-    while (pi < parts.length && c < cpt) {
-      built += parts[pi];
-      if (parts[pi][0] !== '<') c++;
-      pi++;
-    }
-    el.innerHTML = built;
-    if (pi < parts.length) setTimeout(tick, ms);
-    else if (cb) cb();
-  })();
+function closeDemo(){
+  modal.classList.remove('open');
+  document.body.classList.remove('modal-open');
+  frame.src='about:blank';          // clear so it reloads next open
 }
+document.getElementById('demoFabTop').addEventListener('click',openDemo);
+document.getElementById('demoFabHero').addEventListener('click',openDemo);
+document.getElementById('demoClose').addEventListener('click',closeDemo);
+document.getElementById('demoScrim').addEventListener('click',closeDemo);
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&modal.classList.contains('open'))closeDemo();});
 
-function typewrite(elId, text, speed, cb) {
-  var el = document.getElementById(elId);
-  var blocks = parseBlocks(text);
-  var tagged = blocks.filter(function(b) { return b.tag && b.tag !== 'json'; });
-  if (tagged.length === 1) {
-    var parent = tagged[0];
-    var pLines = parent.content.split('\n');
-    var innerLines = [];
-    var started = false;
-    for (var j = 0; j < pLines.length; j++) {
-      var pl = pLines[j];
-      if (!started && new RegExp('^\\s*<' + parent.tag + '[\\s>]').test(pl)) {
-        started = true;
-      } else if (started && new RegExp('</' + parent.tag + '>').test(pl)) {
-        break;
-      } else if (started) {
-        innerLines.push(pl);
-      }
-    }
-    var childBlocks = parseBlocks(innerLines.join('\n'));
-    var childTagged = childBlocks.filter(function(b) { return b.tag && b.tag !== 'json'; });
-    if (childTagged.length > 1) blocks = childBlocks;
-  }
-  tlPause();
-  el.innerHTML = '';
-  var tagBar = document.createElement('div');
-  tagBar.className = 'tag-bar';
-  var tagPills = [];
-  var tagsSeen = {};
-  blocks.forEach(function(b) {
-    if (b.tag && b.tag !== 'json' && !tagsSeen[b.tag]) {
-      tagsSeen[b.tag] = true;
-      var pill = document.createElement('span');
-      pill.className = 'tag-pill';
-      pill.textContent = b.tag;
-      tagBar.appendChild(pill);
-      tagPills.push({pill: pill, tag: b.tag, revealed: false});
-    }
+// ---------- copy bibtex ----------
+document.getElementById('copyBtn').addEventListener('click',function(){
+  var t=document.getElementById('bibtex').innerText;
+  navigator.clipboard.writeText(t).then(function(){
+    var l=document.getElementById('copyLbl');l.textContent='Copied!';setTimeout(function(){l.textContent='Copy';},1600);
   });
-  if (tagPills.length) el.appendChild(tagBar);
-  var blockData = blocks.map(function(b) {
-    var div = document.createElement('div');
-    div.className = 'tw-block';
-    var contentHtml = stylizeContent(escHtml(b.content)).replace(/\n/g, '<br>');
-    var cd = document.createElement('div');
-    cd.className = 'block-content';
-    div.appendChild(cd);
-    el.appendChild(div);
-    return {el: div, cd: cd, html: contentHtml, tag: b.tag};
-  });
-  var bi = 0;
-  function next() {
-    if (bi >= blockData.length) { tlResume(); if (cb) cb(); return; }
-    var bd = blockData[bi];
-    bd.el.classList.add('shown');
-    bd.el.scrollIntoView({behavior:'smooth', block:'center'});
-    if (bd.tag) {
-      for (var i = 0; i < tagPills.length; i++) {
-        if (tagPills[i].tag === bd.tag && !tagPills[i].revealed) {
-          tagPills[i].revealed = true;
-          tagPills[i].pill.classList.add('shown', 'highlight');
-          (function(p) { setTimeout(function() { p.classList.remove('highlight'); }, 1200); })(tagPills[i].pill);
-          break;
-        }
-      }
-    }
-    typeHtml(bd.cd, bd.html, 3, 10, function() {
-      bi++;
-      setTimeout(next, 180);
-    });
-  }
-  next();
-}
-const tl=[]; let t=0;
-var tlPaused=false,tlPauseStart=0,tlOffset=0;
-function tlPause(){tlPaused=true;tlPauseStart=performance.now()}
-function tlResume(){if(tlPaused){tlOffset+=performance.now()-tlPauseStart;tlPaused=false}}
-function at(d,fn){t+=d;tl.push({time:t,fn})}
-function show(id){document.getElementById(id).classList.add('v')}
-function showExpand(id){const e=document.getElementById(id);e.classList.add('v','expanded')}
-function startThinking(id){document.getElementById(id).classList.add('thinking-active')}
-function stopThinking(id){document.getElementById(id).classList.remove('thinking-active')}
-function loadImg(id,dl){setTimeout(()=>document.getElementById(id).classList.add('loaded'),dl)}
-function selectSlot(id){document.getElementById(id).classList.add('sel')}
-function revealResult(id,dl){setTimeout(()=>document.getElementById(id).classList.add('revealed'),dl)}
-function countUp(el,target){const s=performance.now();(function f(n){const p=Math.min((n-s)/800,1);el.textContent='+'+Math.round(target*(1-Math.pow(1-p,3)))+'%';if(p<1)requestAnimationFrame(f)})(performance.now())}
-function scrollTo(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'})}
-
-const TOTAL=85000;
-
-const D1_TW1=`<analysis_reasoning>The prompt centers on 宮崎駿 (Hayao Miyazaki), the Japanese animation director. His name recognition is near-universal, but his visual appearance is underrepresented in training data compared to Western directors. Without visual grounding, models hallucinate a generic elderly Japanese man.</analysis_reasoning>
-
-<knowledge_groups>
-  <gap>
-    <entity>宮崎駿 (Hayao Miyazaki) facial likeness</entity>
-    <category>EIK</category>
-    <search_type>image</search_type>
-    <severity>critical</severity>
-    <reasoning>Miyazaki has distinctive features — thick round black-framed glasses, full white beard, swept-back white hair, beige apron — but generators conflate him with generic elderly Japanese men.</reasoning>
-    <suggested_search>宮崎駿 Hayao Miyazaki portrait photo Studio Ghibli</suggested_search>
-  </gap>
-  <gap>
-    <entity>Studio Ghibli animation workspace</entity>
-    <category>EIK</category>
-    <search_type>image</search_type>
-    <severity>moderate</severity>
-    <reasoning>The cluttered-desk aesthetic of Ghibli's hand-drawn animation studio is distinct from generic art studio imagery.</reasoning>
-    <suggested_search>Miyazaki animation desk workspace Studio Ghibli documentary</suggested_search>
-  </gap>
-</knowledge_groups>
-
-<search_queries>
-  <query search_type="image">宮崎駿 Hayao Miyazaki portrait photo Studio Ghibli</query>
-</search_queries>`;
-
-const D1_TW2=`<reference_selection query="宮崎駿 Hayao Miyazaki portrait photo">
-  <identified_knowledge_gaps>The model lacks specific knowledge of Miyazaki's distinctive appearance — the combination of thick round glasses, full white beard, and his signature beige canvas apron that distinguishes him from generic elderly Japanese men.</identified_knowledge_gaps>
-  <candidates>
-    <image index="0" title="Getty Images / portrait" source="gettyimages.com">Clear frontal portrait, glasses and beard well-lit.</image>
-    <image index="1" title="NHK Documentary / at desk" source="nhk.or.jp">At animation desk wearing apron. Natural light. Shows face AND workspace.</image>
-    <image index="2" title="Studio wide shot" source="ghibli.jp">Interior of Ghibli studio — environment but face too small.</image>
-    <image index="3" title="Digital illustration portrait" source="artstreet.com">Artistic rendering — confirms distinctive look.</image>
-    <image index="4" title="Press photo / event" source="gettyimages.com">Similar angle, captures beard and glasses.</image>
-  </candidates>
-  <selected_index>0</selected_index>
-  <gap_filling_reasoning>Image at index 0 provides the best facial reference: Miyazaki's thick round black-framed glasses, full white beard, and white hair are clearly visible. Directly grounds the critical EIK gap.</gap_filling_reasoning>
-</reference_selection>`;
-
-const D1_TW3=`<visual_planning>Utilize Reference Image 1 (Miyazaki portrait at desk) to ground facial structure, glasses, beard, clothing, and workspace context. The reference provides both identity grounding and environmental setting in a single image.</visual_planning>
-
-<borrow_from_references>
-  <ref index="visual-1" used="true">
-    <reference_focus>Facial likeness (round glasses, white beard, aged skin), clothing (beige apron, dark sweater), environment (paper-covered desk, pencils, natural window light)</reference_focus>
-  </ref>
-</borrow_from_references>
-
-<combine_strategy>Inject reference-grounded physical description into the refined prompt. Replace vague original with precise visual anchors for face, clothing, and workspace drawn directly from the reference image.</combine_strategy>
-
-<refined_prompt>A photorealistic portrait of Hayao Miyazaki (宮崎駿) sitting at his animation desk in Studio Ghibli (refer to Reference Image 1 for facial likeness and environment). He is an elderly Japanese man with thick round black-framed glasses, a full white beard, and swept-back white hair. He wears a beige canvas work apron over a dark navy sweater. The desk is covered with hand-drawn animation sketches, watercolor palettes, and colored pencils. Warm afternoon sunlight streams through a window to his left. Photorealistic, natural lighting, shallow depth of field.</refined_prompt>`;
-
-const D2_TW1=`<analysis_reasoning>The prompt requests a city skyline in Van Gogh's Starry Night style. Starry Night is the #1 most reproduced painting in Western art — all generators are trained on hundreds of thousands of reproductions and style transfers. Impasto technique, cobalt palette, swirling spirals are core training data. No entity requires external grounding.</analysis_reasoning>
-
-<knowledge_groups>
-  <gap>
-    <entity>The Starry Night (1889) visual style</entity>
-    <category>EIK</category>
-    <search_type>image</search_type>
-    <severity>moderate</severity>
-    <reasoning>One of the most reproduced paintings in Western art. Swirling spirals, cobalt/ultramarine palette, thick impasto texture are core training data for all major generators.</reasoning>
-  </gap>
-  <gap>
-    <entity>Post-Impressionist impasto technique</entity>
-    <category>EIK</category>
-    <search_type>image</search_type>
-    <severity>moderate</severity>
-    <reasoning>Thick paint ridges and visible brushwork are among the most common style descriptors in art-generation training data. No visual reference needed.</reasoning>
-  </gap>
-</knowledge_groups>
-
-<search_justification>All knowledge_groups rated moderate — visual elements are core training data. Search would add ~5s latency with no quality gain. Proceed to T2I generation directly.</search_justification>`;
-
-const D2_TW2=`<visual_planning>No reference images — search skipped. Rely on the model's inherent knowledge of Starry Night visual language. Explicitly specify swirling spiral patterns, cobalt/ultramarine palette, thick impasto texture with visible ridges, and cadmium yellow light points.</visual_planning>
-
-<borrow_from_references></borrow_from_references>
-
-<combine_strategy>Enrich the user prompt with precise Post-Impressionist vocabulary derived from the model's knowledge of the original painting. Substitute the generic 'city skyline' with the Starry Night-specific compositional logic: cypress trees → skyscrapers, swirling sky → cobalt impasto spirals.</combine_strategy>
-
-<refined_prompt>A modern metropolitan city skyline reimagined in Vincent van Gogh's The Starry Night (1889) painting style. The sky dominates two-thirds of the composition with swirling cobalt blue and ultramarine spiral patterns, rendered in thick impasto brushstrokes with visible paint ridges. Tall glass skyscrapers replace the original cypress trees as dark silhouettes against the turbulent sky. Glowing cadmium yellow street lamps and lit windows create warm points of light. A river in the lower foreground reflects the swirling sky in broken, shimmering brushstrokes. Oil on canvas texture throughout. Post-Impressionist palette and energy.</refined_prompt>`;
-
-const D3_TW1=`<analysis_reasoning>The prompt requests a labeled CRISPR-Cas9 mechanism diagram. Dual gap: (1) Visual — scientific diagrams use strict conventions (Cas9 bilobed, DNA double helix with R-loop, cleavage arrows) that models get wrong without reference. (2) Factual — molecular labels (sgRNA, PAM 5'-NGG-3', RuvC, HNH, DSB) must be exact; models misspell and scramble these.</analysis_reasoning>
-
-<knowledge_groups>
-  <gap>
-    <entity>CRISPR-Cas9 diagram visual conventions</entity>
-    <category>CSV</category>
-    <search_type>image</search_type>
-    <severity>important</severity>
-    <reasoning>Standard molecular biology illustrations use specific visual idioms — Cas9 as bilobed shape, DNA as double helix with unwound R-loop, directional arrows for cleavage sites. Generator needs layout reference.</reasoning>
-    <suggested_search>CRISPR Cas9 gene editing mechanism diagram labeled scientific illustration</suggested_search>
-  </gap>
-  <gap>
-    <entity>CRISPR molecular component nomenclature</entity>
-    <category>FHA</category>
-    <search_type>web</search_type>
-    <severity>critical</severity>
-    <reasoning>Exact terms required — sgRNA (crRNA + tracrRNA fusion), PAM (5'-NGG-3'), RuvC and HNH nuclease domains, DSB 3bp upstream of PAM. Models hallucinate these labels.</reasoning>
-    <suggested_search>CRISPR Cas9 sgRNA PAM RuvC HNH mechanism steps molecular components</suggested_search>
-  </gap>
-</knowledge_groups>
-
-<search_queries>
-  <query search_type="image">CRISPR Cas9 gene editing mechanism diagram labeled scientific illustration</query>
-  <query search_type="web">CRISPR Cas9 sgRNA PAM RuvC HNH mechanism steps molecular components</query>
-</search_queries>`;
-
-const D3_TW2=`<visual_planning>Integrate two types of references: (1) visual — image search results ground the diagram layout (Cas9 bilobed shape, DNA helix, domain colors, arrow conventions); (2) textual — web search results provide exact molecular nomenclature (sgRNA=crRNA+tracrRNA, PAM 5'-NGG-3', RuvC, HNH, DSB). Both are injected into the refined prompt.</visual_planning>
-
-<borrow_from_references>
-  <ref index="visual-1" used="true">
-    <reference_focus>Overall diagram layout, Cas9 protein bilobed shape, DNA double helix representation, cleavage arrow conventions</reference_focus>
-  </ref>
-  <ref index="visual-2" used="true">
-    <reference_focus>sgRNA hairpin binding visualization, REC/NUC lobe labeling, domain color coding</reference_focus>
-  </ref>
-  <ref index="web-search" used="true">
-    <reference_focus>Exact molecular nomenclature: sgRNA = crRNA + tracrRNA, PAM sequence (5'-NGG-3'), HNH domain cleaves target strand, RuvC domain cleaves non-target strand, DSB 3 bp upstream of PAM</reference_focus>
-  </ref>
-</borrow_from_references>
-
-<combine_strategy>Keep the user's three-step structure (guide RNA binding, PAM recognition, DSB) as the backbone. Inject exact molecular names from web search into each step as explicit labels, preventing hallucinated or misspelled component names. Reference image style grounds the visual layout conventions.</combine_strategy>
-
-<refined_prompt>A clean labeled scientific diagram of the CRISPR-Cas9 gene editing mechanism, in the style of a textbook illustration (refer to Reference Images for layout and visual conventions). Show three key steps left to right: (1) Guide RNA binding — sgRNA (single guide RNA, composed of crRNA + tracrRNA scaffold) bound to Cas9 protein. Label: sgRNA, Cas9, crRNA, tracrRNA. (2) PAM site recognition — Cas9-sgRNA complex locates the PAM sequence (5'-NGG-3') on the non-target DNA strand. Show DNA double helix with the PAM site highlighted. Label: PAM (5'-NGG-3'), target strand, non-target strand. (3) Double-strand DNA break — HNH nuclease domain cleaves the target strand, RuvC nuclease domain cleaves the non-target strand, creating a DSB 3 bp upstream of PAM. Label: HNH domain, RuvC domain, DSB. White background, high-contrast black outlines, color-coded components, arrows showing cleavage sites.</refined_prompt>`;
-
-// ===== DEMO 1: Visual Search — Hayao Miyazaki =====
-at(0,()=>show('hero'));
-at(3000,()=>{show('d1lab');scrollTo('d1lab')});
-at(600,()=>show('d1u'));
-at(1200,()=>show('d1a'));
-at(400,()=>{showExpand('d1t1');startThinking('d1t1')});
-at(200,()=>typewrite('d1tw1',D1_TW1,10,()=>stopThinking('d1t1')));
-at(3500,()=>show('d1gap'));
-at(1200,()=>showExpand('d1t2'));
-at(400,()=>{loadImg('d1img0',400);loadImg('d1img1',800);loadImg('d1img2',1300);loadImg('d1img3',1800);loadImg('d1img4',2200)});
-at(3200,()=>{showExpand('d1t3');startThinking('d1t3')});
-at(200,()=>typewrite('d1tw2',D1_TW2,9,()=>{stopThinking('d1t3')}));
-at(1700,()=>show('d1sel'));
-at(400,()=>selectSlot('d1img0'));
-at(1000,()=>{showExpand('d1t4');startThinking('d1t4')});
-at(200,()=>typewrite('d1tw3',D1_TW3,9,()=>stopThinking('d1t4')));
-at(1400,()=>show('d1refine'));
-at(600,()=>show('d1vref'));
-at(600,()=>show('d1t5'));
-at(800,()=>show('d1mode'));
-at(600,()=>show('d1res'));
-at(100,()=>{revealResult('d1rc0',1200);revealResult('d1rc1',2800)});
-at(3800,()=>show('d1lift'));
-
-// ===== DEMO 2: No Search — Starry Night =====
-at(3500,()=>{show('d2lab');scrollTo('d2lab')});
-at(600,()=>show('d2u'));
-at(1000,()=>show('d2a'));
-at(400,()=>{showExpand('d2t1');startThinking('d2t1')});
-at(200,()=>typewrite('d2tw1',D2_TW1,10,()=>stopThinking('d2t1')));
-at(2200,()=>show('d2gap'));
-at(800,()=>show('d2skip'));
-at(800,()=>{showExpand('d2t2');startThinking('d2t2')});
-at(200,()=>typewrite('d2tw2',D2_TW2,10,()=>stopThinking('d2t2')));
-at(900,()=>show('d2refine'));
-at(800,()=>show('d2t3'));
-at(800,()=>show('d2mode'));
-at(600,()=>show('d2res'));
-at(100,()=>revealResult('d2rc0',1800));
-at(2800,()=>show('d2met'));
-at(800,()=>show('d2cap'));
-
-// ===== DEMO 3: Image + Text Search — CRISPR-Cas9 =====
-at(3500,()=>{show('d3lab');scrollTo('d3lab')});
-at(600,()=>show('d3u'));
-at(1200,()=>show('d3a'));
-at(400,()=>{showExpand('d3t1');startThinking('d3t1')});
-at(200,()=>typewrite('d3tw1',D3_TW1,9,()=>stopThinking('d3t1')));
-at(4700,()=>show('d3gap'));
-// Image search
-at(1200,()=>showExpand('d3t2'));
-at(400,()=>{loadImg('d3img0',400);loadImg('d3img1',800);loadImg('d3img2',1200);loadImg('d3img3',1600)});
-// Web search
-at(2500,()=>showExpand('d3t3'));
-// Thinking: Integrate
-at(1800,()=>{showExpand('d3t4');startThinking('d3t4')});
-at(200,()=>typewrite('d3tw2',D3_TW2,9,()=>stopThinking('d3t4')));
-// Outcome: integration complete
-at(2800,()=>show('d3integ'));
-at(600,()=>show('d3vref'));
-at(600,()=>show('d3t5'));
-at(800,()=>show('d3mode'));
-at(600,()=>show('d3res'));
-at(100,()=>{revealResult('d3rc0',1200);revealResult('d3rc1',2800)});
-at(800,()=>show('d3lift'));
-
-// ===== OUTRO =====
-at(3500,()=>{show('outro');scrollTo('outro')});
-at(800,()=>{const c=document.getElementById('s0');c.classList.add('v');countUp(c.querySelector('.sn'),33)});
-at(300,()=>{const c=document.getElementById('s1');c.classList.add('v');countUp(c.querySelector('.sn'),69)});
-at(300,()=>{const c=document.getElementById('s2');c.classList.add('v');countUp(c.querySelector('.sn'),67)});
-at(1500,()=>show('otag'));
-
-Promise.all([
-  document.fonts.ready,
-  ...Array.from(document.images).map(img=>img.complete?Promise.resolve():new Promise(r=>{img.onload=r;img.onerror=r}))
-]).then(()=>{
-  const s=performance.now();
-  (function tick(){
-    const raw=performance.now()-s;
-    const e=tlPaused?(tlPauseStart-s-tlOffset):(raw-tlOffset);
-    document.getElementById('prog').style.width=Math.min(100,e/TOTAL*100)+'%';
-    if(!tlPaused){while(tl.length&&tl[0].time<=e)tl.shift().fn()}
-    if(tl.length||raw<TOTAL)requestAnimationFrame(tick);
-  })();
 });
+
+// ---------- knowledge boundary SVG ----------
+var CX=300,CY=220,R0=118,R1=152;      // r0 = start frontier, r1 = expanded end-state
+var dotsG=document.getElementById('kbDots');
+var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var dots=[];
+(function buildDots(){
+  var seed=42; function rnd(){seed=(seed*1103515245+12345)&0x7fffffff;return seed/0x7fffffff;}
+  var N=42;
+  for(var i=0;i<N;i++){
+    var ang=rnd()*Math.PI*2;
+    var rad=44+rnd()*146;             // within the big disc (R=200), avoid center label
+    if(rad<48||rad>190) rad=70+rnd()*110;
+    // keep dots clear of the central label band
+    var x=CX+Math.cos(ang)*rad, y=CY+Math.sin(ang)*rad;
+    var startInside=rad<R0;
+    var endInside=rad<R1;
+    var c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('r',5.2);
+    dotsG.appendChild(c);
+    dots.push({el:c,rad:rad,startInside:startInside,endInside:endInside});
+  }
+})();
+function styleDot(d,inside){
+  if(inside){d.el.setAttribute('fill','#16a34a');d.el.setAttribute('stroke','none');}
+  else{d.el.setAttribute('fill','#fff');d.el.setAttribute('stroke','#ea580c');d.el.setAttribute('stroke-width','2');}
+}
+function setEndState(){
+  document.getElementById('kbInner').setAttribute('r',R1);
+  document.getElementById('kbFrontier').setAttribute('r',R1);
+  document.getElementById('kbArrow').style.opacity='1';
+  dots.forEach(function(d){styleDot(d,d.endInside);});
+}
+function setStartState(){
+  document.getElementById('kbInner').setAttribute('r',R0);
+  document.getElementById('kbFrontier').setAttribute('r',R0);
+  document.getElementById('kbArrow').style.opacity='0';
+  dots.forEach(function(d){styleDot(d,d.startInside);});
+}
+var kbDone=false;
+function kbAnimate(){
+  if(reduce){setEndState();kbDone=true;return;}
+  setStartState();
+  var t0=null,DUR=1400;
+  document.getElementById('kbArrow').style.transition='opacity .6s ease';
+  function step(ts){
+    if(!t0)t0=ts;var p=Math.min((ts-t0)/DUR,1);var ease=1-Math.pow(1-p,3);
+    var r=R0+(R1-R0)*ease;
+    document.getElementById('kbInner').setAttribute('r',r);
+    document.getElementById('kbFrontier').setAttribute('r',r);
+    if(p>0.4)document.getElementById('kbArrow').style.opacity='1';
+    dots.forEach(function(d){styleDot(d,d.rad<r);});
+    if(p<1)requestAnimationFrame(step);else kbDone=true;
+  }
+  requestAnimationFrame(step);
+}
+// default: ship strong static end-state (per build spec)
+setEndState();
+document.getElementById('kbReplay').addEventListener('click',function(){if(reduce){setEndState();return;}kbAnimate();});
 </script>
 </body>
 </html>
