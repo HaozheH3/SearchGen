@@ -1,0 +1,10 @@
+include README.md QUICKSTART.md LICENSE .env.example
+recursive-include examples *.py *.jsonl
+recursive-include tests test_*.py
+exclude copy_and_pack_plan.md
+exclude release_allowlist.txt
+exclude scripts/copy_raw_sources.py
+prune _work
+prune runs
+prune dist
+prune build
