@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "searchgen-eval"
 version = "1.0.0"
-description = "Portable SearchGen FFJudge-PP evaluator"
+description = "Portable SearchGen ten-component evaluation protocol"
 requires-python = ">=3.10"
 dependencies = ["Pillow>=10.0", "requests>=2.31"]
 

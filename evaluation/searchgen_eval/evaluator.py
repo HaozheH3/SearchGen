@@ -9,9 +9,9 @@ from . import judge_common as judge
 from .api_client import APIClient
 from .image_utils import local_image_to_data_url
 
-RESULT = "augmented_parsed_result_ffjudge_pp.json"
-PROMPT = "augmented_prompt_context_ffjudge_pp.txt"
-RAW = "augmented_raw_api_output_ffjudge_pp.txt"
+RESULT = "augmented_parsed_result_evaluation_protocol.json"
+PROMPT = "augmented_prompt_context_evaluation_protocol.txt"
+RAW = "augmented_raw_api_output_evaluation_protocol.txt"
 
 
 def atomic_text(path: Path, text: str) -> None:

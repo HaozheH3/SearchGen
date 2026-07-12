@@ -8,7 +8,7 @@ COMPONENTS = ["checklist", "adaptive_rubric", "prompt_faithfulness", "image_qual
 
 
 def aggregate(root: Path, policy: str = "skip") -> dict:
-    files = list(root.rglob("augmented_parsed_result_ffjudge_pp.json"))
+    files = list(root.rglob("augmented_parsed_result_evaluation_protocol.json"))
     values = {key: [] for key in COMPONENTS}
     invalid = parse_failures = 0
     for path in files:

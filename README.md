@@ -234,7 +234,7 @@ Remove `--preflight` and add `--workers 16` to run evaluation. Completed success
 
 SearchGen-Bench separates no-search and search-intensive prompts so evaluation can distinguish missing world knowledge from rendering failures and damage caused by unnecessary retrieval.
 
-The released **FFJudge-PP** evaluator reports checklist satisfaction, adaptive-rubric satisfaction, prompt faithfulness, image quality, text rendering, AI naturalness, composition and aesthetics, physical plausibility, visual-reference consistency, and text-reference consistency. Component scores use a 0–3 scale with half points; non-applicable fields remain unscored.
+The released evaluation protocol reports checklist satisfaction, adaptive-rubric satisfaction, prompt faithfulness, image quality, text rendering, AI naturalness, composition and aesthetics, physical plausibility, visual-reference consistency, and text-reference consistency. Component scores use a 0–3 scale with half points; non-applicable fields remain unscored.
 
 Aggregate completed results with:
 

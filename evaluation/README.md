@@ -1,6 +1,6 @@
 # SearchGen evaluation
 
-This directory is a standalone release of the canonical ten-component FFJudge-PP evaluator. Its vendored judge template and parser are immutable and preserve the production behavior.
+This directory is a standalone release of the canonical ten-component evaluation protocol. Its vendored evaluation template and parser are immutable and preserve the production behavior.
 
 ## Install and run
 
@@ -24,9 +24,9 @@ The API must expose an OpenAI-compatible chat-completions endpoint. Configure `S
 
 Each job writes under `results/{generator}/{bench_id}/`:
 
-- `augmented_parsed_result_ffjudge_pp.json`
-- `augmented_prompt_context_ffjudge_pp.txt`
-- `augmented_raw_api_output_ffjudge_pp.txt`
+- `augmented_parsed_result_evaluation_protocol.json`
+- `augmented_prompt_context_evaluation_protocol.txt`
+- `augmented_raw_api_output_evaluation_protocol.txt`
 
 Aggregate with `python aggregate_scores.py results --missing-policy skip`. Choose `zero` only when missing components should explicitly count as zero.
 

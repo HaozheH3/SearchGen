@@ -11,7 +11,7 @@ from .evaluator import build_request, evaluate, result_valid, RESULT
 
 
 def parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(description="Evaluate SearchGen predictions with canonical FFJudge-PP.")
+    p = argparse.ArgumentParser(description="Evaluate SearchGen predictions with the canonical evaluation protocol.")
     p.add_argument("--metadata", type=Path, required=True)
     p.add_argument("--benchmark-root", type=Path, required=True)
     group = p.add_mutually_exclusive_group(required=True)
