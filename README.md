@@ -60,6 +60,34 @@ To surface it, we built **SearchGen-Bench**: 751 test prompts scored with separa
 
 ***SearchGen-Bench results.** Generators score well on prompts they can answer from memory (gray). On prompts requiring external knowledge (orange), every open generator collapses—up to a 40-point drop—while commercial systems with built-in search hold. The bottleneck is missing knowledge, not rendering skill.*
 
+### Full Benchmark Breakdown
+
+Scores are reported on a 0–100 scale; higher is better. **Checklist**, **Rubric**, and **Visual ref.** are knowledge-sensitive measures that test whether requested facts are present. **Image quality**, **Text rendering**, and **Physical plausibility** capture rendering competence. Together, the components distinguish a model that cannot draw from one that can draw but lacks the required world knowledge.
+
+| Stratum | Type | Generator | Overall | Checklist | Rubric | Prompt | Image quality | Text rendering | AI naturalness | Composition | Physical plausibility | Visual ref. |
+|:--|:--|:--|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|
+| NoSearch | Open | Bagel | **49.3** | 52.3 | 49.1 | 39.2 | 58.0 | 18.4 | 48.3 | 65.3 | 60.4 | 34.8 |
+| NoSearch | Open | Flux.2-Klein-4B | **51.0** | 54.7 | 51.8 | 39.3 | 61.3 | 13.2 | 49.5 | 67.2 | 63.5 | 32.6 |
+| NoSearch | Open | Flux.2-Klein-9B | **57.8** | 63.8 | 59.8 | 51.3 | 63.8 | 31.3 | 52.5 | 72.3 | 66.7 | 43.7 |
+| NoSearch | Open | Qwen-Image | **67.4** | 74.8 | 70.8 | 62.8 | 68.3 | 63.0 | 61.0 | 76.8 | 73.8 | 56.7 |
+| NoSearch | Commercial | Qwen-Image-2 | **70.7** | 78.7 | 73.8 | 68.4 | 70.2 | 71.7 | 60.8 | 80.3 | 75.6 | 60.0 |
+| NoSearch | Commercial | SeedDream-4.0 | **67.9** | 74.9 | 70.6 | 61.7 | 69.5 | 71.1 | 59.7 | 80.3 | 73.9 | 56.7 |
+| NoSearch | Commercial | Nano Banana | **63.1** | 71.1 | 67.5 | 59.7 | 66.3 | 42.8 | 56.5 | 76.3 | 68.5 | 53.8 |
+| NoSearch | Commercial | Nano Banana Pro | **75.0** | 82.8 | 78.1 | 72.8 | 71.5 | 85.9 | 65.0 | 83.3 | 78.2 | 67.8 |
+| NoSearch | Commercial | GPT-Image-2 | **71.1** | 78.6 | 75.6 | 70.8 | 69.0 | 67.7 | 60.8 | 77.7 | 73.9 | 64.3 |
+| Search-Intensive | Open | Bagel | **21.5** | 18.2 | 17.6 | 13.3 | 30.5 | 2.5 | 29.3 | 33.6 | 36.8 | 13.5 |
+| Search-Intensive | Open | Flux.2-Klein-4B | **24.1** | 19.8 | 18.4 | 12.4 | 37.2 | 4.2 | 33.6 | 39.3 | 46.2 | 11.9 |
+| Search-Intensive | Open | Flux.2-Klein-9B | **26.7** | 24.2 | 23.1 | 17.2 | 36.8 | 7.2 | 32.9 | 40.4 | 48.6 | 16.9 |
+| Search-Intensive | Open | Qwen-Image | **27.9** | 24.8 | 24.3 | 18.6 | 40.1 | 8.7 | 31.6 | 42.8 | 44.6 | 17.7 |
+| Search-Intensive | Commercial | Qwen-Image-2 | **31.6** | 28.5 | 27.1 | 22.1 | 42.2 | 12.7 | 36.3 | 45.5 | 48.2 | 21.0 |
+| Search-Intensive | Commercial | Imagen3-Fast | **14.1** | 9.7 | 10.0 | 6.9 | 22.2 | 1.4 | 21.4 | 23.2 | 23.7 | 7.0 |
+| Search-Intensive | Commercial | SeedDream-4.0 | **45.9** | 44.2 | 43.6 | 38.5 | 57.0 | 35.9 | 47.1 | 58.7 | 64.0 | 35.1 |
+| Search-Intensive | Commercial | Nano Banana | **44.1** | 41.0 | 40.4 | 36.0 | 57.1 | 28.0 | 47.4 | 61.5 | 65.5 | 33.2 |
+| Search-Intensive | Commercial | Nano Banana Pro | **65.3** | 64.4 | 63.1 | 60.7 | 71.4 | 65.0 | 62.0 | 75.9 | 78.5 | 58.3 |
+| Search-Intensive | Commercial | GPT-Image-2 | **71.0** | 71.2 | 70.1 | 69.2 | 75.1 | 75.9 | 64.7 | 80.4 | 77.3 | 66.0 |
+
+*NoSearch contains prompts for which parametric knowledge is sufficient; Search-Intensive contains prompts that require external knowledge. Imagen3-Fast was reported only on the Search-Intensive stratum.*
+
 ## Finding 2 — Search Should Help. Often It Hurts.
 
 An illustrator handed an unfamiliar brief looks up references before drawing. Give the generator the same move—a reasoner spots knowledge gaps, search fills them, and the results feed generation—and you have **agentic visual generation**. Natural. And, done naively, harmful.
