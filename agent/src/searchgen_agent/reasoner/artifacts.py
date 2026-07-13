@@ -21,7 +21,7 @@ SAVE_TOP_SEARCH_RESULTS = 10
 
 
 def env_stop_before_reference_selection() -> bool:
-    v = os.environ.get("TOOLGEN_STOP_BEFORE_REFERENCE_SELECTION") or ""
+    v = os.environ.get("SEARCHGEN_STOP_BEFORE_REFERENCE_SELECTION") or ""
     return v.strip().lower() in ("1", "true", "yes")
 
 

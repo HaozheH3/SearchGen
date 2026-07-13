@@ -13,7 +13,7 @@ Each *slot* is either:
 to ``local_path``, that path is read from disk. Hotlink with URL only when there
 is no local file.
 
-Set ``TOOLGEN_VLM_MAX_EDGE`` (e.g. ``512``) to shrink **local** decoded images so
+Set ``SEARCHGEN_VLM_MAX_EDGE`` (e.g. ``512``) to shrink **local** decoded images so
 ``max(width,height)`` never exceeds that value (before the ``max_total_pixels`` area cap).
 Plain ``http(s)`` slot strings are unchanged (no client-side fetch).
 """
@@ -50,14 +50,14 @@ def coalesce_vlm_max_edge(explicit: int = 0) -> int:
     """
     Longest-side cap before the area-based ``max_total_pixels`` resize.
 
-    When ``explicit > 0``, use it. Otherwise read ``TOOLGEN_VLM_MAX_EDGE`` (positive int).
+    When ``explicit > 0``, use it. Otherwise read ``SEARCHGEN_VLM_MAX_EDGE`` (positive int).
     Used to keep **local** decoded condition/reference rasters bounded (plain ``http(s)`` URLs are
     still passed through unchanged).
     """
 
     if explicit and explicit > 0:
         return int(explicit)
-    raw = os.environ.get("TOOLGEN_VLM_MAX_EDGE", "").strip()
+    raw = os.environ.get("SEARCHGEN_VLM_MAX_EDGE", "").strip()
     if not raw:
         return 0
     try:

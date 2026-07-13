@@ -20,7 +20,7 @@ def build_fixture():
         "image_url": URL, "local_path": "fixture.png", "selected_image_title": "Apple"}]}],
         "eval_text_knowledge_slots": [], "has_text_knowledge_gaps_for_eval": False}
     prompt = judge.build_eval_prompt_text(row=row, verification_checklist=checklist, evaluation_rubric=rubric,
-        visual_context=context, variant="augmented", reference_slot_urls=[URL], include_physical_plausibility=True)
+        visual_context=context, variant="augmented", reference_slot_urls=[URL])
     content = judge.build_judge_interleaved_user_content(user_text_prompt=prompt, reference_slot_urls=[URL],
         reference_image_urls=[URL], visual_context=context, assess_image_data_url=URL, max_pixels=1_500_000)
     return {"system_prompt": judge.JUDGE_SYSTEM_PROMPT, "user_prompt": prompt, "interleaved": content}

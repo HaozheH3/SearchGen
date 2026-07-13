@@ -18,7 +18,7 @@ def parser() -> argparse.ArgumentParser:
     group.add_argument("--predictions-manifest", type=Path)
     group.add_argument("--images-dir", type=Path)
     p.add_argument("--output-dir", type=Path, required=True)
-    p.add_argument("--model", default="doubao-seed-2.0-mini")
+    p.add_argument("--model", required=True)
     p.add_argument("--endpoint")
     p.add_argument("--api-key")
     p.add_argument("--workers", type=int, default=1)
@@ -27,7 +27,6 @@ def parser() -> argparse.ArgumentParser:
     p.add_argument("--generator")
     p.add_argument("--dry-run", action="store_true")
     p.add_argument("--preflight", action="store_true")
-    p.add_argument("--include-pp", action="store_true", help="Accepted for compatibility; PP is always enabled.")
     return p
 
 

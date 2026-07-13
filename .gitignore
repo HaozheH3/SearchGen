@@ -28,15 +28,3 @@ logs/
 **/logs/
 runs/
 **/runs/
-
-# Internal packaging material
-github_upload_protocols.md
-agent/copy_and_pack_plan.md
-agent/release_allowlist.txt
-agent/scripts/copy_raw_sources.py
-evaluation/COPY_AND_PACK_PLAN.md
-
-# Legacy compatibility wrappers; use the console commands from pyproject.toml.
-agent/scripts/run_phase4d1_reasoner_v3.py
-agent/scripts/run_phase4d1_generator_v2.py
-agent/scripts/phase4d1_v2_generator_lane_consumer.py

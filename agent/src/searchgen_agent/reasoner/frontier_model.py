@@ -1,5 +1,5 @@
 """
-Frontier model wrapper used by phase4/phase5 workflows.
+OpenAI-compatible model wrapper used by the SearchGen reasoner.
 
 This file intentionally provides:
 1) A lightweight LLM client with retry logic.
@@ -259,14 +259,14 @@ def _analysis_search_mode_preface_from_env() -> str:
     """
     Optional extra user-message text for prompt analysis (``analyze_prompt``).
 
-    When ``TOOLGEN_ANALYSIS_SEARCH_MODE=web_primary``, steer the model toward web-grounding
+    When ``SEARCHGEN_ANALYSIS_SEARCH_MODE=web_primary``, steer the model toward web-grounding
     first and treat image search as optional—without baking dataset-specific strings into
     callers.
 
-    When ``TOOLGEN_ANALYSIS_SEARCH_MODE=balanced``, ask for a balanced mix of web and image
+    When ``SEARCHGEN_ANALYSIS_SEARCH_MODE=balanced``, ask for a balanced mix of web and image
     steps, slightly favoring web. Unset / other values: no extra text (legacy behavior).
     """
-    mode = (os.environ.get("TOOLGEN_ANALYSIS_SEARCH_MODE") or "").strip().lower()
+    mode = (os.environ.get("SEARCHGEN_ANALYSIS_SEARCH_MODE") or "").strip().lower()
     if mode == "web_primary":
         return (
             "## Search modality preference\n\n"

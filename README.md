@@ -173,7 +173,7 @@ Because every search is pre-executed and frozen, the pipeline can be replayed of
 ## Repository Layout
 
 ```text
-code_release/
+./
 ├── README.md
 ├── LICENSE
 ├── agent/
@@ -212,7 +212,7 @@ The agent package defines the complete adaptation contracts:
 Install it with Python 3.10 or newer:
 
 ```bash
-cd code_release/agent
+cd agent
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -e .
@@ -225,7 +225,7 @@ Follow [`agent/QUICKSTART.md`](agent/QUICKSTART.md) for a fully offline run. To 
 The evaluator requires Python 3.10 or newer:
 
 ```bash
-cd code_release/evaluation
+cd evaluation
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -243,15 +243,14 @@ Then export them with `set -a; source .env; set +a`.
 
 ## Evaluation Quick Start
 
-Prepare a predictions manifest following [`evaluation/examples/generated_images_manifest.example.jsonl`](evaluation/examples/generated_images_manifest.example.jsonl). From `code_release/evaluation`, validate all inputs without API calls:
+Download [SearchGen-Bench](https://huggingface.co/datasets/JasperHaozhe/SearchGen-Bench), then prepare a predictions manifest following [`evaluation/examples/generated_images_manifest.example.jsonl`](evaluation/examples/generated_images_manifest.example.jsonl). From the repository's `evaluation/` directory, validate all inputs without API calls, replacing the benchmark paths with the location of your download:
 
 ```bash
 python evaluate.py \
-  --metadata ../../data_release/searchgen-bench/eval_metadata.jsonl \
-  --benchmark-root ../../data_release/searchgen-bench \
+  --metadata /path/to/SearchGen-Bench/eval_metadata.jsonl \
+  --benchmark-root /path/to/SearchGen-Bench \
   --predictions-manifest predictions.jsonl \
   --output-dir results \
-  --include-pp \
   --model your-judge-model \
   --preflight
 ```
@@ -271,42 +270,6 @@ python aggregate_scores.py results --missing-policy skip
 ```
 
 See the **[`evaluation/` folder](evaluation/)** and its **[`README.md`](evaluation/README.md)** for the complete commands, input/output schema, evaluation protocol, prompt reference, and tests.
-
-## Public Upload Contents
-
-Upload the source, user documentation, examples, tests, packaging metadata, and Apache-2.0 license. The following files are internal packaging notes, generated artifacts, caches, or obsolete compatibility wrappers and should not be uploaded to the public source repository:
-
-```text
-github_upload_protocols.md
-agent/copy_and_pack_plan.md
-agent/release_allowlist.txt
-agent/scripts/copy_raw_sources.py
-agent/scripts/run_phase4d1_reasoner_v3.py
-agent/scripts/run_phase4d1_generator_v2.py
-agent/scripts/phase4d1_v2_generator_lane_consumer.py
-agent/dist/
-evaluation/COPY_AND_PACK_PLAN.md
-evaluation/.pytest_cache/
-```
-
-Also exclude these patterns anywhere in the repository:
-
-```text
-.env
-.venv/
-__pycache__/
-*.py[cod]
-*.egg-info/
-.pytest_cache/
-.ruff_cache/
-build/
-dist/
-results/
-outputs/
-logs/
-```
-
-The agent wheel and source archive may be attached separately to a GitHub Release or package registry; they should not be committed to the source repository. The public CLI commands are provided by `pyproject.toml`, so the legacy wrapper scripts are unnecessary.
 
 ## License
 

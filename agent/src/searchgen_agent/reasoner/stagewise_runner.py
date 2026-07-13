@@ -1,7 +1,7 @@
 """V3 stagewise reasoner orchestrator.
 
 This module never modifies v2 code. It uses v2 building blocks (``V2ArtifactsWriter``,
-``search_handlers``, ``FrontierModel``, ``SearchClient``, ``ConversationManager``) as libraries
+``search_handlers``, ``FrontierModel``, and ``SearchClient``) as libraries
 and runs four independent stage pools (S1, S1D1, S2, S3+S4) so different upstream services
 (text LLM, SERP+CDN, VLM) can be saturated in parallel.
 
@@ -23,7 +23,6 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from .frontier_model import FrontierModel, normalize_prompt_analysis_hint_context
 from .search_client import SearchClient
-from .conversation import ConversationManager
 from .search_stages import (
     run_image_download_for_serp_rows,
     run_image_search_for_query,
@@ -373,7 +372,6 @@ class V3StagewiseRunner:
 
         sc = SearchClient()
         sc.output_dir = row_dir  # not used for SERP-only, but required to be set for later download
-        conversation = ConversationManager()
         logger = _setup_row_logger(f"v3.s1d1a.row{idx:03d}", row_dir)
 
         def _do_step(slot_idx: int, step: Dict[str, Any], image_slot: int) -> Tuple[str, List[Dict[str, Any]], int]:
@@ -385,14 +383,12 @@ class V3StagewiseRunner:
                 pack = run_text_search_for_query(
                     q, search_client=sc, max_results=self.max_search,
                     query_id=slot_idx, gap_reasoning="",
-                    conversation=conversation, stage_hooks=False,
                 )
                 return stp, list(pack.get("serp_rows") or []), image_slot
             if stp == "image":
                 pack = run_image_search_only_for_query(
                     q, search_client=sc, max_results=self.max_search,
-                    query_id=slot_idx, query_index=image_slot,
-                    conversation=conversation, logger=logger, stage_hooks=False,
+                    query_id=slot_idx, query_index=image_slot, logger=logger,
                 )
                 return stp, list(pack.get("serp_rows") or []), image_slot + 1
             return stp, [], image_slot
@@ -594,7 +590,6 @@ class V3StagewiseRunner:
         # Build a SearchClient pinned to this row's dir (image downloads land under it).
         sc = SearchClient()
         sc.output_dir = row_dir
-        conversation = ConversationManager()
         logger = _setup_row_logger(f"v3.s1d1.row{idx:03d}", row_dir)
 
         def _do_step(slot_idx: int, step: Dict[str, Any], image_slot: int) -> Tuple[List[Dict[str, Any]], int]:
@@ -607,7 +602,6 @@ class V3StagewiseRunner:
                 pack = run_text_search_for_query(
                     q, search_client=sc, max_results=self.max_search,
                     query_id=slot_idx, gap_reasoning="",
-                    conversation=conversation, stage_hooks=False,
                 )
                 return list(pack.get("serp_rows") or []), image_slot
             if stp == "image":
@@ -617,8 +611,7 @@ class V3StagewiseRunner:
                     q, search_client=sc, frontier_model=fm_local,
                     user_prompt=prompt, analysis=analysis,
                     max_results=self.max_search, query_id=slot_idx, query_index=image_slot,
-                    max_downloaded_images=self.max_dl,
-                    conversation=conversation, logger=logger, stage_hooks=False,
+                    max_downloaded_images=self.max_dl, logger=logger,
                     skip_reference_selection=True,
                 )
                 return list(pack.get("serp_rows") or []), image_slot + 1
@@ -698,7 +691,6 @@ class V3StagewiseRunner:
                 s1_disk = None
         writer = _writer_for_row(row_dir, s1_doc=s1_disk, s1d1_doc=s1d1_doc)
         writer.reset_s2_slots()
-        conversation = ConversationManager()
         logger = _setup_row_logger(f"v3.s2.row{idx:03d}", row_dir)
 
         image_slot = 0
@@ -713,7 +705,7 @@ class V3StagewiseRunner:
             fm_local = FrontierModel(model_name=self.model_name)
             pack = run_image_selection_from_s1d1_bucket(
                 q, bucket, frontier_model=fm_local, user_prompt=prompt, analysis=analysis,
-                query_index=image_slot_in, conversation=conversation, logger=logger, stage_hooks=False,
+                query_index=image_slot_in, logger=logger,
                 skip_reference_selection=False,
             )
             return pack

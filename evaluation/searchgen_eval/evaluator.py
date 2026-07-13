@@ -49,7 +49,7 @@ def build_request(row: dict, image_path: Path) -> tuple[str, list[dict]]:
                  "selected_reference_images_count": len(refs), "expected_reference_images_count": len(refs)}}
     prompt = judge.build_eval_prompt_text(row=judge_row, verification_checklist=row["verification_checklist"],
         evaluation_rubric=row["evaluation_rubric"], visual_context=context, variant="augmented",
-        reference_slot_urls=refs, include_physical_plausibility=True)
+        reference_slot_urls=refs)
     content = judge.build_judge_interleaved_user_content(user_text_prompt=prompt, reference_slot_urls=refs,
         reference_image_urls=list(refs), visual_context=context, assess_image_data_url=local_image_to_data_url(image_path),
         max_pixels=1_500_000)

@@ -10,10 +10,7 @@ from __future__ import annotations
 
 import logging
 import traceback
-from typing import Any, Dict, List, Optional, TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from .conversation import ConversationManager
+from typing import Any, Dict, List, Optional
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -29,8 +26,6 @@ def run_text_search_for_query(
     max_results: int,
     query_id: int,
     gap_reasoning: str = "",
-    conversation: Optional["ConversationManager"] = None,
-    stage_hooks: bool = True,
 ) -> Dict[str, Any]:
     """
     Web SERP + minimal formatting. Returns same SERP shape as legacy ``_execute_search_plan``.
@@ -42,9 +37,6 @@ def run_text_search_for_query(
     """
     if not query.strip():
         return {"serp_rows": [], "text_reference": "", "text_reference_metadata": {}}
-
-    if stage_hooks and conversation is not None:
-        conversation.start_stage("web_search")
 
     result = search_client.search(
         query=query,
@@ -92,21 +84,6 @@ def run_text_search_for_query(
         r["text_reference"] = text_reference
         r["text_reference_metadata"] = dict(meta)
 
-    if stage_hooks and conversation is not None:
-        conversation.add_stage(
-            stage_name="web_search",
-            stage_input={
-                "search_query": query,
-                "search_type": "web",
-                "max_results": max_results,
-            },
-            stage_output={
-                "success": bool(result.get("success")),
-                "num_results": len(serp_rows),
-                "results": result.get("results", []) if result.get("success") else [],
-            },
-        )
-
     return {
         "serp_rows": serp_rows,
         "text_reference": text_reference,
@@ -125,9 +102,7 @@ def run_image_search_for_query(
     query_id: int,
     query_index: int,
     max_downloaded_images: Optional[int],
-    conversation: Optional["ConversationManager"] = None,
     logger: Optional[logging.Logger] = None,
-    stage_hooks: bool = True,
     skip_reference_selection: bool = False,
 ) -> Dict[str, Any]:
     """
@@ -141,9 +116,6 @@ def run_image_search_for_query(
 
     if not query.strip():
         return {"serp_rows": [], "selection": None}
-
-    if stage_hooks and conversation is not None:
-        conversation.start_stage("image_search")
 
     result = search_client.search(
         query=query,
@@ -160,21 +132,6 @@ def run_image_search_for_query(
             row["query"] = query
             row["type"] = "image"
             serp_rows.append(row)
-
-    if stage_hooks and conversation is not None:
-        conversation.add_stage(
-            stage_name="image_search",
-            stage_input={
-                "search_query": query,
-                "search_type": "image",
-                "max_results": max_results,
-            },
-            stage_output={
-                "success": bool(result.get("success")),
-                "num_results": len(serp_rows),
-                "results": result.get("results", []) if result.get("success") else [],
-            },
-        )
 
     downloadable = [
         r for r in serp_rows if r.get("download_success", False) and r.get("imageUrl", "")
@@ -208,9 +165,6 @@ def run_image_search_for_query(
     if skip_reference_selection:
         log.info("skip_reference_selection=1 — skipping select_reference_image (stop before s2)")
         return {"serp_rows": serp_rows, "selection": None}
-
-    if stage_hooks and conversation is not None:
-        conversation.start_stage(f"image_selection_q{query_index}")
 
     try:
         selection = frontier_model.select_reference_image(
@@ -281,9 +235,7 @@ def run_image_selection_from_s1d1_bucket(
     user_prompt: str,
     analysis: Dict[str, Any],
     query_index: int,
-    conversation: Optional["ConversationManager"] = None,
     logger: Optional[logging.Logger] = None,
-    stage_hooks: bool = True,
     skip_reference_selection: bool = False,
 ) -> Dict[str, Any]:
     """
@@ -351,9 +303,6 @@ def run_image_selection_from_s1d1_bucket(
     if skip_reference_selection:
         log.info("skip_reference_selection=1 — skipping select_reference_image (stop before s2)")
         return {"serp_rows": serp_rows, "selection": None}
-
-    if stage_hooks and conversation is not None:
-        conversation.start_stage(f"image_selection_q{query_index}")
 
     try:
         selection = frontier_model.select_reference_image(
@@ -440,9 +389,7 @@ def run_image_search_only_for_query(
     max_results: int,
     query_id: int,
     query_index: int,
-    conversation: Optional["ConversationManager"] = None,
     logger: Optional[logging.Logger] = None,
-    stage_hooks: bool = True,
 ) -> Dict[str, Any]:
     """Image SERP only — no downloads, no reference selection.
 
@@ -454,9 +401,6 @@ def run_image_search_only_for_query(
     log = logger or _LOGGER
     if not query.strip():
         return {"serp_rows": []}
-
-    if stage_hooks and conversation is not None:
-        conversation.start_stage("image_search_only")
 
     result = search_client.image_search(
         query=query,
@@ -475,13 +419,6 @@ def run_image_search_only_for_query(
             row["type"] = "image"
             row["query_index"] = query_index
             serp_rows.append(row)
-
-    if stage_hooks and conversation is not None:
-        conversation.add_stage(
-            stage_name="image_search_only",
-            stage_input={"search_query": query, "search_type": "image", "max_results": max_results},
-            stage_output={"success": bool(result.get("success")), "num_results": len(serp_rows)},
-        )
 
     log.info("[s1d1a] image SERP only: query=%r results=%d", query, len(serp_rows))
     return {"serp_rows": serp_rows}
