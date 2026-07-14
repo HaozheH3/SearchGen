@@ -9,5 +9,5 @@
   <rect x="5" y="4" width="166" height="43" rx="21.5" fill="#6339d7" stroke="#0066ff" stroke-width="1.5" filter="url(#shadow)"/>
   <circle cx="34" cy="25.5" r="10" fill="#8061df" stroke="#fff" stroke-width="1.4"/>
   <path d="M31.5 20.5l8 5-8 5z" fill="#fff"/>
-  <text x="54" y="31" fill="#fff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15" font-weight="750">WATCH DEMO</text>
+  <text x="54" y="31" fill="#fff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15" font-weight="750">Watch Demo</text>
 </svg>

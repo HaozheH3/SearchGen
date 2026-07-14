@@ -9,5 +9,5 @@
   <rect x="5" y="4" width="216" height="43" rx="21.5" fill="#e85d75" stroke="#be3455" stroke-width="1.5" filter="url(#shadow)"/>
   <circle cx="34" cy="25.5" r="10" fill="#ef8195" stroke="#fff" stroke-width="1.4"/>
   <text x="34" y="30" text-anchor="middle" fill="#fff" font-family="Georgia,serif" font-size="15" font-weight="700">α</text>
-  <text x="54" y="31" fill="#fff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="14" font-weight="750">UPVOTE ON alphaXiv</text>
+  <text x="54" y="31" fill="#fff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="14" font-weight="750">Upvote on alphaXiv</text>
 </svg>

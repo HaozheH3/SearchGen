@@ -9,5 +9,5 @@
   <rect x="5" y="4" width="190" height="43" rx="21.5" fill="#f59e0b" stroke="#d97706" stroke-width="1.5" filter="url(#shadow)"/>
   <circle cx="34" cy="25.5" r="10" fill="#fbbf24" stroke="#fff" stroke-width="1.4"/>
   <text x="34" y="29" text-anchor="middle" fill="#fff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="8" font-weight="800">HF</text>
-  <text x="54" y="31" fill="#fff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="14" font-weight="750">UPVOTE ON HF</text>
+  <text x="54" y="31" fill="#fff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="14" font-weight="750">Upvote on HF</text>
 </svg>

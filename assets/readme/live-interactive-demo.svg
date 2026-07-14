@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="326" height="58" viewBox="0 0 326 58" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="380" height="58" viewBox="0 0 380 58" role="img" aria-labelledby="title desc">
   <title id="title">Live Interactive Demo</title>
   <desc id="desc">Launch the SearchGen live interactive demo</desc>
   <defs>
@@ -6,9 +6,9 @@
       <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#ff4c41" flood-opacity=".28"/>
     </filter>
   </defs>
-  <rect x="6" y="4" width="314" height="46" rx="23" fill="#ff5265" stroke="#ff8a00" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="6" y="4" width="368" height="46" rx="23" fill="#ff5265" stroke="#ff8a00" stroke-width="2" filter="url(#shadow)"/>
   <circle cx="35" cy="27" r="5" fill="#fff"/>
   <circle cx="35" cy="27" r="10" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="5"/>
-  <text x="55" y="32" fill="#fff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15" font-weight="800" letter-spacing=".2">LIVE INTERACTIVE DEMO</text>
-  <path d="M292 22h9v9M301 22l-11 11" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="55" y="32" fill="#fff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="15" font-weight="750" letter-spacing=".1">Live Interactive Demo -- Launch Now!</text>
+  <path d="M346 22h9v9M355 22l-11 11" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

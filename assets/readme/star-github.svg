@@ -9,5 +9,5 @@
   <rect x="5" y="4" width="192" height="43" rx="21.5" fill="#24292f" stroke="#111827" stroke-width="1.5" filter="url(#shadow)"/>
   <circle cx="34" cy="25.5" r="10" fill="#4b5563" stroke="#fff" stroke-width="1.4"/>
   <path d="M34 18.5l2.1 4.2 4.7.7-3.4 3.3.8 4.7-4.2-2.2-4.2 2.2.8-4.7-3.4-3.3 4.7-.7z" fill="#fff"/>
-  <text x="54" y="31" fill="#fff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="14" font-weight="750">STAR ON GITHUB</text>
+  <text x="54" y="31" fill="#fff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="14" font-weight="750">Star on GitHub</text>
 </svg>
