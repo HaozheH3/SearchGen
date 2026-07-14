@@ -14,6 +14,10 @@ Haozhe Wang<sup>1</sup> · Weijia Feng<sup>3</sup> · Jinpeng Yu<sup>3</sup> · 
 
 [🤗 SearchGen-20K](https://huggingface.co/datasets/JasperHaozhe/SearchGen-20K) · [🤗 SearchGen-Corpus-1M](https://huggingface.co/datasets/JasperHaozhe/SearchGen-Corpus-1M) · [🤗 SearchGen-Bench](https://huggingface.co/datasets/JasperHaozhe/SearchGen-Bench)
 
+### 🔴 [Live Interactive Demo](http://101.47.155.111:8880/studio) · [▶ Demo](https://haozheh3.github.io/SearchGen/demo.html)
+
+> Enjoying SearchGen? Help us with an [🤗 upvote on Hugging Face](https://huggingface.co/papers/2607.05382), an [αXiv upvote](https://alphaxiv.org/abs/2607.05382), and a [★ star on GitHub](https://github.com/HaozheH3/SearchGen).
+
 **Image generators fabricate what they don't know. _This one looks it up first—and knows when not to._**
 
 <img src="https://haozheh3.github.io/SearchGen/assets/figures/teaser.png" width="900" alt="SearchGen teaser: prompt rewriting versus agentic retrieval">
@@ -289,3 +293,7 @@ The code release is licensed under the [Apache License 2.0](LICENSE).
   url     = {https://arxiv.org/abs/2607.05382}
 }
 ```
+
+---
+
+> Enjoying SearchGen? Help us with an [🤗 upvote on Hugging Face](https://huggingface.co/papers/2607.05382), an [αXiv upvote](https://alphaxiv.org/abs/2607.05382), and a [★ star on GitHub](https://github.com/HaozheH3/SearchGen).
