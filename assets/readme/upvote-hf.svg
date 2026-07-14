@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="186" height="42" viewBox="0 0 186 42" role="img" aria-labelledby="title">
+  <title id="title">Upvote on Hugging Face</title>
+  <rect x="1" y="1" width="184" height="36" rx="18" fill="#fff7ed" stroke="#fdba74"/>
+  <text x="15" y="25" font-family="Segoe UI Emoji,Apple Color Emoji,sans-serif" font-size="15">🤗</text>
+  <text x="40" y="25" fill="#9a3412" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="13" font-weight="700">Upvote on HF</text>
+</svg>

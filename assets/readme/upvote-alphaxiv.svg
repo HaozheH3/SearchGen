@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="202" height="42" viewBox="0 0 202 42" role="img" aria-labelledby="title">
+  <title id="title">Upvote on alphaXiv</title>
+  <rect x="1" y="1" width="200" height="36" rx="18" fill="#fff7ed" stroke="#fdba74"/>
+  <text x="15" y="25" fill="#e85d75" font-family="Georgia,serif" font-size="16" font-weight="700">α</text>
+  <text x="38" y="25" fill="#9a3412" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="13" font-weight="700">Upvote on alphaXiv</text>
+</svg>
