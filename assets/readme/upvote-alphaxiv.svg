@@ -1,6 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="202" height="42" viewBox="0 0 202 42" role="img" aria-labelledby="title">
+<svg xmlns="http://www.w3.org/2000/svg" width="226" height="54" viewBox="0 0 226 54" role="img" aria-labelledby="title desc">
   <title id="title">Upvote on alphaXiv</title>
-  <rect x="1" y="1" width="200" height="36" rx="18" fill="#fff7ed" stroke="#fdba74"/>
-  <text x="15" y="25" fill="#e85d75" font-family="Georgia,serif" font-size="16" font-weight="700">α</text>
-  <text x="38" y="25" fill="#9a3412" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="13" font-weight="700">Upvote on alphaXiv</text>
+  <desc id="desc">Support SearchGen by upvoting the paper on alphaXiv</desc>
+  <defs>
+    <filter id="shadow" x="-12%" y="-35%" width="124%" height="180%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#be3455" flood-opacity=".24"/>
+    </filter>
+  </defs>
+  <rect x="5" y="4" width="216" height="43" rx="21.5" fill="#e85d75" stroke="#be3455" stroke-width="1.5" filter="url(#shadow)"/>
+  <circle cx="34" cy="25.5" r="10" fill="#ef8195" stroke="#fff" stroke-width="1.4"/>
+  <text x="34" y="30" text-anchor="middle" fill="#fff" font-family="Georgia,serif" font-size="15" font-weight="700">α</text>
+  <text x="54" y="31" fill="#fff" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="14" font-weight="750">UPVOTE ON alphaXiv</text>
 </svg>

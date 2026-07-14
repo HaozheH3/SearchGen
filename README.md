@@ -22,9 +22,9 @@ Haozhe Wang<sup>1</sup> · Weijia Feng<sup>3</sup> · Jinpeng Yu<sup>3</sup> · 
 <p><strong>Enjoying SearchGen? Help us by upvoting and starring the project.</strong></p>
 
 <p>
-  <a href="https://huggingface.co/papers/2607.05382"><img src="assets/readme/upvote-hf.svg" height="42" alt="Upvote on Hugging Face"></a>
-  <a href="https://alphaxiv.org/abs/2607.05382"><img src="assets/readme/upvote-alphaxiv.svg" height="42" alt="Upvote on alphaXiv"></a>
-  <a href="https://github.com/HaozheH3/SearchGen"><img src="assets/readme/star-github.svg" height="42" alt="Star on GitHub"></a>
+  <a href="https://huggingface.co/papers/2607.05382"><img src="assets/readme/upvote-hf.svg" height="54" alt="Upvote on Hugging Face"></a>
+  <a href="https://alphaxiv.org/abs/2607.05382"><img src="assets/readme/upvote-alphaxiv.svg" height="54" alt="Upvote on alphaXiv"></a>
+  <a href="https://github.com/HaozheH3/SearchGen"><img src="assets/readme/star-github.svg" height="54" alt="Star on GitHub"></a>
 </p>
 
 **Image generators fabricate what they don't know. _This one looks it up first—and knows when not to._**
@@ -308,8 +308,8 @@ The code release is licensed under the [Apache License 2.0](LICENSE).
 <div align="center">
   <p><strong>Enjoying SearchGen? Help us by upvoting and starring the project.</strong></p>
   <p>
-    <a href="https://huggingface.co/papers/2607.05382"><img src="assets/readme/upvote-hf.svg" height="42" alt="Upvote on Hugging Face"></a>
-    <a href="https://alphaxiv.org/abs/2607.05382"><img src="assets/readme/upvote-alphaxiv.svg" height="42" alt="Upvote on alphaXiv"></a>
-    <a href="https://github.com/HaozheH3/SearchGen"><img src="assets/readme/star-github.svg" height="42" alt="Star on GitHub"></a>
+    <a href="https://huggingface.co/papers/2607.05382"><img src="assets/readme/upvote-hf.svg" height="54" alt="Upvote on Hugging Face"></a>
+    <a href="https://alphaxiv.org/abs/2607.05382"><img src="assets/readme/upvote-alphaxiv.svg" height="54" alt="Upvote on alphaXiv"></a>
+    <a href="https://github.com/HaozheH3/SearchGen"><img src="assets/readme/star-github.svg" height="54" alt="Star on GitHub"></a>
   </p>
 </div>
