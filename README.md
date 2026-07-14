@@ -14,9 +14,18 @@ Haozhe Wang<sup>1</sup> · Weijia Feng<sup>3</sup> · Jinpeng Yu<sup>3</sup> · 
 
 [🤗 SearchGen-20K](https://huggingface.co/datasets/JasperHaozhe/SearchGen-20K) · [🤗 SearchGen-Corpus-1M](https://huggingface.co/datasets/JasperHaozhe/SearchGen-Corpus-1M) · [🤗 SearchGen-Bench](https://huggingface.co/datasets/JasperHaozhe/SearchGen-Bench)
 
-### 🔴 [Live Interactive Demo](http://101.47.155.111:8880/studio) · [▶ Demo](https://haozheh3.github.io/SearchGen/demo.html)
+<p>
+  <a href="http://101.47.155.111:8880/studio"><img src="https://img.shields.io/badge/LIVE_INTERACTIVE_DEMO-LAUNCH_NOW-ff3d71?style=for-the-badge" alt="Launch the Live Interactive Demo"></a>
+  <a href="https://haozheh3.github.io/SearchGen/demo.html"><img src="https://img.shields.io/badge/DEMO-WATCH-7c3aed?style=for-the-badge" alt="Watch the Demo"></a>
+</p>
 
-> Enjoying SearchGen? Help us with an [🤗 upvote on Hugging Face](https://huggingface.co/papers/2607.05382), an [αXiv upvote](https://alphaxiv.org/abs/2607.05382), and a [★ star on GitHub](https://github.com/HaozheH3/SearchGen).
+<p><strong>Enjoying SearchGen? Help us by upvoting and starring the project.</strong></p>
+
+<p>
+  <a href="https://huggingface.co/papers/2607.05382"><img src="https://img.shields.io/badge/UPVOTE_ON-HUGGING_FACE-ff9d00?style=flat-square" alt="Upvote on Hugging Face"></a>
+  <a href="https://alphaxiv.org/abs/2607.05382"><img src="https://img.shields.io/badge/UPVOTE_ON-alphaXiv-e85d75?style=flat-square" alt="Upvote on alphaXiv"></a>
+  <a href="https://github.com/HaozheH3/SearchGen"><img src="https://img.shields.io/badge/STAR_ON-GITHUB-24292f?style=flat-square" alt="Star on GitHub"></a>
+</p>
 
 **Image generators fabricate what they don't know. _This one looks it up first—and knows when not to._**
 
@@ -296,4 +305,11 @@ The code release is licensed under the [Apache License 2.0](LICENSE).
 
 ---
 
-> Enjoying SearchGen? Help us with an [🤗 upvote on Hugging Face](https://huggingface.co/papers/2607.05382), an [αXiv upvote](https://alphaxiv.org/abs/2607.05382), and a [★ star on GitHub](https://github.com/HaozheH3/SearchGen).
+<div align="center">
+  <p><strong>Enjoying SearchGen? Help us by upvoting and starring the project.</strong></p>
+  <p>
+    <a href="https://huggingface.co/papers/2607.05382"><img src="https://img.shields.io/badge/UPVOTE_ON-HUGGING_FACE-ff9d00?style=flat-square" alt="Upvote on Hugging Face"></a>
+    <a href="https://alphaxiv.org/abs/2607.05382"><img src="https://img.shields.io/badge/UPVOTE_ON-alphaXiv-e85d75?style=flat-square" alt="Upvote on alphaXiv"></a>
+    <a href="https://github.com/HaozheH3/SearchGen"><img src="https://img.shields.io/badge/STAR_ON-GITHUB-24292f?style=flat-square" alt="Star on GitHub"></a>
+  </p>
+</div>
