@@ -25,10 +25,15 @@ code,pre,.mono{font-family:'JetBrains Mono',monospace}
 /* scroll progress */
 .progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--accent),var(--purple));z-index:200;transition:width .15s linear}
 
-/* sticky demo launcher (top-right) */
-.demo-fab{position:fixed;top:16px;right:16px;z-index:150;display:inline-flex;align-items:center;gap:9px;padding:9px 16px 9px 12px;border-radius:100px;background:linear-gradient(135deg,var(--accent),var(--purple));color:#fff;font-size:14px;font-weight:700;border:none;cursor:pointer;box-shadow:0 6px 20px rgba(80,40,200,.28);transition:transform .2s ease,box-shadow .2s ease}
+/* sticky demo launchers (top-right) */
+.demo-launchers{position:fixed;top:16px;right:16px;z-index:150;display:flex;flex-direction:column;align-items:flex-end;gap:9px}
+.demo-fab{display:inline-flex;align-items:center;gap:9px;padding:9px 16px 9px 12px;border-radius:100px;background:linear-gradient(135deg,var(--accent),var(--purple));color:#fff;font-size:14px;font-weight:700;border:none;cursor:pointer;box-shadow:0 6px 20px rgba(80,40,200,.28);transition:transform .2s ease,box-shadow .2s ease}
 .demo-fab:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(80,40,200,.36);text-decoration:none;color:#fff}
 .demo-fab svg{width:20px;height:20px;display:block}
+.demo-fab.live{background:linear-gradient(135deg,#ff3d71,#ff8a00);box-shadow:0 8px 26px rgba(255,76,65,.42);font-weight:800;animation:live-glow 2.2s ease-in-out infinite}
+.demo-fab.live:hover{box-shadow:0 12px 34px rgba(255,76,65,.55)}
+.live-dot{width:9px;height:9px;border-radius:50%;background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.22)}
+@keyframes live-glow{0%,100%{box-shadow:0 8px 26px rgba(255,76,65,.35)}50%{box-shadow:0 10px 34px rgba(255,76,65,.58)}}
 
 /* hero */
 header.hero{text-align:center;padding:76px 24px 40px;max-width:940px;margin:0 auto}
@@ -56,6 +61,14 @@ header.hero{text-align:center;padding:76px 24px 40px;max-width:940px;margin:0 au
 .badge-demo{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:100px;background:linear-gradient(135deg,var(--accent),var(--purple));color:#fff;font-size:14px;font-weight:700;border:none;cursor:pointer}
 .badge-demo:hover{opacity:.9;text-decoration:none;color:#fff}
 .badge-demo svg{width:18px;height:18px}
+.badge-live{display:inline-flex;align-items:center;gap:9px;padding:12px 22px;border-radius:100px;background:linear-gradient(135deg,#ff3d71,#ff8a00);color:#fff;font-size:15px;font-weight:800;border:2px solid rgba(255,255,255,.8);box-shadow:0 8px 28px rgba(255,76,65,.35);transition:transform .2s ease,box-shadow .2s ease}
+.badge-live:hover{transform:translateY(-2px);box-shadow:0 12px 34px rgba(255,76,65,.48);text-decoration:none;color:#fff}
+.support-callout{max-width:720px;margin:22px auto 0;padding:15px 18px;border:1px solid #fed7aa;border-radius:16px;background:linear-gradient(135deg,#fff7ed,#fff1f2);box-shadow:0 5px 20px rgba(234,88,12,.08);text-align:center}
+.support-callout strong{display:block;font-size:14px;margin-bottom:9px;color:#9a3412}
+.support-links{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.support-links a{display:inline-flex;align-items:center;padding:6px 12px;border-radius:100px;background:#fff;color:#9a3412;border:1px solid #fdba74;font-size:13px;font-weight:700}
+.support-links a:hover{background:#ffedd5;text-decoration:none;color:#7c2d12}
+.support-bottom{max-width:var(--maxw);margin:16px auto 48px;padding-left:24px;padding-right:24px}
 
 /* hero teaser figure */
 .hero-teaser{max-width:var(--maxw);margin:34px auto 0;padding:0 24px}
@@ -228,11 +241,17 @@ body.modal-open{overflow:hidden}
 <body>
 <div class="progress" id="progress"></div>
 
-<!-- Sticky demo launcher (top-right) -->
-<button class="demo-fab" id="demoFabTop" aria-label="Open live demo">
-  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="rgba(255,255,255,.18)" stroke="#fff" stroke-width="1.6"/><path d="M10 8.5l6 3.5-6 3.5z" fill="#fff"/></svg>
-  <span class="lbl">Live Demo</span>
-</button>
+<!-- Sticky demo launchers (top-right) -->
+<div class="demo-launchers">
+  <a class="demo-fab live" href="http://101.47.155.111:8880/studio" target="_blank" rel="noopener" aria-label="Open the live interactive demo">
+    <span class="live-dot" aria-hidden="true"></span>
+    <span class="lbl">Live Interactive Demo</span>
+  </a>
+  <button class="demo-fab" id="demoFabTop" aria-label="Open demo">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="rgba(255,255,255,.18)" stroke="#fff" stroke-width="1.6"/><path d="M10 8.5l6 3.5-6 3.5z" fill="#fff"/></svg>
+    <span class="lbl">Demo</span>
+  </button>
+</div>
 
 <!-- ========================= §0 HERO (static) ========================= -->
 <header class="hero">
@@ -270,24 +289,31 @@ body.modal-open{overflow:hidden}
     <a class="badge-link alt" href="https://huggingface.co/datasets/JasperHaozhe/SearchGen-Corpus-1M" target="_blank" rel="noopener">&#129303; SearchGen-Corpus-1M</a>
     <a class="badge-link alt" href="https://huggingface.co/datasets/JasperHaozhe/SearchGen-Bench" target="_blank" rel="noopener">&#129303; SearchGen-Bench</a>
   </div>
-  <!-- mirrored demo launcher -->
+  <!-- live interactive demo, followed by the animated walkthrough -->
   <div class="badges" style="margin-top:8px">
+    <a class="badge-live" href="http://101.47.155.111:8880/studio" target="_blank" rel="noopener"><span class="live-dot" aria-hidden="true"></span> Live Interactive Demo <span aria-hidden="true">↗</span></a>
+  </div>
+  <div class="badges">
     <button class="badge-demo" id="demoFabHero">
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="rgba(255,255,255,.18)" stroke="#fff" stroke-width="1.6"/><path d="M10 8.5l6 3.5-6 3.5z" fill="#fff"/></svg>
-      Watch the Live Demo
+      Watch the Demo
     </button>
     <noscript><a class="badge-link alt" href="demo.html" target="_blank" rel="noopener">▶ Open demo (new tab)</a></noscript>
   </div>
-  <!-- interactive demo (temporarily offline) -->
-  <div class="badges" style="margin-top:8px">
-    <span class="badge-link alt" aria-disabled="true" title="The interactive demo is temporarily offline" style="opacity:.55;cursor:not-allowed"><span class="ic">&#127918;</span> Play with the Interactive Demo <span style="font-weight:600;color:var(--text3)">(off-service now)</span></span>
+  <div class="support-callout" aria-label="Support SearchGen">
+    <strong>Enjoying SearchGen? Help us by upvoting and starring the project.</strong>
+    <div class="support-links">
+      <a href="https://huggingface.co/papers/2607.05382" target="_blank" rel="noopener">🤗 Upvote on HF</a>
+      <a href="https://alphaxiv.org/abs/2607.05382" target="_blank" rel="noopener">αXiv Upvote on alphaXiv</a>
+      <a href="https://github.com/HaozheH3/SearchGen" target="_blank" rel="noopener">★ Star on GitHub</a>
+    </div>
   </div>
 </header>
 
 <div class="hero-teaser">
   <figure>
     <img src="assets/figures/teaser.png" alt="Two paradigms for knowledge-hungry prompts: prompt rewrite vs SearchGen agentic retrieval.">
-    <figcaption>Two paradigms for knowledge-hungry prompts. <b>Left:</b> prompt-rewriting inflates the text but still generates from stale weights. <b>Right:</b> SearchGen's agent fetches live web + visual context, then conditions the generator — grounding facts a model cannot know. (The animated agent trace is behind the <b>Live Demo</b> button above.)</figcaption>
+    <figcaption>Two paradigms for knowledge-hungry prompts. <b>Left:</b> prompt-rewriting inflates the text but still generates from stale weights. <b>Right:</b> SearchGen's agent fetches live web + visual context, then conditions the generator — grounding facts a model cannot know. (The animated agent trace is behind the <b>Demo</b> button above.)</figcaption>
   </figure>
 </div>
 
@@ -616,16 +642,27 @@ body.modal-open{overflow:hidden}
 
 </main>
 
+<div class="support-bottom">
+  <div class="support-callout" aria-label="Support SearchGen">
+    <strong>Enjoying SearchGen? Help us by upvoting and starring the project.</strong>
+    <div class="support-links">
+      <a href="https://huggingface.co/papers/2607.05382" target="_blank" rel="noopener">🤗 Upvote on HF</a>
+      <a href="https://alphaxiv.org/abs/2607.05382" target="_blank" rel="noopener">αXiv Upvote on alphaXiv</a>
+      <a href="https://github.com/HaozheH3/SearchGen" target="_blank" rel="noopener">★ Star on GitHub</a>
+    </div>
+  </div>
+</div>
+
 <footer>
   SearchGen © 2026 · HKUST · University of Waterloo · Qwen Applications · Imperial College London
 </footer>
 
 <!-- ========================= DEMO MODAL ========================= -->
-<div class="modal" id="demoModal" role="dialog" aria-modal="true" aria-label="SearchGen live demo">
+<div class="modal" id="demoModal" role="dialog" aria-modal="true" aria-label="SearchGen demo">
   <div class="scrim" id="demoScrim"></div>
   <div class="frame-wrap">
     <button class="close-x" id="demoClose" aria-label="Close demo">&times;</button>
-    <iframe id="demoFrame" title="SearchGen live demo" src="about:blank" allow="autoplay"></iframe>
+    <iframe id="demoFrame" title="SearchGen demo" src="about:blank" allow="autoplay"></iframe>
     <div class="m-hint">Press Esc or click outside to close</div>
   </div>
 </div>
