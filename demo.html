@@ -462,7 +462,6 @@ function typewrite(elId, text, speed, cb) {
     var childTagged = childBlocks.filter(function(b) { return b.tag && b.tag !== 'json'; });
     if (childTagged.length > 1) blocks = childBlocks;
   }
-  tlPause();
   el.innerHTML = '';
   var tagBar = document.createElement('div');
   tagBar.className = 'tag-bar';
@@ -491,7 +490,7 @@ function typewrite(elId, text, speed, cb) {
   });
   var bi = 0;
   function next() {
-    if (bi >= blockData.length) { tlResume(); if (cb) cb(); return; }
+    if (bi >= blockData.length) { if (cb) cb(); return; }
     var bd = blockData[bi];
     bd.el.classList.add('shown');
     followBottom(bd.el, 300);
@@ -505,17 +504,14 @@ function typewrite(elId, text, speed, cb) {
         }
       }
     }
-    typeHtml(bd.cd, bd.html, 3, 10, function() {
+    typeHtml(bd.cd, bd.html, 6, 10, function() {
       bi++;
-      setTimeout(next, 180);
+      next();
     }, function() { followBottom(bd.el, 140); });
   }
   next();
 }
 const tl=[]; let t=0;
-var tlPaused=false,tlPauseStart=0,tlOffset=0;
-function tlPause(){tlPaused=true;tlPauseStart=performance.now()}
-function tlResume(){if(tlPaused){tlOffset+=performance.now()-tlPauseStart;tlPaused=false}}
 function at(d,fn){t+=d;tl.push({time:t,fn})}
 function show(id){
   const e=document.getElementById(id);
@@ -736,9 +732,8 @@ at(1500,()=>show('otag'));
 const s=performance.now();
 (function tick(){
   const raw=performance.now()-s;
-  const e=tlPaused?(tlPauseStart-s-tlOffset):(raw-tlOffset);
-  document.getElementById('prog').style.width=Math.min(100,e/TOTAL*100)+'%';
-  if(!tlPaused){while(tl.length&&tl[0].time<=e)tl.shift().fn()}
+  document.getElementById('prog').style.width=Math.min(100,raw/TOTAL*100)+'%';
+  while(tl.length&&tl[0].time<=raw)tl.shift().fn();
   if(tl.length||raw<TOTAL)requestAnimationFrame(tick);
 })();
 </script>
