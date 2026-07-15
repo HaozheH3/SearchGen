@@ -11,7 +11,7 @@ a:hover{text-decoration:none}
 .nav-links a:hover,.nav-links a.active{background:var(--surface);color:var(--text)}
 .hero{max-width:960px;margin:0 auto;padding:76px 24px 48px;text-align:center}
 .kicker,.eyebrow{display:inline-block;color:var(--purple);font-size:11.5px;font-weight:800;letter-spacing:1.6px;text-transform:uppercase}
-.hero .kicker{font-size:17px;letter-spacing:1.8px}
+.hero .kicker{font-size:42.5px;line-height:1.15;letter-spacing:-1px;text-transform:none}
 .hero h1{font-size:44px;line-height:1.12;letter-spacing:-1.5px;margin:17px 0 18px;font-weight:800}
 .hero h1 span{background:linear-gradient(135deg,var(--accent),var(--purple));-webkit-background-clip:text;color:transparent}
 .hero p{max-width:720px;margin:0 auto;color:var(--text2);font-size:18px}
