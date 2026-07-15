@@ -11,6 +11,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#fff;--surface:#f7f7f8;--border:#e5e5ea;--border-lt:#f0f0f0;--text:#1a1a1a;--text2:#6b6b6b;--text3:#999;--accent:#0066ff;--green:#16a34a;--green-lt:#dcfce7;--orange:#ea580c;--orange-lt:#fff7ed;--red:#dc2626;--red-lt:#fef2f2;--blue:#2563eb;--blue-lt:#eff6ff;--gold:#ca8a04;--gold-lt:#fefce8;--purple:#7c3aed}
 html{scroll-behavior:smooth}
+html.auto-follow{scroll-behavior:auto}
 body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sans-serif;line-height:1.6;overflow-x:hidden}
 .progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--purple));z-index:100;transition:width .3s linear}
 .hero{text-align:center;padding:80px 40px 60px;max-width:800px;margin:0 auto;opacity:0;transform:translateY(20px);transition:all .8s ease}
@@ -373,7 +374,35 @@ function parseBlocks(text) {
   return blocks.filter(function(b) { return b.content.trim(); });
 }
 
-function typeHtml(el, html, cpt, ms, cb) {
+/*
+ * Keep every typing update and every scroll update on the browser's paint
+ * clock. The old 10ms timer rebuilt innerHTML while a separate native smooth
+ * scroll was still running, which made the two animations fight each other.
+ */
+var followState = {anchor:null, until:0, raf:0};
+function followBottom(el, linger) {
+  if (!el) return;
+  followState.anchor = el;
+  followState.until = Math.max(followState.until, performance.now() + (linger || 0));
+  if (followState.raf) return;
+  document.documentElement.classList.add('auto-follow');
+  function frame(now) {
+    var root = document.scrollingElement || document.documentElement;
+    var rect = followState.anchor.getBoundingClientRect();
+    var target = Math.max(root.scrollTop, root.scrollTop + rect.bottom - window.innerHeight + 72);
+    var distance = target - root.scrollTop;
+    if (distance > .5) root.scrollTop += Math.max(.5, distance * .2);
+    if (now < followState.until || distance > .5) {
+      followState.raf = requestAnimationFrame(frame);
+    } else {
+      followState.raf = 0;
+      document.documentElement.classList.remove('auto-follow');
+    }
+  }
+  followState.raf = requestAnimationFrame(frame);
+}
+
+function typeHtml(el, html, cpt, ms, cb, onPaint) {
   var parts = [], i = 0;
   while (i < html.length) {
     if (html[i] === '<') {
@@ -388,18 +417,26 @@ function typeHtml(el, html, cpt, ms, cb) {
       parts.push(html[i]); i++;
     }
   }
-  var pi = 0, built = '';
-  (function tick() {
-    var c = 0;
-    while (pi < parts.length && c < cpt) {
+  var pi = 0, built = '', budget = 0, last = performance.now();
+  (function tick(now) {
+    budget += Math.min(now - last, 50) * cpt / ms;
+    last = now;
+    var changed = false;
+    while (pi < parts.length) {
+      var free = parts[pi][0] === '<';
+      if (!free && budget < 1) break;
       built += parts[pi];
-      if (parts[pi][0] !== '<') c++;
+      if (!free) budget--;
       pi++;
+      changed = true;
     }
-    el.innerHTML = built;
-    if (pi < parts.length) setTimeout(tick, ms);
+    if (changed) {
+      el.innerHTML = built;
+      if (onPaint) onPaint();
+    }
+    if (pi < parts.length) requestAnimationFrame(tick);
     else if (cb) cb();
-  })();
+  })(last);
 }
 
 function typewrite(elId, text, speed, cb) {
@@ -457,7 +494,7 @@ function typewrite(elId, text, speed, cb) {
     if (bi >= blockData.length) { tlResume(); if (cb) cb(); return; }
     var bd = blockData[bi];
     bd.el.classList.add('shown');
-    bd.el.scrollIntoView({behavior:'smooth', block:'center'});
+    followBottom(bd.el, 300);
     if (bd.tag) {
       for (var i = 0; i < tagPills.length; i++) {
         if (tagPills[i].tag === bd.tag && !tagPills[i].revealed) {
@@ -471,7 +508,7 @@ function typewrite(elId, text, speed, cb) {
     typeHtml(bd.cd, bd.html, 3, 10, function() {
       bi++;
       setTimeout(next, 180);
-    });
+    }, function() { followBottom(bd.el, 140); });
   }
   next();
 }
@@ -480,16 +517,14 @@ var tlPaused=false,tlPauseStart=0,tlOffset=0;
 function tlPause(){tlPaused=true;tlPauseStart=performance.now()}
 function tlResume(){if(tlPaused){tlOffset+=performance.now()-tlPauseStart;tlPaused=false}}
 function at(d,fn){t+=d;tl.push({time:t,fn})}
-function show(id){document.getElementById(id).classList.add('v')}
-function showExpand(id){const e=document.getElementById(id);e.classList.add('v','expanded')}
+function show(id){const e=document.getElementById(id);e.classList.add('v');followBottom(e,650)}
+function showExpand(id){const e=document.getElementById(id);e.classList.add('v','expanded');followBottom(e,650)}
 function startThinking(id){document.getElementById(id).classList.add('thinking-active')}
 function stopThinking(id){document.getElementById(id).classList.remove('thinking-active')}
 function loadImg(id,dl){setTimeout(()=>document.getElementById(id).classList.add('loaded'),dl)}
 function selectSlot(id){document.getElementById(id).classList.add('sel')}
 function revealResult(id,dl){setTimeout(()=>document.getElementById(id).classList.add('revealed'),dl)}
 function countUp(el,target){const s=performance.now();(function f(n){const p=Math.min((n-s)/800,1);el.textContent='+'+Math.round(target*(1-Math.pow(1-p,3)))+'%';if(p<1)requestAnimationFrame(f)})(performance.now())}
-function scrollTo(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'})}
-
 const TOTAL=85000;
 
 const D1_TW1=`<analysis_reasoning>The prompt centers on 宮崎駿 (Hayao Miyazaki), the Japanese animation director. His name recognition is near-universal, but his visual appearance is underrepresented in training data compared to Western directors. Without visual grounding, models hallucinate a generic elderly Japanese man.</analysis_reasoning>
@@ -617,7 +652,7 @@ const D3_TW2=`<visual_planning>Integrate two types of references: (1) visual —
 
 // ===== DEMO 1: Visual Search — Hayao Miyazaki =====
 at(0,()=>show('hero'));
-at(3000,()=>{show('d1lab');scrollTo('d1lab')});
+at(3000,()=>show('d1lab'));
 at(600,()=>show('d1u'));
 at(1200,()=>show('d1a'));
 at(400,()=>{showExpand('d1t1');startThinking('d1t1')});
@@ -640,7 +675,7 @@ at(100,()=>{revealResult('d1rc0',1200);revealResult('d1rc1',2800)});
 at(3800,()=>show('d1lift'));
 
 // ===== DEMO 2: No Search — Starry Night =====
-at(3500,()=>{show('d2lab');scrollTo('d2lab')});
+at(3500,()=>show('d2lab'));
 at(600,()=>show('d2u'));
 at(1000,()=>show('d2a'));
 at(400,()=>{showExpand('d2t1');startThinking('d2t1')});
@@ -658,7 +693,7 @@ at(2800,()=>show('d2met'));
 at(800,()=>show('d2cap'));
 
 // ===== DEMO 3: Image + Text Search — CRISPR-Cas9 =====
-at(3500,()=>{show('d3lab');scrollTo('d3lab')});
+at(3500,()=>show('d3lab'));
 at(600,()=>show('d3u'));
 at(1200,()=>show('d3a'));
 at(400,()=>{showExpand('d3t1');startThinking('d3t1')});
@@ -682,7 +717,7 @@ at(100,()=>{revealResult('d3rc0',1200);revealResult('d3rc1',2800)});
 at(800,()=>show('d3lift'));
 
 // ===== OUTRO =====
-at(3500,()=>{show('outro');scrollTo('outro')});
+at(3500,()=>show('outro'));
 at(800,()=>{const c=document.getElementById('s0');c.classList.add('v');countUp(c.querySelector('.sn'),33)});
 at(300,()=>{const c=document.getElementById('s1');c.classList.add('v');countUp(c.querySelector('.sn'),69)});
 at(300,()=>{const c=document.getElementById('s2');c.classList.add('v');countUp(c.querySelector('.sn'),67)});
