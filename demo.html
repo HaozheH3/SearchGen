@@ -504,7 +504,7 @@ function typewrite(elId, text, speed, cb) {
         }
       }
     }
-    typeHtml(bd.cd, bd.html, 12, 10, function() {
+    typeHtml(bd.cd, bd.html, 6, 10, function() {
       bi++;
       next();
     }, function() { followBottom(bd.el, 140); });
@@ -661,7 +661,7 @@ at(600,()=>show('d1u'));
 at(1200,()=>show('d1a'));
 at(400,()=>{showExpand('d1t1');startThinking('d1t1')});
 at(200,()=>typewrite('d1tw1',D1_TW1,10,()=>stopThinking('d1t1')));
-at(3500,()=>show('d1gap'));
+at(2200,()=>show('d1gap'));
 at(1200,()=>showExpand('d1t2'));
 at(400,()=>{loadImg('d1img0',400);loadImg('d1img1',800);loadImg('d1img2',1300);loadImg('d1img3',1800);loadImg('d1img4',2200)});
 at(3200,()=>{showExpand('d1t3');startThinking('d1t3')});
@@ -702,7 +702,7 @@ at(600,()=>show('d3u'));
 at(1200,()=>show('d3a'));
 at(400,()=>{showExpand('d3t1');startThinking('d3t1')});
 at(200,()=>typewrite('d3tw1',D3_TW1,9,()=>stopThinking('d3t1')));
-at(4700,()=>show('d3gap'));
+at(2800,()=>show('d3gap'));
 // Image search
 at(1200,()=>showExpand('d3t2'));
 at(400,()=>{loadImg('d3img0',400);loadImg('d3img1',800);loadImg('d3img2',1200);loadImg('d3img3',1600)});
