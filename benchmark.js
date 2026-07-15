@@ -5,6 +5,9 @@ const boardSelect=document.getElementById('board-select');
 const stratumSelect=document.getElementById('stratum-select');
 const stratumControl=document.getElementById('stratum-control');
 const statsSummary=document.getElementById('stats-summary');
+const domainGlossary=document.getElementById('domain-glossary');
+const failureGlossary=document.getElementById('failure-glossary');
+const excludedModels=new Set(['imagen3fast']);
 
 const components=[
   ['checklist','Checklist'],['rubric_adaptive','Rubric Adaptive'],
@@ -34,9 +37,11 @@ function breakdownRows(groups){
   });
 }
 function sourceRows(){
-  if(boardSelect.value==='domains')return breakdownRows(domains);
-  if(boardSelect.value==='failure_modes')return breakdownRows(failureModes);
-  return [...(strata[stratumSelect.value]||[])];
+  let result;
+  if(boardSelect.value==='domains')result=breakdownRows(domains);
+  else if(boardSelect.value==='failure_modes')result=breakdownRows(failureModes);
+  else result=[...(strata[stratumSelect.value]||[])];
+  return result.filter(row=>!excludedModels.has(row.model_id));
 }
 function value(row,key){return key.startsWith('component:')?row.components?.[key.slice(10)]??null:row[key]??null}
 function arrow(key){return sortKey===key?(sortAsc?' ↑':' ↓'):''}
@@ -45,7 +50,7 @@ function header(key,label,className=''){return `<th class="${className}" data-so
 function renderHeaders(){
   let html='<th class="rank">#</th>'+header('display_name','Model','model-col');
   if(boardSelect.value==='components'){
-    html+=header('overall_9','Overall-9','primary-score')+header('overall_10','Overall-10 · Paper');
+    html+=header('overall_9','Overall-9','primary-score');
     components.forEach(([key,label])=>html+=header(`component:${key}`,label));
     html+=header('coverage','Coverage');
   }else{
@@ -64,7 +69,7 @@ function modelCell(row){const cls=row.type==='Open'?'open':'commercial';return `
 function componentRow(row,index){
   const componentCells=components.map(([key])=>`<td>${score(row.components[key])}</td>`).join('');
   const low=row.coverage<.95?'coverage-low':'';
-  return `<tr><td class="rank">${index+1}</td>${modelCell(row)}<td class="primary-score">${score(row.overall_9)}</td><td>${score(row.overall_10)}</td>${componentCells}<td class="${low}" title="Missing policy: ${esc(row.missing_policy)}">${(row.coverage*100).toFixed(1)}%<span class="coverage-count">${row.n_scored}/${row.n_total}</span></td></tr>`;
+  return `<tr><td class="rank">${index+1}</td>${modelCell(row)}<td class="primary-score">${score(row.overall_9)}</td>${componentCells}<td class="${low}" title="Missing policy: ${esc(row.missing_policy)}">${(row.coverage*100).toFixed(1)}%<span class="coverage-count">${row.n_scored}/${row.n_total}</span></td></tr>`;
 }
 function breakdownRow(row,index,groups){const cells=Object.keys(groups).sort().map(tag=>`<td title="Coverage ${esc(row.groupCoverage[tag])}">${score(row[tag])}</td>`).join('');return `<tr><td class="rank">${index+1}</td>${modelCell(row)}<td class="primary-score">${score(row.All)}</td>${cells}</tr>`}
 
@@ -84,6 +89,8 @@ function update(){
   else{const groups=boardSelect.value==='domains'?domains:failureModes;tableBody.innerHTML=rows.map((row,index)=>breakdownRow(row,index,groups)).join('')}
   const context=boardSelect.value==='components'?`${stratumSelect.value} · ${stratumSelect.value==='All'?manifest.dataset.n_prompts:manifest.partition[stratumSelect.value]} prompts`:`${Object.keys(boardSelect.value==='domains'?domains:failureModes).length} overlapping groups`;
   statsSummary.innerHTML=`Showing <strong>${rows.length}</strong> models · ${esc(context)}`;
+  domainGlossary.hidden=boardSelect.value!=='domains';
+  failureGlossary.hidden=boardSelect.value!=='failure_modes';
 }
 
 async function init(){

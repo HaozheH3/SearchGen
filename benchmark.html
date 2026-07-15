@@ -44,7 +44,7 @@
       <span class="eyebrow">Primary metric</span>
       <h2>Overall-9</h2>
     </div>
-    <p>Prompt-macro average over nine applicable FF-judge+PP components, reported on a 0–100 scale. <strong>Overall-10 (Paper)</strong> additionally includes Text Reference for compatibility with the paper tables.</p>
+    <p>Prompt-macro average over nine applicable FF-judge+PP components, reported on a 0–100 scale. Inapplicable components are skipped at the prompt level before aggregation.</p>
   </section>
 
   <section id="leaderboard" class="leaderboard-section">
@@ -90,6 +90,58 @@
       </div>
     </div>
     <p class="table-note">Click any column header to sort. Domains and failure modes are multi-label: group counts overlap. Coverage is shown because missing results are zero-filled or excluded according to the canonical model-specific policy.</p>
+
+    <section id="domain-glossary" class="taxonomy-panel" hidden>
+      <div class="taxonomy-heading">
+        <div><span class="eyebrow">Reference</span><h3>Domain abbreviations</h3></div>
+        <p>Twenty-two content domains represented in SearchGen-Bench.</p>
+      </div>
+      <div class="glossary-grid">
+        <div><code>ABS</code><span><b>Abstract</b> — Abstract concepts, emotions, and symbolism.</span></div>
+        <div><code>ARC</code><span><b>Architecture</b> — Buildings, structures, interiors, and urban spaces.</span></div>
+        <div><code>ART</code><span><b>Art &amp; Design</b> — Artistic styles, illustration, visual design, and aesthetics.</span></div>
+        <div><code>COM</code><span><b>Commercial</b> — Advertising, branding, marketing, and product imagery.</span></div>
+        <div><code>CUL</code><span><b>Culture</b> — Cultural artifacts, traditions, heritage, and customs.</span></div>
+        <div><code>EDU</code><span><b>Education</b> — Educational diagrams and instructional content.</span></div>
+        <div><code>FAS</code><span><b>Fashion</b> — Apparel, accessories, style, and textiles.</span></div>
+        <div><code>FOO</code><span><b>Food</b> — Cuisine, dishes, ingredients, and culinary arts.</span></div>
+        <div><code>GAM</code><span><b>Gaming</b> — Video games, virtual worlds, and game characters.</span></div>
+        <div><code>HIS</code><span><b>History</b> — Historical events, figures, periods, and artifacts.</span></div>
+        <div><code>INF</code><span><b>Information Design</b> — Data visualization, infographics, and diagrams.</span></div>
+        <div><code>MED</code><span><b>Medical</b> — Anatomy, medical illustration, and health.</span></div>
+        <div><code>MIL</code><span><b>Military</b> — Weapons, military equipment, and warfare.</span></div>
+        <div><code>MUS</code><span><b>Music</b> — Instruments, performances, and music-related imagery.</span></div>
+        <div><code>OBJ</code><span><b>Objects</b> — Products, everyday objects, and artifacts.</span></div>
+        <div><code>OTH</code><span><b>Other</b> — Miscellaneous or uncategorized content.</span></div>
+        <div><code>PEO</code><span><b>People</b> — Portraits, human figures, and fashion on people.</span></div>
+        <div><code>PSY</code><span><b>Psychology</b> — Mental states and psychological concepts.</span></div>
+        <div><code>SCI</code><span><b>Science &amp; Nature</b> — Biology, physics, natural phenomena, and scientific illustration.</span></div>
+        <div><code>SPO</code><span><b>Sports</b> — Athletics, sports, fitness, and recreation.</span></div>
+        <div><code>TEC</code><span><b>Technology</b> — Devices, interfaces, software, and technical diagrams.</span></div>
+        <div><code>TXT</code><span><b>Text &amp; Typography</b> — Text-heavy content, calligraphy, typography, and signage.</span></div>
+      </div>
+    </section>
+
+    <section id="failure-glossary" class="taxonomy-panel" hidden>
+      <div class="taxonomy-heading">
+        <div><span class="eyebrow">Reference</span><h3>Failure-mode abbreviations</h3></div>
+        <p>Twelve recurring categories distilled from real production requests.</p>
+      </div>
+      <div class="glossary-grid">
+        <div><code>TK-R</code><span><b>Temporal — Recent</b> — Newly emerged or recently changed entities, events, products, and trends.</span></div>
+        <div><code>TK-C</code><span><b>Temporal — Current</b> — Up-to-date states such as rankings, live events, locations, or social conditions.</span></div>
+        <div><code>EIK</code><span><b>Entity &amp; IP Knowledge</b> — Accurate identity and appearance of named people, characters, brands, products, or landmarks.</span></div>
+        <div><code>CSV</code><span><b>Concept &amp; Symbol Visualization</b> — Precise concepts, flags, symbols, and diagrams requiring exact representation.</span></div>
+        <div><code>FHA</code><span><b>Factual &amp; Historical Accuracy</b> — Correct facts, periods, artifacts, scientific details, and historical depictions.</span></div>
+        <div><code>CS</code><span><b>Cultural Specificity</b> — Authentic culture-bound practices, aesthetics, artifacts, and conventions.</span></div>
+        <div><code>VUR</code><span><b>Visual / UI / UX</b> — Specific interfaces, layouts, rendering conventions, spatial logic, and visual relationships.</span></div>
+        <div><code>DVZ</code><span><b>Data Visualization</b> — Accurate charts, graphs, timelines, diagrams, and infographics.</span></div>
+        <div><code>THG</code><span><b>Text / Typography</b> — Correct, readable, and stylistically appropriate text rendered inside images.</span></div>
+        <div><code>CCS</code><span><b>Complex Composite</b> — Coherent multi-element scenes, spatial arrangements, and cross-concept compositions.</span></div>
+        <div><code>VUA</code><span><b>Vague / Abstract</b> — Visualizing underspecified ideas, moods, metaphors, and abstract concepts.</span></div>
+        <div><code>IRR</code><span><b>Implicit Reasoning</b> — Requirements that must be inferred rather than stated directly, including contextual and relational constraints.</span></div>
+      </div>
+    </section>
   </section>
 
   <section class="split-note">

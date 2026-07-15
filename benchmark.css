@@ -60,6 +60,15 @@ tbody tr:hover .model-col{background:#fafafa}
 .na{color:var(--text3)}
 .message-cell{padding:60px;text-align:center;color:var(--text2)}
 .table-note{margin:11px 4px 0;color:var(--text3);font-size:11.5px;line-height:1.55}
+.taxonomy-panel{margin-top:24px;padding:22px;border:1px solid var(--border);border-radius:14px;background:var(--surface)}
+.taxonomy-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:16px}
+.taxonomy-heading h3{font-size:20px;letter-spacing:-.35px}
+.taxonomy-heading p{max-width:390px;color:var(--text2);font-size:12.5px;text-align:right}
+.glossary-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 22px}
+.glossary-grid>div{display:grid;grid-template-columns:54px 1fr;gap:10px;align-items:start;padding:9px 0;border-top:1px solid var(--border)}
+.glossary-grid code{color:var(--purple);font:700 12px 'JetBrains Mono',monospace}
+.glossary-grid span{color:var(--text2);font-size:12px;line-height:1.5}
+.glossary-grid b{color:var(--text);font-weight:700}
 .split-note{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:66px}
 .split-note article{padding:24px;border:1px solid var(--border);border-radius:14px;background:var(--surface)}
 .split-note h3{margin:7px 0 8px;font-size:18px}
@@ -67,4 +76,4 @@ tbody tr:hover .model-col{background:#fafafa}
 .eyebrow.orange{color:var(--orange)}
 footer{text-align:center;padding:42px 24px 58px;border-top:1px solid var(--border);color:var(--text3);font-size:13px}
 footer a{color:var(--text2);font-weight:600}
-@media(max-width:760px){.hero{padding-top:52px}.hero h1{font-size:32px}.hero p{font-size:16px}.stat-grid{grid-template-columns:1fr 1fr}.metric-note{grid-template-columns:1fr}.section-heading{display:block}.section-heading p{text-align:left;margin-top:5px}.split-note{grid-template-columns:1fr}.nav-links a{padding:7px 9px}.controls label{width:100%}select{width:100%}}
+@media(max-width:760px){.hero{padding-top:52px}.hero h1{font-size:32px}.hero p{font-size:16px}.stat-grid{grid-template-columns:1fr 1fr}.metric-note{grid-template-columns:1fr}.section-heading,.taxonomy-heading{display:block}.section-heading p,.taxonomy-heading p{text-align:left;margin-top:5px}.glossary-grid{grid-template-columns:1fr}.split-note{grid-template-columns:1fr}.nav-links a{padding:7px 9px}.controls label{width:100%}select{width:100%}}
