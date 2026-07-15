@@ -102,7 +102,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,sa
 .comparison{display:flex;gap:16px;opacity:0;transform:translateY(10px);transition:all .6s ease}
 .comparison.v{opacity:1;transform:translateY(0)}
 .res-card{flex:1;border-radius:12px;overflow:hidden;border:1px solid var(--border);position:relative}
-.res-card .res-shimmer{width:100%;aspect-ratio:1;background:linear-gradient(90deg,var(--surface) 25%,#eee 50%,var(--surface) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
+.res-card .res-shimmer{position:absolute;top:0;left:0;width:100%;aspect-ratio:1;background:linear-gradient(90deg,var(--surface) 25%,#eee 50%,var(--surface) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;z-index:1}
 .res-card img{width:100%;display:block;aspect-ratio:1;object-fit:cover;opacity:0;transition:opacity .8s ease}
 .res-card.revealed img{opacity:1}
 .res-card.revealed .res-shimmer{display:none}
