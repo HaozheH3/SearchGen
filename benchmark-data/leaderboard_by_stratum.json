@@ -9,6 +9,7 @@
         "physical_plausibility": 558,
         "prompt_faithfulness": 751,
         "rubric_adaptive": 751,
+        "text_reference_evaluation": 486,
         "text_rendering": 544,
         "visual_reference_evaluation": 599
       },
@@ -20,6 +21,7 @@
         "physical_plausibility": 76.7,
         "prompt_faithfulness": 69.4,
         "rubric_adaptive": 70.8,
+        "text_reference_evaluation": 54.6,
         "text_rendering": 75.4,
         "visual_reference_evaluation": 65.7
       },
@@ -43,6 +45,7 @@
         "physical_plausibility": 627,
         "prompt_faithfulness": 751,
         "rubric_adaptive": 751,
+        "text_reference_evaluation": 480,
         "text_rendering": 500,
         "visual_reference_evaluation": 598
       },
@@ -54,6 +57,7 @@
         "physical_plausibility": 78.4,
         "prompt_faithfulness": 62.3,
         "rubric_adaptive": 65.1,
+        "text_reference_evaluation": 47.4,
         "text_rendering": 66.3,
         "visual_reference_evaluation": 59.8
       },
@@ -77,6 +81,7 @@
         "physical_plausibility": 539,
         "prompt_faithfulness": 717,
         "rubric_adaptive": 717,
+        "text_reference_evaluation": 487,
         "text_rendering": 517,
         "visual_reference_evaluation": 582
       },
@@ -88,6 +93,7 @@
         "physical_plausibility": 73.1,
         "prompt_faithfulness": 62.0,
         "rubric_adaptive": 64.1,
+        "text_reference_evaluation": 46.0,
         "text_rendering": 63.4,
         "visual_reference_evaluation": 58.9
       },
@@ -111,6 +117,7 @@
         "physical_plausibility": 544,
         "prompt_faithfulness": 742,
         "rubric_adaptive": 742,
+        "text_reference_evaluation": 473,
         "text_rendering": 471,
         "visual_reference_evaluation": 606
       },
@@ -122,6 +129,7 @@
         "physical_plausibility": 71.7,
         "prompt_faithfulness": 50.0,
         "rubric_adaptive": 54.2,
+        "text_reference_evaluation": 35.7,
         "text_rendering": 56.7,
         "visual_reference_evaluation": 46.2
       },
@@ -145,6 +153,7 @@
         "physical_plausibility": 561,
         "prompt_faithfulness": 751,
         "rubric_adaptive": 751,
+        "text_reference_evaluation": 492,
         "text_rendering": 467,
         "visual_reference_evaluation": 617
       },
@@ -156,6 +165,7 @@
         "physical_plausibility": 67.9,
         "prompt_faithfulness": 47.3,
         "rubric_adaptive": 51.9,
+        "text_reference_evaluation": 33.1,
         "text_rendering": 54.0,
         "visual_reference_evaluation": 43.2
       },
@@ -179,6 +189,7 @@
         "physical_plausibility": 593,
         "prompt_faithfulness": 751,
         "rubric_adaptive": 751,
+        "text_reference_evaluation": 486,
         "text_rendering": 518,
         "visual_reference_evaluation": 615
       },
@@ -190,6 +201,7 @@
         "physical_plausibility": 64.0,
         "prompt_faithfulness": 45.9,
         "rubric_adaptive": 50.2,
+        "text_reference_evaluation": 28.2,
         "text_rendering": 48.9,
         "visual_reference_evaluation": 39.9
       },
@@ -213,6 +225,7 @@
         "physical_plausibility": 604,
         "prompt_faithfulness": 750,
         "rubric_adaptive": 751,
+        "text_reference_evaluation": 501,
         "text_rendering": 483,
         "visual_reference_evaluation": 596
       },
@@ -224,6 +237,7 @@
         "physical_plausibility": 65.6,
         "prompt_faithfulness": 41.6,
         "rubric_adaptive": 47.2,
+        "text_reference_evaluation": 23.4,
         "text_rendering": 38.1,
         "visual_reference_evaluation": 38.4
       },
@@ -247,6 +261,7 @@
         "physical_plausibility": 594,
         "prompt_faithfulness": 751,
         "rubric_adaptive": 751,
+        "text_reference_evaluation": 522,
         "text_rendering": 498,
         "visual_reference_evaluation": 597
       },
@@ -258,6 +273,7 @@
         "physical_plausibility": 66.0,
         "prompt_faithfulness": 39.1,
         "rubric_adaptive": 44.0,
+        "text_reference_evaluation": 17.8,
         "text_rendering": 28.9,
         "visual_reference_evaluation": 36.4
       },
@@ -281,6 +297,7 @@
         "physical_plausibility": 676,
         "prompt_faithfulness": 751,
         "rubric_adaptive": 751,
+        "text_reference_evaluation": 516,
         "text_rendering": 475,
         "visual_reference_evaluation": 595
       },
@@ -292,6 +309,7 @@
         "physical_plausibility": 48.6,
         "prompt_faithfulness": 24.5,
         "rubric_adaptive": 30.5,
+        "text_reference_evaluation": 7.7,
         "text_rendering": 11.3,
         "visual_reference_evaluation": 23.8
       },
@@ -315,6 +333,7 @@
         "physical_plausibility": 599,
         "prompt_faithfulness": 751,
         "rubric_adaptive": 751,
+        "text_reference_evaluation": 536,
         "text_rendering": 501,
         "visual_reference_evaluation": 596
       },
@@ -326,6 +345,7 @@
         "physical_plausibility": 51.5,
         "prompt_faithfulness": 21.7,
         "rubric_adaptive": 27.9,
+        "text_reference_evaluation": 6.6,
         "text_rendering": 8.4,
         "visual_reference_evaluation": 21.1
       },
@@ -349,6 +369,7 @@
         "physical_plausibility": 597,
         "prompt_faithfulness": 750,
         "rubric_adaptive": 751,
+        "text_reference_evaluation": 537,
         "text_rendering": 483,
         "visual_reference_evaluation": 594
       },
@@ -360,6 +381,7 @@
         "physical_plausibility": 49.0,
         "prompt_faithfulness": 16.0,
         "rubric_adaptive": 22.9,
+        "text_reference_evaluation": 3.6,
         "text_rendering": 4.7,
         "visual_reference_evaluation": 15.1
       },
@@ -383,6 +405,7 @@
         "physical_plausibility": 631,
         "prompt_faithfulness": 751,
         "rubric_adaptive": 751,
+        "text_reference_evaluation": 521,
         "text_rendering": 465,
         "visual_reference_evaluation": 595
       },
@@ -394,6 +417,7 @@
         "physical_plausibility": 40.4,
         "prompt_faithfulness": 16.7,
         "rubric_adaptive": 21.8,
+        "text_reference_evaluation": 3.5,
         "text_rendering": 3.5,
         "visual_reference_evaluation": 16.8
       },
@@ -417,6 +441,7 @@
         "physical_plausibility": 656,
         "prompt_faithfulness": 751,
         "rubric_adaptive": 751,
+        "text_reference_evaluation": 630,
         "text_rendering": 596,
         "visual_reference_evaluation": 688
       },
@@ -428,6 +453,7 @@
         "physical_plausibility": 20.0,
         "prompt_faithfulness": 6.0,
         "rubric_adaptive": 8.7,
+        "text_reference_evaluation": 1.2,
         "text_rendering": 1.2,
         "visual_reference_evaluation": 6.0
       },
@@ -453,6 +479,7 @@
         "physical_plausibility": 94,
         "prompt_faithfulness": 100,
         "rubric_adaptive": 100,
+        "text_reference_evaluation": 35,
         "text_rendering": 33,
         "visual_reference_evaluation": 92
       },
@@ -464,6 +491,7 @@
         "physical_plausibility": 78.2,
         "prompt_faithfulness": 72.8,
         "rubric_adaptive": 78.1,
+        "text_reference_evaluation": 59.5,
         "text_rendering": 85.9,
         "visual_reference_evaluation": 67.8
       },
@@ -487,6 +515,7 @@
         "physical_plausibility": 95,
         "prompt_faithfulness": 100,
         "rubric_adaptive": 100,
+        "text_reference_evaluation": 38,
         "text_rendering": 32,
         "visual_reference_evaluation": 93
       },
@@ -498,6 +527,7 @@
         "physical_plausibility": 73.9,
         "prompt_faithfulness": 70.8,
         "rubric_adaptive": 75.6,
+        "text_reference_evaluation": 48.2,
         "text_rendering": 67.7,
         "visual_reference_evaluation": 64.3
       },
@@ -521,6 +551,7 @@
         "physical_plausibility": 90,
         "prompt_faithfulness": 97,
         "rubric_adaptive": 97,
+        "text_reference_evaluation": 33,
         "text_rendering": 33,
         "visual_reference_evaluation": 89
       },
@@ -532,6 +563,7 @@
         "physical_plausibility": 70.9,
         "prompt_faithfulness": 69.2,
         "rubric_adaptive": 74.2,
+        "text_reference_evaluation": 47.0,
         "text_rendering": 71.2,
         "visual_reference_evaluation": 61.9
       },
@@ -555,6 +587,7 @@
         "physical_plausibility": 96,
         "prompt_faithfulness": 100,
         "rubric_adaptive": 100,
+        "text_reference_evaluation": 34,
         "text_rendering": 23,
         "visual_reference_evaluation": 92
       },
@@ -566,6 +599,7 @@
         "physical_plausibility": 72.0,
         "prompt_faithfulness": 66.3,
         "rubric_adaptive": 73.2,
+        "text_reference_evaluation": 45.1,
         "text_rendering": 76.1,
         "visual_reference_evaluation": 59.4
       },
@@ -589,6 +623,7 @@
         "physical_plausibility": 96,
         "prompt_faithfulness": 100,
         "rubric_adaptive": 100,
+        "text_reference_evaluation": 37,
         "text_rendering": 26,
         "visual_reference_evaluation": 91
       },
@@ -600,6 +635,7 @@
         "physical_plausibility": 71.5,
         "prompt_faithfulness": 63.2,
         "rubric_adaptive": 69.9,
+        "text_reference_evaluation": 47.7,
         "text_rendering": 76.9,
         "visual_reference_evaluation": 60.1
       },
@@ -623,6 +659,7 @@
         "physical_plausibility": 95,
         "prompt_faithfulness": 100,
         "rubric_adaptive": 100,
+        "text_reference_evaluation": 38,
         "text_rendering": 30,
         "visual_reference_evaluation": 92
       },
@@ -634,6 +671,7 @@
         "physical_plausibility": 73.9,
         "prompt_faithfulness": 61.7,
         "rubric_adaptive": 70.6,
+        "text_reference_evaluation": 45.2,
         "text_rendering": 71.1,
         "visual_reference_evaluation": 56.7
       },
@@ -657,6 +695,7 @@
         "physical_plausibility": 93,
         "prompt_faithfulness": 100,
         "rubric_adaptive": 100,
+        "text_reference_evaluation": 38,
         "text_rendering": 23,
         "visual_reference_evaluation": 92
       },
@@ -668,6 +707,7 @@
         "physical_plausibility": 73.8,
         "prompt_faithfulness": 62.8,
         "rubric_adaptive": 70.8,
+        "text_reference_evaluation": 41.2,
         "text_rendering": 63.0,
         "visual_reference_evaluation": 56.7
       },
@@ -691,6 +731,7 @@
         "physical_plausibility": 96,
         "prompt_faithfulness": 100,
         "rubric_adaptive": 100,
+        "text_reference_evaluation": 35,
         "text_rendering": 37,
         "visual_reference_evaluation": 92
       },
@@ -702,6 +743,7 @@
         "physical_plausibility": 71.4,
         "prompt_faithfulness": 64.5,
         "rubric_adaptive": 71.0,
+        "text_reference_evaluation": 43.3,
         "text_rendering": 68.0,
         "visual_reference_evaluation": 55.8
       },
@@ -725,6 +767,7 @@
         "physical_plausibility": 92,
         "prompt_faithfulness": 100,
         "rubric_adaptive": 100,
+        "text_reference_evaluation": 40,
         "text_rendering": 30,
         "visual_reference_evaluation": 92
       },
@@ -736,6 +779,7 @@
         "physical_plausibility": 68.5,
         "prompt_faithfulness": 59.7,
         "rubric_adaptive": 67.5,
+        "text_reference_evaluation": 26.2,
         "text_rendering": 42.8,
         "visual_reference_evaluation": 53.8
       },
@@ -759,6 +803,7 @@
         "physical_plausibility": 96,
         "prompt_faithfulness": 100,
         "rubric_adaptive": 100,
+        "text_reference_evaluation": 42,
         "text_rendering": 25,
         "visual_reference_evaluation": 92
       },
@@ -770,6 +815,7 @@
         "physical_plausibility": 66.7,
         "prompt_faithfulness": 51.3,
         "rubric_adaptive": 59.8,
+        "text_reference_evaluation": 22.2,
         "text_rendering": 31.3,
         "visual_reference_evaluation": 43.7
       },
@@ -793,6 +839,7 @@
         "physical_plausibility": 95,
         "prompt_faithfulness": 100,
         "rubric_adaptive": 100,
+        "text_reference_evaluation": 40,
         "text_rendering": 24,
         "visual_reference_evaluation": 92
       },
@@ -804,6 +851,7 @@
         "physical_plausibility": 63.5,
         "prompt_faithfulness": 39.3,
         "rubric_adaptive": 51.8,
+        "text_reference_evaluation": 19.6,
         "text_rendering": 13.2,
         "visual_reference_evaluation": 32.6
       },
@@ -827,6 +875,7 @@
         "physical_plausibility": 95,
         "prompt_faithfulness": 100,
         "rubric_adaptive": 100,
+        "text_reference_evaluation": 42,
         "text_rendering": 29,
         "visual_reference_evaluation": 92
       },
@@ -838,6 +887,7 @@
         "physical_plausibility": 60.4,
         "prompt_faithfulness": 39.2,
         "rubric_adaptive": 49.1,
+        "text_reference_evaluation": 21.4,
         "text_rendering": 18.4,
         "visual_reference_evaluation": 34.8
       },
@@ -861,6 +911,7 @@
         "physical_plausibility": 100,
         "prompt_faithfulness": 100,
         "rubric_adaptive": 100,
+        "text_reference_evaluation": 100,
         "text_rendering": 100,
         "visual_reference_evaluation": 100
       },
@@ -872,6 +923,7 @@
         "physical_plausibility": 0.0,
         "prompt_faithfulness": 0.0,
         "rubric_adaptive": 0.0,
+        "text_reference_evaluation": 0.0,
         "text_rendering": 0.0,
         "visual_reference_evaluation": 0.0
       },
@@ -897,6 +949,7 @@
         "physical_plausibility": 463,
         "prompt_faithfulness": 651,
         "rubric_adaptive": 651,
+        "text_reference_evaluation": 448,
         "text_rendering": 512,
         "visual_reference_evaluation": 506
       },
@@ -908,6 +961,7 @@
         "physical_plausibility": 77.3,
         "prompt_faithfulness": 69.2,
         "rubric_adaptive": 70.1,
+        "text_reference_evaluation": 55.1,
         "text_rendering": 75.9,
         "visual_reference_evaluation": 66.0
       },
@@ -931,6 +985,7 @@
         "physical_plausibility": 533,
         "prompt_faithfulness": 651,
         "rubric_adaptive": 651,
+        "text_reference_evaluation": 445,
         "text_rendering": 467,
         "visual_reference_evaluation": 506
       },
@@ -942,6 +997,7 @@
         "physical_plausibility": 78.5,
         "prompt_faithfulness": 60.7,
         "rubric_adaptive": 63.1,
+        "text_reference_evaluation": 46.4,
         "text_rendering": 65.0,
         "visual_reference_evaluation": 58.3
       },
@@ -965,6 +1021,7 @@
         "physical_plausibility": 449,
         "prompt_faithfulness": 620,
         "rubric_adaptive": 620,
+        "text_reference_evaluation": 454,
         "text_rendering": 484,
         "visual_reference_evaluation": 493
       },
@@ -976,6 +1033,7 @@
         "physical_plausibility": 73.6,
         "prompt_faithfulness": 60.8,
         "rubric_adaptive": 62.5,
+        "text_reference_evaluation": 46.0,
         "text_rendering": 62.8,
         "visual_reference_evaluation": 58.3
       },
@@ -999,6 +1057,7 @@
         "physical_plausibility": 448,
         "prompt_faithfulness": 642,
         "rubric_adaptive": 642,
+        "text_reference_evaluation": 436,
         "text_rendering": 445,
         "visual_reference_evaluation": 515
       },
@@ -1010,6 +1069,7 @@
         "physical_plausibility": 71.8,
         "prompt_faithfulness": 47.9,
         "rubric_adaptive": 51.8,
+        "text_reference_evaluation": 34.7,
         "text_rendering": 55.5,
         "visual_reference_evaluation": 43.8
       },
@@ -1033,6 +1093,7 @@
         "physical_plausibility": 465,
         "prompt_faithfulness": 651,
         "rubric_adaptive": 651,
+        "text_reference_evaluation": 458,
         "text_rendering": 444,
         "visual_reference_evaluation": 525
       },
@@ -1044,6 +1105,7 @@
         "physical_plausibility": 67.1,
         "prompt_faithfulness": 44.4,
         "rubric_adaptive": 48.7,
+        "text_reference_evaluation": 32.2,
         "text_rendering": 52.9,
         "visual_reference_evaluation": 40.3
       },
@@ -1067,6 +1129,7 @@
         "physical_plausibility": 497,
         "prompt_faithfulness": 651,
         "rubric_adaptive": 651,
+        "text_reference_evaluation": 451,
         "text_rendering": 481,
         "visual_reference_evaluation": 523
       },
@@ -1078,6 +1141,7 @@
         "physical_plausibility": 62.6,
         "prompt_faithfulness": 43.1,
         "rubric_adaptive": 47.0,
+        "text_reference_evaluation": 27.0,
         "text_rendering": 47.5,
         "visual_reference_evaluation": 37.1
       },
@@ -1101,6 +1165,7 @@
         "physical_plausibility": 509,
         "prompt_faithfulness": 650,
         "rubric_adaptive": 651,
+        "text_reference_evaluation": 463,
         "text_rendering": 453,
         "visual_reference_evaluation": 504
       },
@@ -1112,6 +1177,7 @@
         "physical_plausibility": 64.0,
         "prompt_faithfulness": 38.5,
         "rubric_adaptive": 43.6,
+        "text_reference_evaluation": 21.6,
         "text_rendering": 35.9,
         "visual_reference_evaluation": 35.1
       },
@@ -1135,6 +1201,7 @@
         "physical_plausibility": 502,
         "prompt_faithfulness": 651,
         "rubric_adaptive": 651,
+        "text_reference_evaluation": 482,
         "text_rendering": 468,
         "visual_reference_evaluation": 505
       },
@@ -1146,6 +1213,7 @@
         "physical_plausibility": 65.5,
         "prompt_faithfulness": 36.0,
         "rubric_adaptive": 40.4,
+        "text_reference_evaluation": 17.1,
         "text_rendering": 28.0,
         "visual_reference_evaluation": 33.2
       },
@@ -1169,6 +1237,7 @@
         "physical_plausibility": 583,
         "prompt_faithfulness": 651,
         "rubric_adaptive": 651,
+        "text_reference_evaluation": 478,
         "text_rendering": 452,
         "visual_reference_evaluation": 503
       },
@@ -1180,6 +1249,7 @@
         "physical_plausibility": 44.6,
         "prompt_faithfulness": 18.6,
         "rubric_adaptive": 24.3,
+        "text_reference_evaluation": 5.0,
         "text_rendering": 8.7,
         "visual_reference_evaluation": 17.7
       },
@@ -1203,6 +1273,7 @@
         "physical_plausibility": 503,
         "prompt_faithfulness": 651,
         "rubric_adaptive": 651,
+        "text_reference_evaluation": 494,
         "text_rendering": 476,
         "visual_reference_evaluation": 504
       },
@@ -1214,6 +1285,7 @@
         "physical_plausibility": 48.6,
         "prompt_faithfulness": 17.2,
         "rubric_adaptive": 23.1,
+        "text_reference_evaluation": 5.3,
         "text_rendering": 7.2,
         "visual_reference_evaluation": 16.9
       },
@@ -1237,6 +1309,7 @@
         "physical_plausibility": 502,
         "prompt_faithfulness": 650,
         "rubric_adaptive": 651,
+        "text_reference_evaluation": 497,
         "text_rendering": 459,
         "visual_reference_evaluation": 502
       },
@@ -1248,6 +1321,7 @@
         "physical_plausibility": 46.2,
         "prompt_faithfulness": 12.4,
         "rubric_adaptive": 18.4,
+        "text_reference_evaluation": 2.3,
         "text_rendering": 4.2,
         "visual_reference_evaluation": 11.9
       },
@@ -1271,6 +1345,7 @@
         "physical_plausibility": 536,
         "prompt_faithfulness": 651,
         "rubric_adaptive": 651,
+        "text_reference_evaluation": 479,
         "text_rendering": 436,
         "visual_reference_evaluation": 503
       },
@@ -1282,6 +1357,7 @@
         "physical_plausibility": 36.8,
         "prompt_faithfulness": 13.3,
         "rubric_adaptive": 17.6,
+        "text_reference_evaluation": 1.9,
         "text_rendering": 2.5,
         "visual_reference_evaluation": 13.5
       },
@@ -1305,6 +1381,7 @@
         "physical_plausibility": 556,
         "prompt_faithfulness": 651,
         "rubric_adaptive": 651,
+        "text_reference_evaluation": 530,
         "text_rendering": 496,
         "visual_reference_evaluation": 588
       },
@@ -1316,6 +1393,7 @@
         "physical_plausibility": 23.7,
         "prompt_faithfulness": 6.9,
         "rubric_adaptive": 10.0,
+        "text_reference_evaluation": 1.4,
         "text_rendering": 1.4,
         "visual_reference_evaluation": 7.0
       },
@@ -1341,6 +1419,7 @@
         "physical_plausibility": 158,
         "prompt_faithfulness": 264,
         "rubric_adaptive": 264,
+        "text_reference_evaluation": 254,
         "text_rendering": 252,
         "visual_reference_evaluation": 173
       },
@@ -1352,6 +1431,7 @@
         "physical_plausibility": 89.1,
         "prompt_faithfulness": 69.3,
         "rubric_adaptive": 67.8,
+        "text_reference_evaluation": 48.5,
         "text_rendering": 70.1,
         "visual_reference_evaluation": 66.7
       },
@@ -1375,6 +1455,7 @@
         "physical_plausibility": 214,
         "prompt_faithfulness": 264,
         "rubric_adaptive": 264,
+        "text_reference_evaluation": 255,
         "text_rendering": 244,
         "visual_reference_evaluation": 173
       },
@@ -1386,6 +1467,7 @@
         "physical_plausibility": 86.2,
         "prompt_faithfulness": 60.1,
         "rubric_adaptive": 59.8,
+        "text_reference_evaluation": 39.5,
         "text_rendering": 59.6,
         "visual_reference_evaluation": 54.4
       },
@@ -1409,6 +1491,7 @@
         "physical_plausibility": 171,
         "prompt_faithfulness": 264,
         "rubric_adaptive": 264,
+        "text_reference_evaluation": 260,
         "text_rendering": 248,
         "visual_reference_evaluation": 172
       },
@@ -1420,6 +1503,7 @@
         "physical_plausibility": 85.0,
         "prompt_faithfulness": 60.9,
         "rubric_adaptive": 59.3,
+        "text_reference_evaluation": 39.5,
         "text_rendering": 57.0,
         "visual_reference_evaluation": 54.8
       },
@@ -1443,6 +1527,7 @@
         "physical_plausibility": 155,
         "prompt_faithfulness": 264,
         "rubric_adaptive": 264,
+        "text_reference_evaluation": 258,
         "text_rendering": 249,
         "visual_reference_evaluation": 172
       },
@@ -1454,6 +1539,7 @@
         "physical_plausibility": 83.1,
         "prompt_faithfulness": 48.0,
         "rubric_adaptive": 48.5,
+        "text_reference_evaluation": 29.7,
         "text_rendering": 47.3,
         "visual_reference_evaluation": 37.1
       },
@@ -1477,6 +1563,7 @@
         "physical_plausibility": 157,
         "prompt_faithfulness": 264,
         "rubric_adaptive": 264,
+        "text_reference_evaluation": 258,
         "text_rendering": 244,
         "visual_reference_evaluation": 172
       },
@@ -1488,6 +1575,7 @@
         "physical_plausibility": 80.4,
         "prompt_faithfulness": 45.0,
         "rubric_adaptive": 46.4,
+        "text_reference_evaluation": 26.2,
         "text_rendering": 45.4,
         "visual_reference_evaluation": 34.4
       },
@@ -1511,6 +1599,7 @@
         "physical_plausibility": 189,
         "prompt_faithfulness": 264,
         "rubric_adaptive": 264,
+        "text_reference_evaluation": 257,
         "text_rendering": 256,
         "visual_reference_evaluation": 172
       },
@@ -1522,6 +1611,7 @@
         "physical_plausibility": 69.6,
         "prompt_faithfulness": 40.5,
         "rubric_adaptive": 42.2,
+        "text_reference_evaluation": 22.4,
         "text_rendering": 41.4,
         "visual_reference_evaluation": 27.2
       },
@@ -1545,6 +1635,7 @@
         "physical_plausibility": 197,
         "prompt_faithfulness": 264,
         "rubric_adaptive": 264,
+        "text_reference_evaluation": 260,
         "text_rendering": 250,
         "visual_reference_evaluation": 172
       },
@@ -1556,6 +1647,7 @@
         "physical_plausibility": 72.3,
         "prompt_faithfulness": 33.6,
         "rubric_adaptive": 36.7,
+        "text_reference_evaluation": 16.3,
         "text_rendering": 30.1,
         "visual_reference_evaluation": 24.0
       },
@@ -1579,6 +1671,7 @@
         "physical_plausibility": 188,
         "prompt_faithfulness": 264,
         "rubric_adaptive": 264,
+        "text_reference_evaluation": 261,
         "text_rendering": 254,
         "visual_reference_evaluation": 172
       },
@@ -1590,6 +1683,7 @@
         "physical_plausibility": 75.5,
         "prompt_faithfulness": 32.5,
         "rubric_adaptive": 33.7,
+        "text_reference_evaluation": 12.1,
         "text_rendering": 22.1,
         "visual_reference_evaluation": 25.0
       },
@@ -1613,6 +1707,7 @@
         "physical_plausibility": 233,
         "prompt_faithfulness": 264,
         "rubric_adaptive": 264,
+        "text_reference_evaluation": 264,
         "text_rendering": 253,
         "visual_reference_evaluation": 172
       },
@@ -1624,6 +1719,7 @@
         "physical_plausibility": 44.3,
         "prompt_faithfulness": 13.8,
         "rubric_adaptive": 17.5,
+        "text_reference_evaluation": 3.5,
         "text_rendering": 5.4,
         "visual_reference_evaluation": 10.4
       },
@@ -1647,6 +1743,7 @@
         "physical_plausibility": 198,
         "prompt_faithfulness": 264,
         "rubric_adaptive": 264,
+        "text_reference_evaluation": 263,
         "text_rendering": 254,
         "visual_reference_evaluation": 172
       },
@@ -1658,6 +1755,7 @@
         "physical_plausibility": 48.7,
         "prompt_faithfulness": 12.4,
         "rubric_adaptive": 16.2,
+        "text_reference_evaluation": 3.6,
         "text_rendering": 3.9,
         "visual_reference_evaluation": 9.9
       },
@@ -1681,6 +1779,7 @@
         "physical_plausibility": 201,
         "prompt_faithfulness": 263,
         "rubric_adaptive": 264,
+        "text_reference_evaluation": 262,
         "text_rendering": 249,
         "visual_reference_evaluation": 171
       },
@@ -1692,6 +1791,7 @@
         "physical_plausibility": 44.6,
         "prompt_faithfulness": 9.1,
         "rubric_adaptive": 13.6,
+        "text_reference_evaluation": 1.7,
         "text_rendering": 2.8,
         "visual_reference_evaluation": 7.2
       },
@@ -1715,6 +1815,7 @@
         "physical_plausibility": 203,
         "prompt_faithfulness": 264,
         "rubric_adaptive": 264,
+        "text_reference_evaluation": 264,
         "text_rendering": 244,
         "visual_reference_evaluation": 172
       },
@@ -1726,6 +1827,7 @@
         "physical_plausibility": 37.8,
         "prompt_faithfulness": 9.9,
         "rubric_adaptive": 12.4,
+        "text_reference_evaluation": 1.1,
         "text_rendering": 1.6,
         "visual_reference_evaluation": 9.3
       },
@@ -1749,6 +1851,7 @@
         "physical_plausibility": 216,
         "prompt_faithfulness": 264,
         "rubric_adaptive": 264,
+        "text_reference_evaluation": 264,
         "text_rendering": 249,
         "visual_reference_evaluation": 239
       },
@@ -1760,6 +1863,7 @@
         "physical_plausibility": 8.1,
         "prompt_faithfulness": 0.6,
         "rubric_adaptive": 1.7,
+        "text_reference_evaluation": 0.2,
         "text_rendering": 0.0,
         "visual_reference_evaluation": 0.1
       },
@@ -1785,6 +1889,7 @@
         "physical_plausibility": 305,
         "prompt_faithfulness": 387,
         "rubric_adaptive": 387,
+        "text_reference_evaluation": 194,
         "text_rendering": 260,
         "visual_reference_evaluation": 333
       },
@@ -1796,6 +1901,7 @@
         "physical_plausibility": 71.2,
         "prompt_faithfulness": 69.2,
         "rubric_adaptive": 71.7,
+        "text_reference_evaluation": 63.7,
         "text_rendering": 81.5,
         "visual_reference_evaluation": 65.7
       },
@@ -1819,6 +1925,7 @@
         "physical_plausibility": 319,
         "prompt_faithfulness": 387,
         "rubric_adaptive": 387,
+        "text_reference_evaluation": 190,
         "text_rendering": 223,
         "visual_reference_evaluation": 333
       },
@@ -1830,6 +1937,7 @@
         "physical_plausibility": 73.3,
         "prompt_faithfulness": 61.1,
         "rubric_adaptive": 65.4,
+        "text_reference_evaluation": 55.6,
         "text_rendering": 70.8,
         "visual_reference_evaluation": 60.4
       },
@@ -1853,6 +1961,7 @@
         "physical_plausibility": 278,
         "prompt_faithfulness": 356,
         "rubric_adaptive": 356,
+        "text_reference_evaluation": 194,
         "text_rendering": 236,
         "visual_reference_evaluation": 321
       },
@@ -1864,6 +1973,7 @@
         "physical_plausibility": 66.5,
         "prompt_faithfulness": 60.8,
         "rubric_adaptive": 64.9,
+        "text_reference_evaluation": 54.6,
         "text_rendering": 69.0,
         "visual_reference_evaluation": 60.2
       },
@@ -1887,6 +1997,7 @@
         "physical_plausibility": 293,
         "prompt_faithfulness": 378,
         "rubric_adaptive": 378,
+        "text_reference_evaluation": 178,
         "text_rendering": 196,
         "visual_reference_evaluation": 343
       },
@@ -1898,6 +2009,7 @@
         "physical_plausibility": 65.8,
         "prompt_faithfulness": 47.9,
         "rubric_adaptive": 54.1,
+        "text_reference_evaluation": 41.9,
         "text_rendering": 66.0,
         "visual_reference_evaluation": 47.2
       },
@@ -1921,6 +2033,7 @@
         "physical_plausibility": 308,
         "prompt_faithfulness": 387,
         "rubric_adaptive": 387,
+        "text_reference_evaluation": 200,
         "text_rendering": 200,
         "visual_reference_evaluation": 353
       },
@@ -1932,6 +2045,7 @@
         "physical_plausibility": 60.3,
         "prompt_faithfulness": 44.0,
         "rubric_adaptive": 50.2,
+        "text_reference_evaluation": 39.9,
         "text_rendering": 62.0,
         "visual_reference_evaluation": 43.2
       },
@@ -1955,6 +2069,7 @@
         "physical_plausibility": 308,
         "prompt_faithfulness": 387,
         "rubric_adaptive": 387,
+        "text_reference_evaluation": 194,
         "text_rendering": 225,
         "visual_reference_evaluation": 351
       },
@@ -1966,6 +2081,7 @@
         "physical_plausibility": 58.3,
         "prompt_faithfulness": 44.8,
         "rubric_adaptive": 50.3,
+        "text_reference_evaluation": 33.2,
         "text_rendering": 54.4,
         "visual_reference_evaluation": 41.9
       },
@@ -1989,6 +2105,7 @@
         "physical_plausibility": 312,
         "prompt_faithfulness": 386,
         "rubric_adaptive": 387,
+        "text_reference_evaluation": 203,
         "text_rendering": 203,
         "visual_reference_evaluation": 332
       },
@@ -2000,6 +2117,7 @@
         "physical_plausibility": 58.8,
         "prompt_faithfulness": 41.9,
         "rubric_adaptive": 48.3,
+        "text_reference_evaluation": 28.5,
         "text_rendering": 43.2,
         "visual_reference_evaluation": 40.8
       },
@@ -2023,6 +2141,7 @@
         "physical_plausibility": 314,
         "prompt_faithfulness": 387,
         "rubric_adaptive": 387,
+        "text_reference_evaluation": 221,
         "text_rendering": 214,
         "visual_reference_evaluation": 333
       },
@@ -2034,6 +2153,7 @@
         "physical_plausibility": 59.5,
         "prompt_faithfulness": 38.4,
         "rubric_adaptive": 45.0,
+        "text_reference_evaluation": 23.0,
         "text_rendering": 35.0,
         "visual_reference_evaluation": 37.4
       },
@@ -2057,6 +2177,7 @@
         "physical_plausibility": 350,
         "prompt_faithfulness": 387,
         "rubric_adaptive": 387,
+        "text_reference_evaluation": 214,
         "text_rendering": 199,
         "visual_reference_evaluation": 331
       },
@@ -2068,6 +2189,7 @@
         "physical_plausibility": 44.8,
         "prompt_faithfulness": 21.9,
         "rubric_adaptive": 29.0,
+        "text_reference_evaluation": 6.9,
         "text_rendering": 12.8,
         "visual_reference_evaluation": 21.6
       },
@@ -2091,6 +2213,7 @@
         "physical_plausibility": 305,
         "prompt_faithfulness": 387,
         "rubric_adaptive": 387,
+        "text_reference_evaluation": 231,
         "text_rendering": 222,
         "visual_reference_evaluation": 332
       },
@@ -2102,6 +2225,7 @@
         "physical_plausibility": 48.5,
         "prompt_faithfulness": 20.4,
         "rubric_adaptive": 27.7,
+        "text_reference_evaluation": 7.2,
         "text_rendering": 11.0,
         "visual_reference_evaluation": 20.6
       },
@@ -2125,6 +2249,7 @@
         "physical_plausibility": 301,
         "prompt_faithfulness": 387,
         "rubric_adaptive": 387,
+        "text_reference_evaluation": 235,
         "text_rendering": 210,
         "visual_reference_evaluation": 331
       },
@@ -2136,6 +2261,7 @@
         "physical_plausibility": 47.3,
         "prompt_faithfulness": 14.7,
         "rubric_adaptive": 21.7,
+        "text_reference_evaluation": 3.0,
         "text_rendering": 6.0,
         "visual_reference_evaluation": 14.3
       },
@@ -2159,6 +2285,7 @@
         "physical_plausibility": 333,
         "prompt_faithfulness": 387,
         "rubric_adaptive": 387,
+        "text_reference_evaluation": 215,
         "text_rendering": 192,
         "visual_reference_evaluation": 331
       },
@@ -2170,6 +2297,7 @@
         "physical_plausibility": 36.2,
         "prompt_faithfulness": 15.5,
         "rubric_adaptive": 21.2,
+        "text_reference_evaluation": 2.9,
         "text_rendering": 3.6,
         "visual_reference_evaluation": 15.7
       },
@@ -2193,6 +2321,7 @@
         "physical_plausibility": 340,
         "prompt_faithfulness": 387,
         "rubric_adaptive": 387,
+        "text_reference_evaluation": 266,
         "text_rendering": 247,
         "visual_reference_evaluation": 349
       },
@@ -2204,6 +2333,7 @@
         "physical_plausibility": 33.5,
         "prompt_faithfulness": 11.2,
         "rubric_adaptive": 15.7,
+        "text_reference_evaluation": 2.6,
         "text_rendering": 2.8,
         "visual_reference_evaluation": 11.7
       },

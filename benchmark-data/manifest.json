@@ -88,7 +88,6 @@
   },
   "schema_version": "1.0.0",
   "scoring": {
-    "excluded_public_component": "text_reference_evaluation",
     "missing_policy_default": "zero_fill",
     "missing_policy_exceptions": [
       "qwen_image_2_pro",
@@ -117,6 +116,8 @@
       "physical_plausibility",
       "visual_reference_evaluation"
     ],
+    "overall_9_excluded_component": "text_reference_evaluation",
+    "primary_metric": "overall_10",
     "public_rounding_decimals": 1,
     "scale_public": [
       0,

@@ -16,9 +16,10 @@ const components=[
   ['composition_and_aesthetics','Composition & Aesthetics'],
   ['physical_plausibility','Physical Plausibility'],
   ['visual_reference_evaluation','Visual Reference'],
+  ['text_reference_evaluation','Text Reference'],
 ];
 let manifest,strata,domains,failureModes,rows=[];
-let sortKey='overall_9',sortAsc=false;
+let sortKey='overall_10',sortAsc=false;
 
 const esc=(value)=>String(value??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;');
 const score=(value)=>value==null?'<span class="na">N/A</span>':Number(value).toFixed(1);
@@ -27,10 +28,10 @@ function byModel(items){return Object.fromEntries(items.map(item=>[item.model_id
 
 function breakdownRows(groups){
   return strata.All.map(base=>{
-    const row={...base,All:base.overall_9,groupCoverage:{}};
+    const row={...base,All:base.overall_10,groupCoverage:{}};
     Object.entries(groups).forEach(([tag,items])=>{
       const item=byModel(items)[base.model_id];
-      row[tag]=item?.overall_9??null;
+      row[tag]=item?.overall_10??null;
       row.groupCoverage[tag]=item?`${item.n_scored}/${item.n_total}`:'0/0';
     });
     return row;
@@ -50,7 +51,7 @@ function header(key,label,className=''){return `<th class="${className}" data-so
 function renderHeaders(){
   let html='<th class="rank">#</th>'+header('display_name','Model','model-col');
   if(boardSelect.value==='components'){
-    html+=header('overall_9','Overall-9','primary-score');
+    html+=header('overall_10','Overall-10','primary-score');
     components.forEach(([key,label])=>html+=header(`component:${key}`,label));
     html+=header('coverage','Coverage');
   }else{
@@ -69,7 +70,7 @@ function modelCell(row){const cls=row.type==='Open'?'open':'commercial';return `
 function componentRow(row,index){
   const componentCells=components.map(([key])=>`<td>${score(row.components[key])}</td>`).join('');
   const low=row.coverage<.95?'coverage-low':'';
-  return `<tr><td class="rank">${index+1}</td>${modelCell(row)}<td class="primary-score">${score(row.overall_9)}</td>${componentCells}<td class="${low}" title="Missing policy: ${esc(row.missing_policy)}">${(row.coverage*100).toFixed(1)}%<span class="coverage-count">${row.n_scored}/${row.n_total}</span></td></tr>`;
+  return `<tr><td class="rank">${index+1}</td>${modelCell(row)}<td class="primary-score">${score(row.overall_10)}</td>${componentCells}<td class="${low}" title="Missing policy: ${esc(row.missing_policy)}">${(row.coverage*100).toFixed(1)}%<span class="coverage-count">${row.n_scored}/${row.n_total}</span></td></tr>`;
 }
 function breakdownRow(row,index,groups){const cells=Object.keys(groups).sort().map(tag=>`<td title="Coverage ${esc(row.groupCoverage[tag])}">${score(row[tag])}</td>`).join('');return `<tr><td class="rank">${index+1}</td>${modelCell(row)}<td class="primary-score">${score(row.All)}</td>${cells}</tr>`}
 
@@ -100,8 +101,8 @@ async function init(){
       getJson('benchmark-data/leaderboard_by_domain.json'),getJson('benchmark-data/leaderboard_by_failure_mode.json'),
     ]);
     searchInput.addEventListener('input',update);
-    boardSelect.addEventListener('change',()=>{stratumControl.hidden=boardSelect.value!=='components';sortKey=boardSelect.value==='components'?'overall_9':'All';sortAsc=false;update()});
-    stratumSelect.addEventListener('change',()=>{sortKey='overall_9';sortAsc=false;update()});
+    boardSelect.addEventListener('change',()=>{stratumControl.hidden=boardSelect.value!=='components';sortKey=boardSelect.value==='components'?'overall_10':'All';sortAsc=false;update()});
+    stratumSelect.addEventListener('change',()=>{sortKey='overall_10';sortAsc=false;update()});
     update();
   }catch(error){console.error(error);tableBody.innerHTML='<tr><td class="message-cell" colspan="100">Unable to load benchmark data.</td></tr>';statsSummary.textContent='Data unavailable'}
 }

@@ -299,6 +299,7 @@ body.modal-open{overflow:hidden}
     <a class="badge-link hf" href="https://huggingface.co/datasets/JasperHaozhe/SearchGen-20K" target="_blank" rel="noopener">&#129303; SearchGen-20K</a>
     <a class="badge-link hf" href="https://huggingface.co/datasets/JasperHaozhe/SearchGen-Corpus-1M" target="_blank" rel="noopener">&#129303; SearchGen-Corpus-1M</a>
     <a class="badge-link hf" href="https://huggingface.co/datasets/JasperHaozhe/SearchGen-Bench" target="_blank" rel="noopener">&#129303; SearchGen-Bench</a>
+    <a class="badge-link hf" href="https://huggingface.co/spaces/CongWei1230/SearchGen-Bench" target="_blank" rel="noopener">&#129303; LeaderBoard</a>
   </div>
   <!-- benchmark, live interactive demo, and animated static walkthrough -->
   <div class="badges" style="margin-top:8px">
@@ -387,7 +388,7 @@ body.modal-open{overflow:hidden}
   </div>
 
   <p>On prompts that need only what a model already learned, open and commercial generators land in the same band (67–75 out of 100). Turn to prompts that need live world knowledge, and the field splits: open generators crater to <strong>21–28</strong>, while commercial systems with built-in search barely move. Existing benchmarks test rendering inside known concepts, so they never see this gap at all.</p>
-  <p>To surface it, we built <strong>SearchGen-Bench</strong>: 751 test prompts scored by a 9-component judge on a 0–100 scale, with separate dimensions for <span class="em">knowledge</span> and for <span class="em">rendering</span>. The split is the whole point. When Flux.2-Klein-9B scores 24.2 on knowledge checklists but stays high on image quality, the diagnosis is unambiguous — it can draw, it just doesn't know.</p>
+  <p>To surface it, we built <strong>SearchGen-Bench</strong>: 751 test prompts scored by a canonical 10-component judge on a 0–100 scale, with separate dimensions for <span class="em">knowledge</span> and for <span class="em">rendering</span>. The split is the whole point. When Flux.2-Klein-9B scores 24.2 on knowledge checklists but stays high on image quality, the diagnosis is unambiguous — it can draw, it just doesn't know.</p>
 
   <figure class="fig">
     <img src="assets/figures/b1.png" alt="Per-generator quality on NoSearch vs Search-Intensive strata across twelve generators.">
@@ -401,7 +402,7 @@ body.modal-open{overflow:hidden}
 
   <div class="benchmark-head">
     <h3>Full benchmark breakdown</h3>
-    <p>Scores are on a 0–100 scale; higher is better. Scroll horizontally to inspect all nine judge components.</p>
+    <p>Scores are on a 0–100 scale; higher is better. Overall uses the canonical ten-component protocol; the table shows its nine most broadly applicable diagnostic components.</p>
   </div>
   <div class="tbl-wrap benchmark-wrap" role="region" aria-label="Full SearchGen-Bench results" tabindex="0">
     <table class="results benchmark">

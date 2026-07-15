@@ -8,6 +8,7 @@
       "physical_plausibility": 558,
       "prompt_faithfulness": 751,
       "rubric_adaptive": 751,
+      "text_reference_evaluation": 486,
       "text_rendering": 544,
       "visual_reference_evaluation": 599
     },
@@ -19,6 +20,7 @@
       "physical_plausibility": 76.7,
       "prompt_faithfulness": 69.4,
       "rubric_adaptive": 70.8,
+      "text_reference_evaluation": 54.6,
       "text_rendering": 75.4,
       "visual_reference_evaluation": 65.7
     },
@@ -42,6 +44,7 @@
       "physical_plausibility": 627,
       "prompt_faithfulness": 751,
       "rubric_adaptive": 751,
+      "text_reference_evaluation": 480,
       "text_rendering": 500,
       "visual_reference_evaluation": 598
     },
@@ -53,6 +56,7 @@
       "physical_plausibility": 78.4,
       "prompt_faithfulness": 62.3,
       "rubric_adaptive": 65.1,
+      "text_reference_evaluation": 47.4,
       "text_rendering": 66.3,
       "visual_reference_evaluation": 59.8
     },
@@ -76,6 +80,7 @@
       "physical_plausibility": 539,
       "prompt_faithfulness": 717,
       "rubric_adaptive": 717,
+      "text_reference_evaluation": 487,
       "text_rendering": 517,
       "visual_reference_evaluation": 582
     },
@@ -87,6 +92,7 @@
       "physical_plausibility": 73.1,
       "prompt_faithfulness": 62.0,
       "rubric_adaptive": 64.1,
+      "text_reference_evaluation": 46.0,
       "text_rendering": 63.4,
       "visual_reference_evaluation": 58.9
     },
@@ -110,6 +116,7 @@
       "physical_plausibility": 544,
       "prompt_faithfulness": 742,
       "rubric_adaptive": 742,
+      "text_reference_evaluation": 473,
       "text_rendering": 471,
       "visual_reference_evaluation": 606
     },
@@ -121,6 +128,7 @@
       "physical_plausibility": 71.7,
       "prompt_faithfulness": 50.0,
       "rubric_adaptive": 54.2,
+      "text_reference_evaluation": 35.7,
       "text_rendering": 56.7,
       "visual_reference_evaluation": 46.2
     },
@@ -144,6 +152,7 @@
       "physical_plausibility": 561,
       "prompt_faithfulness": 751,
       "rubric_adaptive": 751,
+      "text_reference_evaluation": 492,
       "text_rendering": 467,
       "visual_reference_evaluation": 617
     },
@@ -155,6 +164,7 @@
       "physical_plausibility": 67.9,
       "prompt_faithfulness": 47.3,
       "rubric_adaptive": 51.9,
+      "text_reference_evaluation": 33.1,
       "text_rendering": 54.0,
       "visual_reference_evaluation": 43.2
     },
@@ -178,6 +188,7 @@
       "physical_plausibility": 593,
       "prompt_faithfulness": 751,
       "rubric_adaptive": 751,
+      "text_reference_evaluation": 486,
       "text_rendering": 518,
       "visual_reference_evaluation": 615
     },
@@ -189,6 +200,7 @@
       "physical_plausibility": 64.0,
       "prompt_faithfulness": 45.9,
       "rubric_adaptive": 50.2,
+      "text_reference_evaluation": 28.2,
       "text_rendering": 48.9,
       "visual_reference_evaluation": 39.9
     },
@@ -212,6 +224,7 @@
       "physical_plausibility": 604,
       "prompt_faithfulness": 750,
       "rubric_adaptive": 751,
+      "text_reference_evaluation": 501,
       "text_rendering": 483,
       "visual_reference_evaluation": 596
     },
@@ -223,6 +236,7 @@
       "physical_plausibility": 65.6,
       "prompt_faithfulness": 41.6,
       "rubric_adaptive": 47.2,
+      "text_reference_evaluation": 23.4,
       "text_rendering": 38.1,
       "visual_reference_evaluation": 38.4
     },
@@ -246,6 +260,7 @@
       "physical_plausibility": 594,
       "prompt_faithfulness": 751,
       "rubric_adaptive": 751,
+      "text_reference_evaluation": 522,
       "text_rendering": 498,
       "visual_reference_evaluation": 597
     },
@@ -257,6 +272,7 @@
       "physical_plausibility": 66.0,
       "prompt_faithfulness": 39.1,
       "rubric_adaptive": 44.0,
+      "text_reference_evaluation": 17.8,
       "text_rendering": 28.9,
       "visual_reference_evaluation": 36.4
     },
@@ -280,6 +296,7 @@
       "physical_plausibility": 676,
       "prompt_faithfulness": 751,
       "rubric_adaptive": 751,
+      "text_reference_evaluation": 516,
       "text_rendering": 475,
       "visual_reference_evaluation": 595
     },
@@ -291,6 +308,7 @@
       "physical_plausibility": 48.6,
       "prompt_faithfulness": 24.5,
       "rubric_adaptive": 30.5,
+      "text_reference_evaluation": 7.7,
       "text_rendering": 11.3,
       "visual_reference_evaluation": 23.8
     },
@@ -314,6 +332,7 @@
       "physical_plausibility": 599,
       "prompt_faithfulness": 751,
       "rubric_adaptive": 751,
+      "text_reference_evaluation": 536,
       "text_rendering": 501,
       "visual_reference_evaluation": 596
     },
@@ -325,6 +344,7 @@
       "physical_plausibility": 51.5,
       "prompt_faithfulness": 21.7,
       "rubric_adaptive": 27.9,
+      "text_reference_evaluation": 6.6,
       "text_rendering": 8.4,
       "visual_reference_evaluation": 21.1
     },
@@ -348,6 +368,7 @@
       "physical_plausibility": 597,
       "prompt_faithfulness": 750,
       "rubric_adaptive": 751,
+      "text_reference_evaluation": 537,
       "text_rendering": 483,
       "visual_reference_evaluation": 594
     },
@@ -359,6 +380,7 @@
       "physical_plausibility": 49.0,
       "prompt_faithfulness": 16.0,
       "rubric_adaptive": 22.9,
+      "text_reference_evaluation": 3.6,
       "text_rendering": 4.7,
       "visual_reference_evaluation": 15.1
     },
@@ -382,6 +404,7 @@
       "physical_plausibility": 631,
       "prompt_faithfulness": 751,
       "rubric_adaptive": 751,
+      "text_reference_evaluation": 521,
       "text_rendering": 465,
       "visual_reference_evaluation": 595
     },
@@ -393,6 +416,7 @@
       "physical_plausibility": 40.4,
       "prompt_faithfulness": 16.7,
       "rubric_adaptive": 21.8,
+      "text_reference_evaluation": 3.5,
       "text_rendering": 3.5,
       "visual_reference_evaluation": 16.8
     },
@@ -416,6 +440,7 @@
       "physical_plausibility": 656,
       "prompt_faithfulness": 751,
       "rubric_adaptive": 751,
+      "text_reference_evaluation": 630,
       "text_rendering": 596,
       "visual_reference_evaluation": 688
     },
@@ -427,6 +452,7 @@
       "physical_plausibility": 20.0,
       "prompt_faithfulness": 6.0,
       "rubric_adaptive": 8.7,
+      "text_reference_evaluation": 1.2,
       "text_rendering": 1.2,
       "visual_reference_evaluation": 6.0
     },
