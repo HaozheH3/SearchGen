@@ -1,0 +1,132 @@
+{
+  "artifacts": [
+    "prompt_scores.jsonl",
+    "leaderboard_overall.json",
+    "leaderboard_by_stratum.json",
+    "leaderboard_by_domain.json",
+    "leaderboard_by_failure_mode.json"
+  ],
+  "benchmark": "SearchGen-Bench",
+  "dataset": {
+    "filename": "eval_datasets_548_finalized_v1.jsonl",
+    "n_prompts": 751,
+    "sha256": "2a80f209304421056b78d1fa2e8c0b24b64c33735cb18eee0044f17df30e13e7"
+  },
+  "generated_at": "2026-07-16T00:00:00+00:00",
+  "models": {
+    "bagel": {
+      "display_name": "Bagel",
+      "source_id": "bagel",
+      "type": "Open"
+    },
+    "gemini2d5flash": {
+      "display_name": "Nano Banana",
+      "source_id": "gemini2d5flash",
+      "type": "Commercial"
+    },
+    "gemini3pro": {
+      "display_name": "Nano Banana Pro",
+      "source_id": "gemini3pro",
+      "type": "Commercial"
+    },
+    "gpt_image": {
+      "display_name": "GPT-Image-2",
+      "source_id": "gpt_image",
+      "type": "Commercial"
+    },
+    "imagen3fast": {
+      "display_name": "Imagen3-Fast",
+      "source_id": "imagen3fast",
+      "type": "Commercial"
+    },
+    "jimeng4d0": {
+      "display_name": "SeedDream-4.0",
+      "source_id": "jimeng4d0",
+      "type": "Commercial"
+    },
+    "klein": {
+      "display_name": "Flux.2-Klein-9B",
+      "source_id": "klein",
+      "type": "Open"
+    },
+    "klein4b": {
+      "display_name": "Flux.2-Klein-4B",
+      "source_id": "klein4b",
+      "type": "Open"
+    },
+    "qwen1": {
+      "display_name": "Qwen-Image",
+      "source_id": "qwen1",
+      "type": "Open"
+    },
+    "qwen2": {
+      "display_name": "Qwen-Image-2",
+      "source_id": "qwen-image-2.0",
+      "type": "Commercial"
+    },
+    "qwen_image_2_pro": {
+      "display_name": "Qwen-Image-2-Pro",
+      "source_id": "qwen_image_2_pro",
+      "type": "Commercial"
+    },
+    "seedream4d5": {
+      "display_name": "SeedDream-4.5",
+      "source_id": "seedream4d5",
+      "type": "Commercial"
+    },
+    "xai_image": {
+      "display_name": "Grok-Imagine-Image",
+      "source_id": "xai_image",
+      "type": "Commercial"
+    }
+  },
+  "partition": {
+    "NoSearch": 100,
+    "SearchIntensive": 651,
+    "TextualSearch": 264,
+    "VisualSearch": 387
+  },
+  "schema_version": "1.0.0",
+  "scoring": {
+    "excluded_public_component": "text_reference_evaluation",
+    "missing_policy_default": "zero_fill",
+    "missing_policy_exceptions": [
+      "qwen_image_2_pro",
+      "xai_image"
+    ],
+    "overall_10_components": [
+      "checklist",
+      "rubric_adaptive",
+      "prompt_faithfulness",
+      "image_quality",
+      "text_rendering",
+      "ai_naturalness",
+      "composition_and_aesthetics",
+      "physical_plausibility",
+      "visual_reference_evaluation",
+      "text_reference_evaluation"
+    ],
+    "overall_9_components": [
+      "checklist",
+      "rubric_adaptive",
+      "prompt_faithfulness",
+      "image_quality",
+      "text_rendering",
+      "ai_naturalness",
+      "composition_and_aesthetics",
+      "physical_plausibility",
+      "visual_reference_evaluation"
+    ],
+    "public_rounding_decimals": 1,
+    "scale_public": [
+      0,
+      100
+    ],
+    "scale_raw": [
+      0,
+      3
+    ],
+    "source": "augmented_parsed_result_ffjudge_pp.json"
+  },
+  "source_commit": null
+}

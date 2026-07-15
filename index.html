@@ -32,6 +32,8 @@ code,pre,.mono{font-family:'JetBrains Mono',monospace}
 .demo-fab svg{width:20px;height:20px;display:block}
 .demo-fab.live{background:linear-gradient(135deg,#ff3d71,#ff8a00);box-shadow:0 8px 26px rgba(255,76,65,.42);font-weight:800;animation:live-glow 2.2s ease-in-out infinite}
 .demo-fab.live:hover{box-shadow:0 12px 34px rgba(255,76,65,.55)}
+.demo-fab.benchmark{background:linear-gradient(135deg,var(--accent),var(--purple));box-shadow:0 7px 24px rgba(37,99,235,.3)}
+.demo-fab.benchmark:hover{box-shadow:0 11px 30px rgba(37,99,235,.42)}
 .live-dot{width:9px;height:9px;border-radius:50%;background:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.22)}
 @keyframes live-glow{0%,100%{box-shadow:0 8px 26px rgba(255,76,65,.35)}50%{box-shadow:0 10px 34px rgba(255,76,65,.58)}}
 
@@ -243,6 +245,10 @@ body.modal-open{overflow:hidden}
 
 <!-- Sticky demo launchers (top-right) -->
 <div class="demo-launchers">
+  <a class="demo-fab benchmark" href="benchmark.html" aria-label="Open the SearchGen-Bench leaderboard">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19V10m7 9V5m7 14v-7" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M3 19.5h18" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <span class="lbl">Benchmark</span>
+  </a>
   <a class="demo-fab live" href="http://101.47.155.111:8880/studio" target="_blank" rel="noopener" aria-label="Open the live interactive demo">
     <span class="live-dot" aria-hidden="true"></span>
     <span class="lbl">Live Interactive Demo</span>
