@@ -25,8 +25,8 @@ code,pre,.mono{font-family:'JetBrains Mono',monospace}
 /* scroll progress */
 .progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--accent),var(--purple));z-index:200;transition:width .15s linear}
 
-/* sticky demo launchers (top-right) */
-.demo-launchers{position:fixed;top:16px;right:16px;z-index:150;display:flex;flex-direction:column;align-items:flex-end;gap:9px}
+/* sticky project launchers (top-right) */
+.demo-launchers{position:fixed;top:16px;right:16px;z-index:150;display:flex;flex-direction:row;align-items:center;justify-content:flex-end;gap:9px}
 .demo-fab{display:inline-flex;align-items:center;gap:9px;padding:9px 16px 9px 12px;border-radius:100px;background:linear-gradient(135deg,var(--accent),var(--purple));color:#fff;font-size:14px;font-weight:700;border:none;cursor:pointer;box-shadow:0 6px 20px rgba(80,40,200,.28);transition:transform .2s ease,box-shadow .2s ease}
 .demo-fab:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(80,40,200,.36);text-decoration:none;color:#fff}
 .demo-fab svg{width:20px;height:20px;display:block}
@@ -58,6 +58,8 @@ header.hero{text-align:center;padding:76px 24px 40px;max-width:940px;margin:0 au
 .badge-link:hover{opacity:.85;text-decoration:none;color:#fff}
 .badge-link.alt{background:var(--surface);color:var(--text);border:1px solid var(--border)}
 .badge-link.alt:hover{color:var(--text);background:#eee}
+.badge-link.hf{background:#ffd21e;color:#111;border-color:#e6b800;box-shadow:0 3px 10px rgba(255,183,0,.2)}
+.badge-link.hf:hover{background:#ffbf00;color:#111;opacity:1}
 .badge-link .ic{font-size:15px}
 /* hero demo launcher badge (mirrored) */
 .badge-demo{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:100px;background:linear-gradient(135deg,var(--accent),var(--purple));color:#fff;font-size:14px;font-weight:700;border:none;cursor:pointer}
@@ -65,6 +67,8 @@ header.hero{text-align:center;padding:76px 24px 40px;max-width:940px;margin:0 au
 .badge-demo svg{width:18px;height:18px}
 .badge-live{display:inline-flex;align-items:center;gap:9px;padding:12px 22px;border-radius:100px;background:linear-gradient(135deg,#ff3d71,#ff8a00);color:#fff;font-size:15px;font-weight:800;border:2px solid rgba(255,255,255,.8);box-shadow:0 8px 28px rgba(255,76,65,.35);transition:transform .2s ease,box-shadow .2s ease}
 .badge-live:hover{transform:translateY(-2px);box-shadow:0 12px 34px rgba(255,76,65,.48);text-decoration:none;color:#fff}
+.badge-benchmark{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:100px;background:linear-gradient(135deg,var(--accent),var(--purple));color:#fff;font-size:14px;font-weight:800;border:2px solid rgba(255,255,255,.8);box-shadow:0 7px 24px rgba(37,99,235,.3);transition:transform .2s ease,box-shadow .2s ease}
+.badge-benchmark:hover{transform:translateY(-2px);box-shadow:0 11px 30px rgba(37,99,235,.42);text-decoration:none;color:#fff}
 .support-callout{max-width:720px;margin:22px auto 0;padding:15px 18px;border:1px solid #fed7aa;border-radius:16px;background:linear-gradient(135deg,#fff7ed,#fff1f2);box-shadow:0 5px 20px rgba(234,88,12,.08);text-align:center}
 .support-callout strong{display:block;font-size:14px;margin-bottom:9px;color:#9a3412}
 .support-links{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
@@ -231,6 +235,7 @@ body.modal-open{overflow:hidden}
   .benchmark-head p{text-align:left;max-width:none;margin-top:5px}
   .demo-fab span.lbl{display:none}
   .demo-fab{padding:10px}
+  .demo-launchers{gap:6px}
   .modal{padding:0}
   .modal .frame-wrap{height:100vh;border-radius:0;width:100%}
 }
@@ -243,19 +248,19 @@ body.modal-open{overflow:hidden}
 <body>
 <div class="progress" id="progress"></div>
 
-<!-- Sticky demo launchers (top-right) -->
+<!-- Sticky project launchers (top-right) -->
 <div class="demo-launchers">
   <a class="demo-fab benchmark" href="benchmark.html" aria-label="Open the SearchGen-Bench leaderboard">
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19V10m7 9V5m7 14v-7" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M3 19.5h18" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
-    <span class="lbl">Benchmark</span>
+    <span class="lbl">Top Image Generator Benchmark</span>
   </a>
   <a class="demo-fab live" href="http://101.47.155.111:8880/studio" target="_blank" rel="noopener" aria-label="Open the live interactive demo">
     <span class="live-dot" aria-hidden="true"></span>
     <span class="lbl">Live Interactive Demo</span>
   </a>
-  <button class="demo-fab" id="demoFabTop" aria-label="Open demo">
+  <button class="demo-fab" id="demoFabTop" aria-label="Open static demo">
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="rgba(255,255,255,.18)" stroke="#fff" stroke-width="1.6"/><path d="M10 8.5l6 3.5-6 3.5z" fill="#fff"/></svg>
-    <span class="lbl">Demo</span>
+    <span class="lbl">Static Demo</span>
   </button>
 </div>
 
@@ -291,18 +296,19 @@ body.modal-open{overflow:hidden}
     <a class="badge-link" href="https://github.com/HaozheH3/SearchGen" target="_blank" rel="noopener"><span class="ic">&#128187;</span> GitHub</a>
   </div>
   <div class="badges">
-    <a class="badge-link alt" href="https://huggingface.co/datasets/JasperHaozhe/SearchGen-20K" target="_blank" rel="noopener">&#129303; SearchGen-20K</a>
-    <a class="badge-link alt" href="https://huggingface.co/datasets/JasperHaozhe/SearchGen-Corpus-1M" target="_blank" rel="noopener">&#129303; SearchGen-Corpus-1M</a>
-    <a class="badge-link alt" href="https://huggingface.co/datasets/JasperHaozhe/SearchGen-Bench" target="_blank" rel="noopener">&#129303; SearchGen-Bench</a>
+    <a class="badge-link hf" href="https://huggingface.co/datasets/JasperHaozhe/SearchGen-20K" target="_blank" rel="noopener">&#129303; SearchGen-20K</a>
+    <a class="badge-link hf" href="https://huggingface.co/datasets/JasperHaozhe/SearchGen-Corpus-1M" target="_blank" rel="noopener">&#129303; SearchGen-Corpus-1M</a>
+    <a class="badge-link hf" href="https://huggingface.co/datasets/JasperHaozhe/SearchGen-Bench" target="_blank" rel="noopener">&#129303; SearchGen-Bench</a>
   </div>
-  <!-- live interactive demo, followed by the animated walkthrough -->
+  <!-- benchmark, live interactive demo, and animated static walkthrough -->
   <div class="badges" style="margin-top:8px">
+    <a class="badge-benchmark" href="benchmark.html">
+      <span aria-hidden="true">▥</span> Top Image Generator Benchmark
+    </a>
     <a class="badge-live" href="http://101.47.155.111:8880/studio" target="_blank" rel="noopener"><span class="live-dot" aria-hidden="true"></span> Live Interactive Demo <span aria-hidden="true">↗</span></a>
-  </div>
-  <div class="badges">
     <button class="badge-demo" id="demoFabHero">
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="rgba(255,255,255,.18)" stroke="#fff" stroke-width="1.6"/><path d="M10 8.5l6 3.5-6 3.5z" fill="#fff"/></svg>
-      Watch the Demo
+      Static Demo
     </button>
     <noscript><a class="badge-link alt" href="demo.html" target="_blank" rel="noopener">▶ Open demo (new tab)</a></noscript>
   </div>
