@@ -26,7 +26,7 @@ code,pre,.mono{font-family:'JetBrains Mono',monospace}
 .progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--accent),var(--purple));z-index:200;transition:width .15s linear}
 
 /* sticky project launchers (top-right) */
-.demo-launchers{position:fixed;top:16px;right:16px;z-index:150;display:flex;flex-direction:row;align-items:center;justify-content:flex-end;gap:9px}
+.demo-launchers{position:fixed;top:16px;right:16px;z-index:150;display:flex;flex-direction:row;flex-wrap:nowrap;align-items:center;justify-content:flex-end;gap:9px;max-width:calc(100vw - 32px);white-space:nowrap;overflow-x:auto}
 .demo-fab{display:inline-flex;align-items:center;gap:9px;padding:9px 16px 9px 12px;border-radius:100px;background:linear-gradient(135deg,var(--accent),var(--purple));color:#fff;font-size:14px;font-weight:700;border:none;cursor:pointer;box-shadow:0 6px 20px rgba(80,40,200,.28);transition:transform .2s ease,box-shadow .2s ease}
 .demo-fab:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(80,40,200,.36);text-decoration:none;color:#fff}
 .demo-fab svg{width:20px;height:20px;display:block}
@@ -250,9 +250,9 @@ body.modal-open{overflow:hidden}
 
 <!-- Sticky project launchers (top-right) -->
 <div class="demo-launchers">
-  <a class="demo-fab benchmark" href="benchmark.html" aria-label="Open the SearchGen-Bench leaderboard">
+  <a class="demo-fab benchmark" href="benchmark.html" aria-label="Check top image generators">
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 19V10m7 9V5m7 14v-7" stroke="#fff" stroke-width="2" stroke-linecap="round"/><path d="M3 19.5h18" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
-    <span class="lbl">Top Image Generator Benchmark</span>
+    <span class="lbl">Check Top Image Generators</span>
   </a>
   <a class="demo-fab live" href="http://101.47.155.111:8880/studio" target="_blank" rel="noopener" aria-label="Open the live interactive demo">
     <span class="live-dot" aria-hidden="true"></span>
@@ -303,7 +303,7 @@ body.modal-open{overflow:hidden}
   <!-- benchmark, live interactive demo, and animated static walkthrough -->
   <div class="badges" style="margin-top:8px">
     <a class="badge-benchmark" href="benchmark.html">
-      <span aria-hidden="true">▥</span> Top Image Generator Benchmark
+      <span aria-hidden="true">▥</span> SearchGen-Bench
     </a>
     <a class="badge-live" href="http://101.47.155.111:8880/studio" target="_blank" rel="noopener"><span class="live-dot" aria-hidden="true"></span> Live Interactive Demo <span aria-hidden="true">↗</span></a>
     <button class="badge-demo" id="demoFabHero">
