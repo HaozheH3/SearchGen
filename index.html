@@ -378,8 +378,13 @@ body.modal-open{overflow:hidden}
   <p>To surface it, we built <strong>SearchGen-Bench</strong>: 751 test prompts scored by a 9-component judge on a 0–100 scale, with separate dimensions for <span class="em">knowledge</span> and for <span class="em">rendering</span>. The split is the whole point. When Flux.2-Klein-9B scores 24.2 on knowledge checklists but stays high on image quality, the diagnosis is unambiguous — it can draw, it just doesn't know.</p>
 
   <figure class="fig">
-    <img src="assets/figures/b1.png" alt="Per-generator quality on NoSearch vs Search-Intensive strata across nine generators.">
+    <img src="assets/figures/b1.png" alt="Per-generator quality on NoSearch vs Search-Intensive strata across twelve generators.">
     <figcaption><b>Generators score well on prompts they can answer from memory (gray).</b> On prompts that require external knowledge (orange), every open generator collapses — up to a 40-point drop — while commercial systems with built-in search hold. The bottleneck is missing knowledge, not rendering skill.</figcaption>
+  </figure>
+
+  <figure class="fig">
+    <img src="assets/figures/searchgenbench_arena_style.png" alt="Overall SearchGen-Bench ranking of twelve image generators on the full 751-prompt evaluation.">
+    <figcaption><b>Overall SearchGen-Bench ranking.</b> GPT-Image-2 leads the full 751-prompt evaluation, followed by Nano Banana Pro and Grok-Imagine-Image. Scores use the canonical 10-component physical-plausibility judge.</figcaption>
   </figure>
 
   <div class="benchmark-head">
@@ -405,25 +410,30 @@ body.modal-open{overflow:hidden}
       </thead>
       <tbody>
         <tr class="stratum memory"><th colspan="11" scope="rowgroup">NoSearch <span class="count">parametric knowledge is sufficient</span></th></tr>
-        <tr><td class="model">Bagel</td><td class="overall">49.3</td><td>52.3</td><td>49.1</td><td>39.2</td><td>58.0</td><td>18.4</td><td>48.3</td><td>65.3</td><td>60.4</td><td>34.8</td></tr>
-        <tr><td class="model">Flux.2-Klein-4B</td><td class="overall">51.0</td><td>54.7</td><td>51.8</td><td>39.3</td><td>61.3</td><td>13.2</td><td>49.5</td><td>67.2</td><td>63.5</td><td>32.6</td></tr>
-        <tr><td class="model">Flux.2-Klein-9B</td><td class="overall">57.8</td><td>63.8</td><td>59.8</td><td>51.3</td><td>63.8</td><td>31.3</td><td>52.5</td><td>72.3</td><td>66.7</td><td>43.7</td></tr>
+        <tr><td class="model">Bagel</td><td class="overall">14.0</td><td>14.3</td><td>13.2</td><td>10.7</td><td>16.5</td><td>1.0</td><td>14.0</td><td>19.3</td><td>17.9</td><td>9.4</td></tr>
+        <tr><td class="model">Flux.2-Klein-9B</td><td class="overall">42.1</td><td>47.2</td><td>43.2</td><td>37.2</td><td>46.7</td><td>16.0</td><td>38.3</td><td>52.3</td><td>48.5</td><td>29.8</td></tr>
         <tr><td class="model">Qwen-Image</td><td class="overall">67.4</td><td>74.8</td><td>70.8</td><td>62.8</td><td>68.3</td><td>63.0</td><td>61.0</td><td>76.8</td><td>73.8</td><td>56.7</td></tr>
-        <tr><td class="model">Qwen-Image-2</td><td class="overall">70.7</td><td>78.7</td><td>73.8</td><td>68.4</td><td>70.2</td><td>71.7</td><td>60.8</td><td>80.3</td><td>75.6</td><td>60.0</td></tr>
+        <tr><td class="model">Qwen-Image-2</td><td class="overall">63.4</td><td>75.4</td><td>73.2</td><td>66.3</td><td>69.3</td><td>17.5</td><td>61.2</td><td>80.8</td><td>72.0</td><td>59.4</td></tr>
+        <tr><td class="model">Qwen-Image-2-Pro</td><td class="overall">68.0</td><td>75.5</td><td>69.9</td><td>63.2</td><td>70.0</td><td>76.9</td><td>58.5</td><td>77.2</td><td>71.5</td><td>60.1</td></tr>
         <tr><td class="model">SeedDream-4.0</td><td class="overall">67.9</td><td>74.9</td><td>70.6</td><td>61.7</td><td>69.5</td><td>71.1</td><td>59.7</td><td>80.3</td><td>73.9</td><td>56.7</td></tr>
+        <tr><td class="model">SeedDream-4.5</td><td class="overall">66.1</td><td>75.9</td><td>71.0</td><td>64.5</td><td>66.2</td><td>68.0</td><td>52.5</td><td>76.0</td><td>71.4</td><td>55.8</td></tr>
         <tr><td class="model">Nano Banana</td><td class="overall">63.1</td><td>71.1</td><td>67.5</td><td>59.7</td><td>66.3</td><td>42.8</td><td>56.5</td><td>76.3</td><td>68.5</td><td>53.8</td></tr>
         <tr><td class="model">Nano Banana Pro</td><td class="overall">75.0</td><td>82.8</td><td>78.1</td><td>72.8</td><td>71.5</td><td>85.9</td><td>65.0</td><td>83.3</td><td>78.2</td><td>67.8</td></tr>
+        <tr><td class="model">Grok-Imagine-Image</td><td class="overall">70.0</td><td>78.7</td><td>74.2</td><td>69.2</td><td>69.1</td><td>71.2</td><td>59.8</td><td>78.5</td><td>70.9</td><td>61.9</td></tr>
         <tr><td class="model">GPT-Image-2</td><td class="overall">71.1</td><td>78.6</td><td>75.6</td><td>70.8</td><td>69.0</td><td>67.7</td><td>60.8</td><td>77.7</td><td>73.9</td><td>64.3</td></tr>
         <tr class="stratum search"><th colspan="11" scope="rowgroup">Search-Intensive <span class="count">external knowledge is required</span></th></tr>
-        <tr><td class="model">Bagel</td><td class="overall">21.5</td><td>18.2</td><td>17.6</td><td>13.3</td><td>30.5</td><td>2.5</td><td>29.3</td><td>33.6</td><td>36.8</td><td>13.5</td></tr>
-        <tr><td class="model">Flux.2-Klein-4B</td><td class="overall">24.1</td><td>19.8</td><td>18.4</td><td>12.4</td><td>37.2</td><td>4.2</td><td>33.6</td><td>39.3</td><td>46.2</td><td>11.9</td></tr>
-        <tr><td class="model">Flux.2-Klein-9B</td><td class="overall">26.7</td><td>24.2</td><td>23.1</td><td>17.2</td><td>36.8</td><td>7.2</td><td>32.9</td><td>40.4</td><td>48.6</td><td>16.9</td></tr>
+        <tr><td class="model">Bagel</td><td class="overall">18.2</td><td>14.8</td><td>14.4</td><td>10.7</td><td>26.6</td><td>1.8</td><td>26.2</td><td>29.3</td><td>32.9</td><td>11.0</td></tr>
+        <tr><td class="model">Flux.2-Klein-4B</td><td class="overall">21.0</td><td>16.6</td><td>15.6</td><td>10.1</td><td>33.2</td><td>3.6</td><td>30.4</td><td>34.8</td><td>42.1</td><td>9.8</td></tr>
+        <tr><td class="model">Flux.2-Klein-9B</td><td class="overall">23.0</td><td>20.1</td><td>19.3</td><td>13.9</td><td>32.6</td><td>6.1</td><td>29.5</td><td>35.9</td><td>43.9</td><td>13.6</td></tr>
         <tr><td class="model">Qwen-Image</td><td class="overall">27.9</td><td>24.8</td><td>24.3</td><td>18.6</td><td>40.1</td><td>8.7</td><td>31.6</td><td>42.8</td><td>44.6</td><td>17.7</td></tr>
-        <tr><td class="model">Qwen-Image-2</td><td class="overall">31.6</td><td>28.5</td><td>27.1</td><td>22.1</td><td>42.2</td><td>12.7</td><td>36.3</td><td>45.5</td><td>48.2</td><td>21.0</td></tr>
+        <tr><td class="model">Qwen-Image-2</td><td class="overall">50.3</td><td>49.6</td><td>48.7</td><td>44.4</td><td>62.8</td><td>36.0</td><td>53.1</td><td>66.1</td><td>67.1</td><td>40.3</td></tr>
+        <tr><td class="model">Qwen-Image-2-Pro</td><td class="overall">55.2</td><td>53.1</td><td>51.8</td><td>47.9</td><td>66.4</td><td>55.5</td><td>54.8</td><td>70.1</td><td>71.8</td><td>43.8</td></tr>
         <tr><td class="model">Imagen3-Fast</td><td class="overall">14.1</td><td>9.7</td><td>10.0</td><td>6.9</td><td>22.2</td><td>1.4</td><td>21.4</td><td>23.2</td><td>23.7</td><td>7.0</td></tr>
         <tr><td class="model">SeedDream-4.0</td><td class="overall">45.9</td><td>44.2</td><td>43.6</td><td>38.5</td><td>57.0</td><td>35.9</td><td>47.1</td><td>58.7</td><td>64.0</td><td>35.1</td></tr>
+        <tr><td class="model">SeedDream-4.5</td><td class="overall">48.6</td><td>48.3</td><td>47.0</td><td>43.1</td><td>58.7</td><td>47.5</td><td>45.6</td><td>61.1</td><td>62.6</td><td>37.1</td></tr>
         <tr><td class="model">Nano Banana</td><td class="overall">44.1</td><td>41.0</td><td>40.4</td><td>36.0</td><td>57.1</td><td>28.0</td><td>47.4</td><td>61.5</td><td>65.5</td><td>33.2</td></tr>
         <tr><td class="model">Nano Banana Pro</td><td class="overall">65.3</td><td>64.4</td><td>63.1</td><td>60.7</td><td>71.4</td><td>65.0</td><td>62.0</td><td>75.9</td><td>78.5</td><td>58.3</td></tr>
+        <tr><td class="model">Grok-Imagine-Image</td><td class="overall">63.2</td><td>64.1</td><td>62.5</td><td>60.8</td><td>68.6</td><td>62.8</td><td>59.1</td><td>74.2</td><td>73.6</td><td>58.3</td></tr>
         <tr><td class="model">GPT-Image-2</td><td class="overall">71.0</td><td>71.2</td><td>70.1</td><td>69.2</td><td>75.1</td><td>75.9</td><td>64.7</td><td>80.4</td><td>77.3</td><td>66.0</td></tr>
       </tbody>
     </table>
@@ -445,6 +455,25 @@ body.modal-open{overflow:hidden}
   </div>
 
   <p>Search everything, blindly, and every generator gets <span class="em">worse</span> on prompts that never needed help. Qwen-Image-2 drops from <strong>70.7 to 60.4</strong> on the no-search stratum — a <strong>14.6% relative loss</strong> on prompts it already aced.</p>
+
+  <div class="tbl-wrap">
+    <table class="results">
+      <thead>
+        <tr><th class="cfg">Need Search?</th><th class="cfg">Generator</th><th>n</th><th>NoSearch</th><th>Reasoned</th><th>Blind</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="cfg" rowspan="3"><b>NoSearch</b></td><td class="cfg"><b>Qwen2</b></td><td>100</td><td>70.7</td><td>76.5</td><td>60.4</td></tr>
+        <tr><td class="cfg">Qwen1</td><td>99</td><td>67.5</td><td>75.0</td><td>59.5</td></tr>
+        <tr><td class="cfg">Klein-9B</td><td>58</td><td>57.9</td><td>66.4</td><td>52.3</td></tr>
+        <tr><td class="cfg" rowspan="3"><b>VisualSearch</b></td><td class="cfg"><b>Qwen2</b></td><td>384</td><td>37.2</td><td>49.1</td><td>45.3</td></tr>
+        <tr><td class="cfg">Qwen1</td><td>384</td><td>32.8</td><td>44.4</td><td>39.7</td></tr>
+        <tr><td class="cfg">Klein-9B</td><td>338</td><td>29.6</td><td>39.4</td><td>36.0</td></tr>
+        <tr><td class="cfg" rowspan="3"><b>TextualSearch</b></td><td class="cfg"><b>Qwen2</b></td><td>263</td><td>22.9</td><td>34.1</td><td>32.1</td></tr>
+        <tr><td class="cfg">Qwen1</td><td>263</td><td>20.5</td><td>28.5</td><td>25.3</td></tr>
+        <tr><td class="cfg">Klein-9B</td><td>264</td><td>18.9</td><td>26.6</td><td>24.0</td></tr>
+      </tbody>
+    </table>
+  </div>
   <p>Two distinct failures explain it. <strong>Concept corruption</strong>: search fires on something the model already knew, and the retrieved reference overrides correct internal knowledge — a <span class="em">gating</span> failure, searching when it shouldn't. <strong>Copy effect</strong>: a reference carries so much detail that the generator copies it wholesale instead of borrowing the one missing fact — a <span class="em">filtering</span> failure, keeping too much.</p>
 
   <div class="card-line o">The cure and the disease depend entirely on the patient. Search helps only when the generator is actually missing something.</div>
@@ -565,14 +594,14 @@ body.modal-open{overflow:hidden}
   <div class="tbl-wrap">
     <table class="results">
       <thead>
-        <tr><th class="cfg">Phase</th><th class="cfg">Config</th><th>NoSearch</th><th>Set I</th><th>Set II</th><th>Set III</th><th>Overall</th></tr>
+        <tr><th class="cfg">Phase</th><th class="cfg">Config</th><th>n</th><th>NoSearch</th><th>Easy</th><th>Medium</th><th>Hard</th><th>Overall</th></tr>
       </thead>
       <tbody>
-        <tr><td class="phase-lbl">Phase 0</td><td class="cfg">Gen-Agnostic (SFT-8B) + Klein-4B</td><td>54.6</td><td>28.9</td><td>29.2</td><td>21.2</td><td class="overall">26.4</td></tr>
-        <tr><td class="phase-lbl">Phase 1</td><td class="cfg">Gen-Agnostic (SFT-8B) + Klein-4B-DPO</td><td>54.0</td><td>31.8</td><td>31.1</td><td>24.7</td><td class="overall">29.2</td></tr>
-        <tr class="head-row"><td class="phase-lbl"><b>Phase 2</b></td><td class="cfg">Gen-Adaptive (RFT-8B) + Klein-4B-DPO</td><td>56.9</td><td>34.1</td><td>33.6</td><td>27.4</td><td class="overall"><span class="big">31.8</span></td></tr>
-        <tr class="ref"><td class="phase-lbl">ref</td><td class="cfg">Oracle (frontier API) + Klein-4B-DPO</td><td>55.7</td><td>33.7</td><td>33.9</td><td>26.0</td><td class="overall">31.2</td></tr>
-        <tr class="ref"><td class="phase-lbl">ref</td><td class="cfg">No-Search + Klein-4B-DPO</td><td>49.9</td><td>28.2</td><td>26.3</td><td>20.6</td><td class="overall">25.0</td></tr>
+        <tr><td class="phase-lbl">Phase 0</td><td class="cfg">Gen-Agnostic (SFT-8B) + Klein-4B</td><td>602</td><td>54.6</td><td>28.9</td><td>29.2</td><td>21.2</td><td class="overall">26.4</td></tr>
+        <tr><td class="phase-lbl">Phase 1</td><td class="cfg">Gen-Agnostic (SFT-8B) + Klein-4B-DPO-v2</td><td>321</td><td>54.0</td><td>31.8</td><td>31.1</td><td>24.7</td><td class="overall">29.2</td></tr>
+        <tr class="head-row"><td class="phase-lbl"><b>Phase 2</b></td><td class="cfg">Gen-Adaptive (RFT-8B) + Klein-4B-DPO-v2</td><td>321</td><td>56.9</td><td>34.1</td><td>33.6</td><td>27.4</td><td class="overall"><span class="big">31.8</span></td></tr>
+        <tr class="ref"><td class="phase-lbl">ref</td><td class="cfg">Oracle (frontier API) + Klein-4B-DPO-v2</td><td>750</td><td>55.7</td><td>33.7</td><td>33.9</td><td>26.0</td><td class="overall">31.2</td></tr>
+        <tr class="ref"><td class="phase-lbl">ref</td><td class="cfg">No-Search + Klein-4B-DPO-v2</td><td>751</td><td>49.9</td><td>28.2</td><td>26.3</td><td>20.6</td><td class="overall">25.0</td></tr>
       </tbody>
     </table>
   </div>
