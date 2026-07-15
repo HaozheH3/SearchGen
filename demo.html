@@ -723,19 +723,16 @@ at(300,()=>{const c=document.getElementById('s1');c.classList.add('v');countUp(c
 at(300,()=>{const c=document.getElementById('s2');c.classList.add('v');countUp(c.querySelector('.sn'),67)});
 at(1500,()=>show('otag'));
 
-Promise.all([
-  document.fonts.ready,
-  ...Array.from(document.images).map(img=>img.complete?Promise.resolve():new Promise(r=>{img.onload=r;img.onerror=r}))
-]).then(()=>{
-  const s=performance.now();
-  (function tick(){
-    const raw=performance.now()-s;
-    const e=tlPaused?(tlPauseStart-s-tlOffset):(raw-tlOffset);
-    document.getElementById('prog').style.width=Math.min(100,e/TOTAL*100)+'%';
-    if(!tlPaused){while(tl.length&&tl[0].time<=e)tl.shift().fn()}
-    if(tl.length||raw<TOTAL)requestAnimationFrame(tick);
-  })();
-});
+// Start immediately. Fonts and images can continue loading in parallel; waiting
+// for every asset here leaves the opacity-zero page blank on slow connections.
+const s=performance.now();
+(function tick(){
+  const raw=performance.now()-s;
+  const e=tlPaused?(tlPauseStart-s-tlOffset):(raw-tlOffset);
+  document.getElementById('prog').style.width=Math.min(100,e/TOTAL*100)+'%';
+  if(!tlPaused){while(tl.length&&tl[0].time<=e)tl.shift().fn()}
+  if(tl.length||raw<TOTAL)requestAnimationFrame(tick);
+})();
 </script>
 </body>
 </html>
