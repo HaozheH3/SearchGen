@@ -517,7 +517,15 @@ var tlPaused=false,tlPauseStart=0,tlOffset=0;
 function tlPause(){tlPaused=true;tlPauseStart=performance.now()}
 function tlResume(){if(tlPaused){tlOffset+=performance.now()-tlPauseStart;tlPaused=false}}
 function at(d,fn){t+=d;tl.push({time:t,fn})}
-function show(id){const e=document.getElementById(id);e.classList.add('v');followBottom(e,650)}
+function show(id){
+  const e=document.getElementById(id);
+  e.classList.add('v');
+  // Assistant messages contain the entire upcoming trace in normal layout.
+  // Following the container jumps to its mostly invisible bottom; follow its
+  // avatar instead, then let each revealed trace block advance the viewport.
+  const anchor=e.classList.contains('msg')&&e.querySelector('.trace')?e.querySelector('.av'):e;
+  followBottom(anchor,650);
+}
 function showExpand(id){const e=document.getElementById(id);e.classList.add('v','expanded');followBottom(e,650)}
 function startThinking(id){document.getElementById(id).classList.add('thinking-active')}
 function stopThinking(id){document.getElementById(id).classList.remove('thinking-active')}
