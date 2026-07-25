@@ -322,15 +322,11 @@ The code release is licensed under the [Apache License 2.0](LICENSE).
 ## Citation
 
 ```bibtex
-@article{wang2026searchgen,
-  title   = {Search Beyond What Can Be Taught: Evolving the Knowledge
-             Boundary in Agentic Visual Generation},
-  author  = {Wang, Haozhe and Feng, Weijia and Yu, Jinpeng and Liu, Che and
-             Nie, Ping and Lin, Fangzhen and Liu, Jiaming and Huang, Ruihua and
-             Lin, Jimmy and Chen, Wenhu and Wei, Cong},
-  journal = {arXiv preprint arXiv:2607.05382},
-  year    = {2026},
-  url     = {https://arxiv.org/abs/2607.05382}
+@article{searchgen,
+  title={Search Beyond What Can Be Taught: Evolving the Knowledge Boundary in Agentic Visual Generation},
+  author={Wang, Haozhe and Feng, Weijia and Yu, Jinpeng and Liu, Che and Nie, Ping and Lin, Fangzhen and Liu, Jiaming and Huang, Ruihua and Lin, Jimmy and Chen, Wenhu and others},
+  journal={arXiv preprint arXiv:2607.05382},
+  year={2026}
 }
 ```
 
