@@ -37,7 +37,7 @@ Haozhe Wang<sup>1</sup> · Weijia Feng<sup>3</sup> · Jinpeng Yu<sup>3</sup> · 
 
 ## TL;DR — Teach What You Can, Search the Rest
 
-Modern image generators render gorgeously and lie fluently. Ask for the 2025 Osaka Expo mascot and you get a confident, wrong invention. The failure isn't the pixels—it's the **knowledge**. On **SearchGen-Bench**, frontier open generators score just **21–28 out of 100** on search-intensive prompts—up to a roughly 40-point collapse that standard benchmarks never register.
+Modern image generators render gorgeously and lie fluently. Ask for the 2025 Osaka Expo mascot and you get a confident, wrong invention. The failure isn't the pixels—it's the **knowledge**. On **SearchGen-Bench**, open generators score just **22.2–28.6 out of 100** on search-intensive prompts—up to a 41.4-point collapse.
 
 Search is the obvious fix, the way an illustrator consults references. But naive search backfires: it corrupts prompts the generator already handled. The real problem is a **knowledge boundary**—the line between what a generator can learn and what it must look up. That line is generator-specific, it moves during training, and it cannot be hand-drawn. It has to be discovered.
 
@@ -59,11 +59,11 @@ Worse, generators have no way to flag their own ignorance. They are trained to a
 
 *Ask for a specific person, a labeled scientific diagram, or live data and today's best generators confidently fabricate. These representative cases span SearchGen's 12 failure categories.*
 
-## Finding 1 — A 40-Point Gap That No Benchmark Shows
+## Finding 1 — A 41-Point Gap That No Benchmark Shows
 
-> **Generators that score comparably on standard prompts diverge by nearly 40 points when search-intensive world knowledge is required.**
+> **Generators diverge by up to 41.4 points when search-intensive world knowledge is required.**
 
-On prompts that need only what a model already learned, open and commercial generators land in the same band (**67–75 out of 100**). Turn to prompts that need live world knowledge, and the field splits: open generators crater to **21–28**, while commercial systems with built-in search barely move. Existing benchmarks test rendering inside known concepts, so they never see this gap at all.
+Across 15 generators, NoSearch Overall9 scores span **49.1–78.9**. On prompts needing external knowledge, open generators fall to **22.2–28.6**, while the strongest commercial systems remain above 60.
 
 To surface it, we built **SearchGen-Bench**: 751 test prompts scored with separate dimensions for **knowledge** and **rendering**. The split is the whole point. When a generator scores poorly on knowledge checklists but remains strong on image quality, the diagnosis is unambiguous—it can draw; it just does not know.
 
@@ -71,46 +71,52 @@ To surface it, we built **SearchGen-Bench**: 751 test prompts scored with separa
   <img src="assets/readme/b1.png" width="900" alt="SearchGen-Bench results across no-search and search-intensive prompts">
 </p>
 
-***SearchGen-Bench results.** Generators score well on prompts they can answer from memory (gray). On prompts requiring external knowledge (orange), every open generator collapses—up to a 40-point drop—while commercial systems with built-in search hold. The bottleneck is missing knowledge, not rendering skill.*
+***SearchGen-Bench results.** Finalized 3d5 Overall9 scores on 100 NoSearch and 651 Search-Intensive prompts. The largest gap is 41.4 points.*
 
 <p align="center">
-  <img src="assets/readme/searchgenbench_arena_style.png" width="760" alt="Overall SearchGen-Bench ranking of twelve image generators on the full 751-prompt evaluation">
+  <img src="assets/readme/searchgenbench_arena_style.png" width="760" alt="Overall9 SearchGen-Bench ranking of fifteen image generators on the full 751-prompt evaluation">
 </p>
 
-***Overall SearchGen-Bench ranking.** GPT-Image-2 leads the full 751-prompt evaluation, followed by Nano Banana Pro and Grok-Imagine-Image. Scores use the canonical 10-component physical-plausibility judge.*
+***Overall SearchGen-Bench ranking.** GPT-Image-2 leads, followed by Qwen-Image-3-Max and Grok-Imagine-Image. Scores use Overall9 from the finalized 3d5 evaluator.*
 
 ### Full Benchmark Breakdown
 
 Scores are reported on a 0–100 scale; higher is better. **Checklist**, **Rubric**, and **Visual ref.** are knowledge-sensitive measures that test whether requested facts are present. **Image quality**, **Text rendering**, and **Physical plausibility** capture rendering competence. Together, the components distinguish a model that cannot draw from one that can draw but lacks the required world knowledge.
 
-| Stratum | Type | Generator | Overall | Checklist | Rubric | Prompt | Image quality | Text rendering | AI naturalness | Composition | Physical plausibility | Visual ref. |
+| Stratum | Type | Generator | Overall9 | Checklist | Rubric | Prompt | Image quality | Text rendering | AI naturalness | Composition | Physical plausibility | Visual ref. |
 |:--|:--|:--|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|
-| NoSearch | Open | Bagel | **14.0** | 14.3 | 13.2 | 10.7 | 16.5 | 1.0 | 14.0 | 19.3 | 17.9 | 9.4 |
-| NoSearch | Open | Flux.2-Klein-9B | **42.1** | 47.2 | 43.2 | 37.2 | 46.7 | 16.0 | 38.3 | 52.3 | 48.5 | 29.8 |
-| NoSearch | Open | Qwen-Image | **67.4** | 74.8 | 70.8 | 62.8 | 68.3 | 63.0 | 61.0 | 76.8 | 73.8 | 56.7 |
-| NoSearch | Commercial | Qwen-Image-2 | **63.4** | 75.4 | 73.2 | 66.3 | 69.3 | 17.5 | 61.2 | 80.8 | 72.0 | 59.4 |
-| NoSearch | Commercial | Qwen-Image-2-Pro | **68.0** | 75.5 | 69.9 | 63.2 | 70.0 | 76.9 | 58.5 | 77.2 | 71.5 | 60.1 |
-| NoSearch | Commercial | SeedDream-4.0 | **67.9** | 74.9 | 70.6 | 61.7 | 69.5 | 71.1 | 59.7 | 80.3 | 73.9 | 56.7 |
-| NoSearch | Commercial | SeedDream-4.5 | **66.1** | 75.9 | 71.0 | 64.5 | 66.2 | 68.0 | 52.5 | 76.0 | 71.4 | 55.8 |
-| NoSearch | Commercial | Nano Banana | **63.1** | 71.1 | 67.5 | 59.7 | 66.3 | 42.8 | 56.5 | 76.3 | 68.5 | 53.8 |
-| NoSearch | Commercial | Nano Banana Pro | **75.0** | 82.8 | 78.1 | 72.8 | 71.5 | 85.9 | 65.0 | 83.3 | 78.2 | 67.8 |
-| NoSearch | Commercial | Grok-Imagine-Image | **70.0** | 78.7 | 74.2 | 69.2 | 69.1 | 71.2 | 59.8 | 78.5 | 70.9 | 61.9 |
-| NoSearch | Commercial | GPT-Image-2 | **71.1** | 78.6 | 75.6 | 70.8 | 69.0 | 67.7 | 60.8 | 77.7 | 73.9 | 64.3 |
-| Search-Intensive | Open | Bagel | **18.2** | 14.8 | 14.4 | 10.7 | 26.6 | 1.8 | 26.2 | 29.3 | 32.9 | 11.0 |
-| Search-Intensive | Open | Flux.2-Klein-4B | **21.0** | 16.6 | 15.6 | 10.1 | 33.2 | 3.6 | 30.4 | 34.8 | 42.1 | 9.8 |
-| Search-Intensive | Open | Flux.2-Klein-9B | **23.0** | 20.1 | 19.3 | 13.9 | 32.6 | 6.1 | 29.5 | 35.9 | 43.9 | 13.6 |
-| Search-Intensive | Open | Qwen-Image | **27.9** | 24.8 | 24.3 | 18.6 | 40.1 | 8.7 | 31.6 | 42.8 | 44.6 | 17.7 |
-| Search-Intensive | Commercial | Qwen-Image-2 | **50.3** | 49.6 | 48.7 | 44.4 | 62.8 | 36.0 | 53.1 | 66.1 | 67.1 | 40.3 |
-| Search-Intensive | Commercial | Qwen-Image-2-Pro | **55.2** | 53.1 | 51.8 | 47.9 | 66.4 | 55.5 | 54.8 | 70.1 | 71.8 | 43.8 |
-| Search-Intensive | Commercial | Imagen3-Fast | **14.1** | 9.7 | 10.0 | 6.9 | 22.2 | 1.4 | 21.4 | 23.2 | 23.7 | 7.0 |
-| Search-Intensive | Commercial | SeedDream-4.0 | **45.9** | 44.2 | 43.6 | 38.5 | 57.0 | 35.9 | 47.1 | 58.7 | 64.0 | 35.1 |
-| Search-Intensive | Commercial | SeedDream-4.5 | **48.6** | 48.3 | 47.0 | 43.1 | 58.7 | 47.5 | 45.6 | 61.1 | 62.6 | 37.1 |
-| Search-Intensive | Commercial | Nano Banana | **44.1** | 41.0 | 40.4 | 36.0 | 57.1 | 28.0 | 47.4 | 61.5 | 65.5 | 33.2 |
-| Search-Intensive | Commercial | Nano Banana Pro | **65.3** | 64.4 | 63.1 | 60.7 | 71.4 | 65.0 | 62.0 | 75.9 | 78.5 | 58.3 |
-| Search-Intensive | Commercial | Grok-Imagine-Image | **63.2** | 64.1 | 62.5 | 60.8 | 68.6 | 62.8 | 59.1 | 74.2 | 73.6 | 58.3 |
-| Search-Intensive | Commercial | GPT-Image-2 | **71.0** | 71.2 | 70.1 | 69.2 | 75.1 | 75.9 | 64.7 | 80.4 | 77.3 | 66.0 |
+| NoSearch | Commercial | GPT-Image-2 | 78.9 | 84.8 | 82.7 | 79.3 | 73.4 | 92.3 | 67.6 | 86.5 | 81.2 | 70.9 |
+| NoSearch | Commercial | Grok-Imagine-Image | 74.8 | 81.3 | 78.3 | 72.7 | 72.3 | 83.9 | 65.6 | 79.7 | 77.2 | 66.9 |
+| NoSearch | Commercial | Qwen-Image-3-Max | 73.7 | 79.1 | 76.2 | 69.8 | 70.3 | 86.2 | 63.9 | 82.5 | 78.3 | 64.0 |
+| NoSearch | Commercial | Nano Banana Pro | 73.3 | 78.4 | 76.3 | 70.2 | 70.7 | 85.6 | 65.2 | 80.3 | 77.1 | 63.0 |
+| NoSearch | Commercial | Qwen-Image-2-Pro | 71.2 | 76.8 | 74.1 | 67.3 | 70.5 | 77.8 | 61.8 | 78.3 | 75.3 | 61.2 |
+| NoSearch | Commercial | Qwen-Image-2 | 71.1 | 76.2 | 73.1 | 67.5 | 70.2 | 79.5 | 63.8 | 79.2 | 74.2 | 60.3 |
+| NoSearch | Commercial | Jimeng-4.0 / SeedDream-4.0 | 70.7 | 76.4 | 73.3 | 65.8 | 69.0 | 76.0 | 61.7 | 80.8 | 75.5 | 58.5 |
+| NoSearch | Open | Qwen-Image | 70.0 | 74.9 | 72.0 | 65.5 | 69.2 | 61.1 | 61.7 | 77.0 | 78.6 | 60.1 |
+| NoSearch | Commercial | SeedDream-4.5 | 69.3 | 76.2 | 72.8 | 65.5 | 67.3 | 74.0 | 59.0 | 76.8 | 73.4 | 59.6 |
+| NoSearch | Commercial | Gemini-2.5-Flash | 66.3 | 70.8 | 68.5 | 61.8 | 67.7 | 49.0 | 59.7 | 77.5 | 70.5 | 56.2 |
+| NoSearch | Open | Flux.2-Klein-9B | 58.5 | 63.7 | 60.7 | 49.5 | 63.2 | 30.0 | 53.5 | 71.0 | 67.0 | 41.1 |
+| NoSearch | Open | Flux.2-Klein-4B | 52.3 | 55.8 | 52.6 | 42.3 | 59.7 | 16.1 | 49.8 | 67.7 | 60.1 | 35.3 |
+| NoSearch | Open | Flux.2-Klein-4B-DPO-v2 | 50.4 | 52.8 | 50.6 | 38.8 | 59.7 | 9.3 | 48.3 | 64.3 | 59.9 | 32.6 |
+| NoSearch | Open | Bagel-DPO-v2 | 50.0 | 52.1 | 49.8 | 37.8 | 57.8 | 19.9 | 48.8 | 63.0 | 61.2 | 32.1 |
+| NoSearch | Open | Bagel | 49.1 | 51.5 | 49.2 | 37.7 | 56.2 | 16.1 | 48.8 | 62.8 | 58.5 | 32.1 |
+| SearchIntensive | Commercial | GPT-Image-2 | 75.5 | 74.4 | 73.7 | 72.2 | 77.4 | 77.7 | 68.9 | 83.9 | 84.9 | 70.4 |
+| SearchIntensive | Commercial | Qwen-Image-3-Max | 67.6 | 65.8 | 65.3 | 62.8 | 71.1 | 67.9 | 62.3 | 77.0 | 78.6 | 59.6 |
+| SearchIntensive | Commercial | Grok-Imagine-Image | 66.7 | 65.9 | 64.6 | 62.8 | 69.5 | 65.7 | 61.7 | 75.6 | 77.8 | 59.7 |
+| SearchIntensive | Commercial | Nano Banana Pro | 63.6 | 60.7 | 60.1 | 56.4 | 68.1 | 61.3 | 60.0 | 72.7 | 78.1 | 55.4 |
+| SearchIntensive | Commercial | Qwen-Image-2-Pro | 57.5 | 53.9 | 53.1 | 48.3 | 65.3 | 55.1 | 57.3 | 68.9 | 72.8 | 46.8 |
+| SearchIntensive | Commercial | Qwen-Image-2 | 54.1 | 49.9 | 49.6 | 44.1 | 62.5 | 50.1 | 54.3 | 66.2 | 71.4 | 42.0 |
+| SearchIntensive | Commercial | SeedDream-4.5 | 54.1 | 51.7 | 50.8 | 45.2 | 61.8 | 50.4 | 50.8 | 65.9 | 69.3 | 42.1 |
+| SearchIntensive | Commercial | Jimeng-4.0 / SeedDream-4.0 | 49.6 | 45.6 | 45.1 | 39.3 | 58.8 | 37.2 | 50.9 | 62.5 | 68.0 | 36.8 |
+| SearchIntensive | Commercial | Gemini-2.5-Flash | 47.1 | 43.0 | 42.3 | 36.1 | 56.9 | 31.2 | 48.9 | 60.5 | 67.0 | 35.9 |
+| SearchIntensive | Open | Qwen-Image | 28.6 | 25.0 | 23.8 | 17.4 | 37.9 | 9.2 | 29.9 | 41.0 | 45.5 | 17.7 |
+| SearchIntensive | Open | Flux.2-Klein-9B | 26.9 | 23.8 | 22.4 | 15.1 | 36.1 | 5.8 | 29.9 | 38.3 | 47.7 | 16.7 |
+| SearchIntensive | Open | Flux.2-Klein-4B | 23.9 | 20.1 | 18.6 | 11.5 | 33.0 | 3.4 | 28.1 | 35.7 | 44.8 | 12.7 |
+| SearchIntensive | Open | Flux.2-Klein-4B-DPO-v2 | 23.8 | 18.3 | 17.3 | 10.7 | 34.0 | 3.2 | 29.8 | 36.2 | 47.1 | 10.9 |
+| SearchIntensive | Open | Bagel-DPO-v2 | 22.8 | 17.3 | 16.6 | 10.6 | 32.9 | 2.4 | 28.1 | 35.1 | 40.5 | 10.7 |
+| SearchIntensive | Open | Bagel | 22.2 | 18.7 | 17.7 | 12.4 | 30.4 | 2.2 | 25.0 | 32.4 | 38.1 | 14.2 |
 
-*NoSearch contains prompts for which parametric knowledge is sufficient; Search-Intensive contains prompts that require external knowledge. Imagen3-Fast was reported only on the Search-Intensive stratum.*
+*NoSearch contains 100 prompts; Search-Intensive is the 651-row union of VisualSearch and TextualSearch. Scores use present-only aggregation.*
 
 ## Finding 2 — Search Should Help. Often It Hurts.
 
@@ -198,7 +204,7 @@ The headline is calibration per dollar. An 8B reasoner on a 4B generator reaches
 
 ***(a) Co-training compounds.** Each round—reasoner SFT, generator DPO, reasoner RFT—lifts quality across all three difficulty tiers for Klein-4B and Bagel-7B. **(b) Proof the boundary moved:** after co-training, per-prompt no-search quality shifts right; more prompts clear a given quality bar without search.*
 
-This compares reasoners on a fixed 4B generator; it is not a claim of frontier absolute image quality. In absolute terms, 31.8 remains below a search-integrated commercial system such as GPT-Image-2 (71.0). Closing that gap requires scaling the generator, not changing the recipe alone.
+This compares reasoners on a fixed 4B generator; it is not a claim of frontier absolute image quality. In absolute terms, 31.8 remains below GPT-Image-2's finalized full-benchmark Overall9 score of 76.0.
 
 ## The Released Harness
 
