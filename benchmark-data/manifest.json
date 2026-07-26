@@ -4,9 +4,10 @@
     "leaderboard_overall.json",
     "leaderboard_by_stratum.json",
     "leaderboard_by_domain.json",
-    "leaderboard_by_failure_mode.json"
+    "leaderboard_by_failure_mode.json",
+    "leaderboard_by_slice.json"
   ],
-  "benchmark": "SearchGen-Bench",
+  "benchmark": "AgentGen Bench",
   "dataset": {
     "filename": "eval_datasets_548_finalized_v1.jsonl",
     "n_prompts": 751,
@@ -47,7 +48,7 @@
     },
     "subset_field": "subset"
   },
-  "generated_at": "2026-07-26T10:47:23+00:00",
+  "generated_at": "2026-07-26T14:15:01+00:00",
   "models": {
     "bagel": {
       "aliases": [],
@@ -183,7 +184,13 @@
     "TextualSearch": 264,
     "VisualSearch": 387
   },
-  "schema_version": "1.0.0",
+  "published_slices": [
+    "full_751",
+    "testmini",
+    "testmini_easy",
+    "testmini_hard"
+  ],
+  "schema_version": "1.1.0",
   "scoring": {
     "metric_label": "Overall9",
     "missing_policy_default": "exclude",
@@ -223,6 +230,32 @@
       3
     ],
     "source": "augmented_parsed_result_eval_qw3d5_pp.json"
+  },
+  "slice_partitions": {
+    "full_751": {
+      "NoSearch": 100,
+      "SearchIntensive": 651,
+      "TextualSearch": 264,
+      "VisualSearch": 387
+    },
+    "testmini": {
+      "NoSearch": 26,
+      "SearchIntensive": 174,
+      "TextualSearch": 73,
+      "VisualSearch": 101
+    },
+    "testmini_easy": {
+      "NoSearch": 13,
+      "SearchIntensive": 87,
+      "TextualSearch": 37,
+      "VisualSearch": 50
+    },
+    "testmini_hard": {
+      "NoSearch": 13,
+      "SearchIntensive": 87,
+      "TextualSearch": 37,
+      "VisualSearch": 50
+    }
   },
   "source_commit": null
 }
