@@ -10,76 +10,168 @@
   "dataset": {
     "filename": "eval_datasets_548_finalized_v1.jsonl",
     "n_prompts": 751,
-    "sha256": "2a80f209304421056b78d1fa2e8c0b24b64c33735cb18eee0044f17df30e13e7"
+    "sha256": "321cf11a26609674bae6acf132aa59da3436756208531429cf04e1224b523d05"
   },
-  "generated_at": "2026-07-16T00:00:00+00:00",
+  "evaluation_slices": {
+    "named": {
+      "full_751": {
+        "deduplicate_by": "release_row",
+        "expected_rows": 751,
+        "include_tags": [],
+        "match": "all"
+      },
+      "testmini": {
+        "deduplicate_by": "release_row",
+        "expected_rows": 200,
+        "include_tags": [
+          "testmini"
+        ],
+        "match": "any"
+      },
+      "testmini_easy": {
+        "deduplicate_by": "release_row",
+        "expected_rows": 100,
+        "include_tags": [
+          "testmini_easy"
+        ],
+        "match": "any"
+      },
+      "testmini_hard": {
+        "deduplicate_by": "release_row",
+        "expected_rows": 100,
+        "include_tags": [
+          "testmini_hard"
+        ],
+        "match": "any"
+      }
+    },
+    "subset_field": "subset"
+  },
+  "generated_at": "2026-07-25T12:09:36+00:00",
   "models": {
     "bagel": {
+      "aliases": [],
       "display_name": "Bagel",
       "source_id": "bagel",
       "type": "Open"
     },
+    "bagel-dpo-v2": {
+      "aliases": [
+        "Bagel DPO v2"
+      ],
+      "display_name": "Bagel-DPO-v2",
+      "source_id": "bagel-dpo-v2",
+      "type": "Open"
+    },
     "gemini2d5flash": {
-      "display_name": "Nano Banana",
+      "aliases": [
+        "Nano Banana"
+      ],
+      "display_name": "Gemini-2.5-Flash",
       "source_id": "gemini2d5flash",
       "type": "Commercial"
     },
     "gemini3pro": {
+      "aliases": [
+        "Gemini 3 Pro"
+      ],
       "display_name": "Nano Banana Pro",
       "source_id": "gemini3pro",
       "type": "Commercial"
     },
     "gpt_image": {
+      "aliases": [
+        "GPT Image 2"
+      ],
       "display_name": "GPT-Image-2",
       "source_id": "gpt_image",
       "type": "Commercial"
     },
-    "imagen3fast": {
-      "display_name": "Imagen3-Fast",
-      "source_id": "imagen3fast",
-      "type": "Commercial"
-    },
     "jimeng4d0": {
-      "display_name": "SeedDream-4.0",
+      "aliases": [
+        "SeedDream-4.0",
+        "Jimeng-4.0"
+      ],
+      "display_name": "Jimeng-4.0 / SeedDream-4.0",
       "source_id": "jimeng4d0",
       "type": "Commercial"
     },
-    "klein": {
-      "display_name": "Flux.2-Klein-9B",
-      "source_id": "klein",
-      "type": "Open"
-    },
     "klein4b": {
+      "aliases": [
+        "Klein-4B"
+      ],
       "display_name": "Flux.2-Klein-4B",
       "source_id": "klein4b",
       "type": "Open"
     },
+    "klein4b-dpo-v2": {
+      "aliases": [
+        "Klein-4B-DPO-v2"
+      ],
+      "display_name": "Flux.2-Klein-4B-DPO-v2",
+      "source_id": "klein4b-dpo-v2",
+      "type": "Open"
+    },
+    "klein9b": {
+      "aliases": [
+        "Klein-9B",
+        "klein"
+      ],
+      "display_name": "Flux.2-Klein-9B",
+      "source_id": "klein",
+      "type": "Open"
+    },
+    "qwen-image-3-max": {
+      "aliases": [
+        "Qwen Image 3 Max"
+      ],
+      "display_name": "Qwen-Image-3-Max",
+      "source_id": "qwen-image-3-max",
+      "type": "Commercial"
+    },
     "qwen1": {
+      "aliases": [
+        "Qwen1"
+      ],
       "display_name": "Qwen-Image",
       "source_id": "qwen1",
       "type": "Open"
     },
-    "qwen2": {
+    "qwen_image_2": {
+      "aliases": [
+        "qwen2",
+        "Qwen Image 2"
+      ],
       "display_name": "Qwen-Image-2",
       "source_id": "qwen-image-2.0",
       "type": "Commercial"
     },
     "qwen_image_2_pro": {
+      "aliases": [
+        "Qwen Image 2 Pro"
+      ],
       "display_name": "Qwen-Image-2-Pro",
       "source_id": "qwen_image_2_pro",
       "type": "Commercial"
     },
     "seedream4d5": {
+      "aliases": [
+        "Seedream 4.5"
+      ],
       "display_name": "SeedDream-4.5",
       "source_id": "seedream4d5",
       "type": "Commercial"
     },
     "xai_image": {
+      "aliases": [
+        "Grok Imagine Image"
+      ],
       "display_name": "Grok-Imagine-Image",
       "source_id": "xai_image",
       "type": "Commercial"
     }
   },
+  "output_slice": "full_751",
   "partition": {
     "NoSearch": 100,
     "SearchIntensive": 651,
@@ -88,11 +180,9 @@
   },
   "schema_version": "1.0.0",
   "scoring": {
-    "missing_policy_default": "zero_fill",
-    "missing_policy_exceptions": [
-      "qwen_image_2_pro",
-      "xai_image"
-    ],
+    "metric_label": "Overall9",
+    "missing_policy_default": "exclude",
+    "missing_policy_exceptions": {},
     "overall_10_components": [
       "checklist",
       "rubric_adaptive",
@@ -117,7 +207,7 @@
       "visual_reference_evaluation"
     ],
     "overall_9_excluded_component": "text_reference_evaluation",
-    "primary_metric": "overall_10",
+    "primary_metric": "overall_9",
     "public_rounding_decimals": 1,
     "scale_public": [
       0,
@@ -127,7 +217,7 @@
       0,
       3
     ],
-    "source": "augmented_parsed_result_ffjudge_pp.json"
+    "source": "augmented_parsed_result_eval_qw3d5_pp.json"
   },
   "source_commit": null
 }
