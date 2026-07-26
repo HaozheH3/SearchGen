@@ -47,29 +47,13 @@
     },
     "subset_field": "subset"
   },
-  "generated_at": "2026-07-25T12:09:36+00:00",
+  "generated_at": "2026-07-26T10:47:23+00:00",
   "models": {
     "bagel": {
       "aliases": [],
       "display_name": "Bagel",
       "source_id": "bagel",
       "type": "Open"
-    },
-    "bagel-dpo-v2": {
-      "aliases": [
-        "Bagel DPO v2"
-      ],
-      "display_name": "Bagel-DPO-v2",
-      "source_id": "bagel-dpo-v2",
-      "type": "Open"
-    },
-    "gemini2d5flash": {
-      "aliases": [
-        "Nano Banana"
-      ],
-      "display_name": "Gemini-2.5-Flash",
-      "source_id": "gemini2d5flash",
-      "type": "Commercial"
     },
     "gemini3pro": {
       "aliases": [
@@ -87,29 +71,12 @@
       "source_id": "gpt_image",
       "type": "Commercial"
     },
-    "jimeng4d0": {
-      "aliases": [
-        "SeedDream-4.0",
-        "Jimeng-4.0"
-      ],
-      "display_name": "Jimeng-4.0 / SeedDream-4.0",
-      "source_id": "jimeng4d0",
-      "type": "Commercial"
-    },
     "klein4b": {
       "aliases": [
         "Klein-4B"
       ],
       "display_name": "Flux.2-Klein-4B",
       "source_id": "klein4b",
-      "type": "Open"
-    },
-    "klein4b-dpo-v2": {
-      "aliases": [
-        "Klein-4B-DPO-v2"
-      ],
-      "display_name": "Flux.2-Klein-4B-DPO-v2",
-      "source_id": "klein4b-dpo-v2",
       "type": "Open"
     },
     "klein9b": {
@@ -119,6 +86,26 @@
       ],
       "display_name": "Flux.2-Klein-9B",
       "source_id": "klein",
+      "type": "Open"
+    },
+    "mage-flow": {
+      "aliases": [],
+      "display_name": "Mage-Flow",
+      "source_id": "mage-flow",
+      "type": "Open"
+    },
+    "nano_banana": {
+      "aliases": [
+        "Nano Banana"
+      ],
+      "display_name": "Nano-Banana",
+      "source_id": "gemini2d5flash",
+      "type": "Commercial"
+    },
+    "omnigen2": {
+      "aliases": [],
+      "display_name": "OmniGen2",
+      "source_id": "omnigen2",
       "type": "Open"
     },
     "qwen-image-3-max": {
@@ -154,6 +141,12 @@
       "source_id": "qwen_image_2_pro",
       "type": "Commercial"
     },
+    "seedream4d0": {
+      "aliases": [],
+      "display_name": "SeedDream-4.0",
+      "source_id": "jimeng4d0",
+      "type": "Commercial"
+    },
     "seedream4d5": {
       "aliases": [
         "Seedream 4.5"
@@ -161,6 +154,18 @@
       "display_name": "SeedDream-4.5",
       "source_id": "seedream4d5",
       "type": "Commercial"
+    },
+    "sensenova-u1": {
+      "aliases": [],
+      "display_name": "SenseNova-U1",
+      "source_id": "sensenova-u1",
+      "type": "Open"
+    },
+    "show-o2": {
+      "aliases": [],
+      "display_name": "Show-o2",
+      "source_id": "show-o2",
+      "type": "Open"
     },
     "xai_image": {
       "aliases": [

@@ -336,7 +336,7 @@ body.modal-open{overflow:hidden}
 <section class="card narrow" id="tldr">
   <span class="eyebrow">TL;DR</span>
   <h2>The short version — teach what you can, search the rest</h2>
-  <p>Modern image generators render gorgeously and lie fluently. Ask for the 2025 Osaka Expo mascot and you get a confident, wrong invention. The failure isn't the pixels — it's the <span class="em">knowledge</span>. On <strong>SearchGen-Bench</strong>, open generators score just <strong>22.2–28.6 out of 100</strong> on search-intensive prompts — up to a 41.4-point collapse.</p>
+  <p>Modern image generators render gorgeously and lie fluently. Ask for the 2025 Osaka Expo mascot and you get a confident, wrong invention. The failure isn't the pixels — it's the <span class="em">knowledge</span>. On <strong>SearchGen-Bench</strong>, frontier open generators score just <strong>21–28 out of 100</strong> on search-intensive prompts — up to a ~40-point collapse that standard benchmarks never register.</p>
   <p>Search is the obvious fix, the way an illustrator consults references. But naive search backfires: it corrupts prompts the generator already handled. The real problem is a <strong>knowledge boundary</strong> — the line between what a generator can learn and what it must look up. That line is generator-specific, it moves during training, and it can't be hand-drawn. It has to be <span class="em">discovered</span>.</p>
   <p>So we discover it, by <strong>co-training the generator and the search agent together</strong>. Below: how the collapse works, why naive search fails, what the knowledge boundary is, and how a co-trained 8B reasoner on a 4B generator matches a frontier <span class="em">reasoner</span> on the same generator — jump to the finding cards. ↓</p>
 </section>
@@ -380,23 +380,23 @@ body.modal-open{overflow:hidden}
 <!-- ========================= §3 Finding 1 ========================= -->
 <section class="card" id="finding1">
   <span class="eyebrow">Finding 1</span>
-  <h2>A 41-point gap that no benchmark shows</h2>
+  <h2>A 40-point gap that no benchmark shows</h2>
 
   <div class="callout finding">
     <div class="tag">&#9679; Finding 1</div>
-    <p class="lead">Generators diverge by up to 41.4 points when search-intensive world knowledge is required.</p>
+    <p class="lead">Generators that score comparably on standard prompts diverge by nearly 40 points when search-intensive world knowledge is required.</p>
   </div>
 
-  <p>Across 15 generators, NoSearch Overall9 scores span 49.1–78.9. On prompts needing external knowledge, open generators fall to <strong>22.2–28.6</strong>, while the strongest commercial systems remain above 60.</p>
+  <p>On prompts that need only what a model already learned, open and commercial generators land in the same band (67–75 out of 100). Turn to prompts that need live world knowledge, and the field splits: open generators crater to <strong>21–28</strong>, while commercial systems with built-in search barely move. Existing benchmarks test rendering inside known concepts, so they never see this gap at all.</p>
   <p>SearchGen-Bench contains 751 prompts scored by the finalized 3d5 evaluator. The primary <strong>Overall9</strong> metric averages nine applicable components and excludes Text Reference.</p>
 
   <figure class="fig">
-    <img src="assets/figures/b1.png" alt="Overall9 quality on NoSearch versus Search-Intensive strata across fifteen generators.">
-    <figcaption><b>Generators score well on prompts they can answer from memory (gray).</b> On prompts requiring external knowledge (blue), open generators drop sharply—by as much as 41.4 points—while the strongest commercial systems hold.</figcaption>
+    <img src="assets/figures/b1.png" alt="Per-generator quality on NoSearch vs Search-Intensive strata across twelve generators.">
+    <figcaption><b>Generators score well on prompts they can answer from memory (gray).</b> On prompts that require external knowledge (orange), every open generator collapses — up to a 40-point drop — while commercial systems with built-in search hold. The bottleneck is missing knowledge, not rendering skill.</figcaption>
   </figure>
 
   <figure class="fig">
-    <img src="assets/figures/searchgenbench_arena_style.png" alt="Overall9 SearchGen-Bench ranking of fifteen image generators on the full 751-prompt evaluation.">
+    <img src="assets/figures/searchgenbench_arena_style.png" alt="Overall9 SearchGen-Bench ranking of seventeen image generators on the full 751-prompt evaluation.">
     <figcaption><b>Overall SearchGen-Bench ranking.</b> GPT-Image-2 leads, followed by Qwen-Image-3-Max and Grok-Imagine-Image. Scores use Overall9 from the finalized 3d5 evaluator.</figcaption>
   </figure>
 
@@ -429,15 +429,17 @@ body.modal-open{overflow:hidden}
         <tr><td class="model">Nano Banana Pro</td><td class="overall">73.3</td><td>78.4</td><td>76.3</td><td>70.2</td><td>70.7</td><td>85.6</td><td>65.2</td><td>80.3</td><td>77.1</td><td>63.0</td></tr>
         <tr><td class="model">Qwen-Image-2-Pro</td><td class="overall">71.2</td><td>76.8</td><td>74.1</td><td>67.3</td><td>70.5</td><td>77.8</td><td>61.8</td><td>78.3</td><td>75.3</td><td>61.2</td></tr>
         <tr><td class="model">Qwen-Image-2</td><td class="overall">71.1</td><td>76.2</td><td>73.1</td><td>67.5</td><td>70.2</td><td>79.5</td><td>63.8</td><td>79.2</td><td>74.2</td><td>60.3</td></tr>
-        <tr><td class="model">Jimeng-4.0 / SeedDream-4.0</td><td class="overall">70.7</td><td>76.4</td><td>73.3</td><td>65.8</td><td>69.0</td><td>76.0</td><td>61.7</td><td>80.8</td><td>75.5</td><td>58.5</td></tr>
+        <tr><td class="model">SeedDream-4.0</td><td class="overall">70.7</td><td>76.4</td><td>73.3</td><td>65.8</td><td>69.0</td><td>76.0</td><td>61.7</td><td>80.8</td><td>75.5</td><td>58.5</td></tr>
         <tr><td class="model">Qwen-Image</td><td class="overall">70.0</td><td>74.9</td><td>72.0</td><td>65.5</td><td>69.2</td><td>61.1</td><td>61.7</td><td>77.0</td><td>78.6</td><td>60.1</td></tr>
         <tr><td class="model">SeedDream-4.5</td><td class="overall">69.3</td><td>76.2</td><td>72.8</td><td>65.5</td><td>67.3</td><td>74.0</td><td>59.0</td><td>76.8</td><td>73.4</td><td>59.6</td></tr>
-        <tr><td class="model">Gemini-2.5-Flash</td><td class="overall">66.3</td><td>70.8</td><td>68.5</td><td>61.8</td><td>67.7</td><td>49.0</td><td>59.7</td><td>77.5</td><td>70.5</td><td>56.2</td></tr>
+        <tr><td class="model">Nano-Banana</td><td class="overall">66.3</td><td>70.8</td><td>68.5</td><td>61.8</td><td>67.7</td><td>49.0</td><td>59.7</td><td>77.5</td><td>70.5</td><td>56.2</td></tr>
+        <tr><td class="model">SenseNova-U1</td><td class="overall">62.8</td><td>68.1</td><td>65.2</td><td>58.5</td><td>64.3</td><td>58.3</td><td>56.2</td><td>72.2</td><td>65.1</td><td>51.1</td></tr>
+        <tr><td class="model">Mage-Flow</td><td class="overall">61.2</td><td>64.2</td><td>61.8</td><td>54.5</td><td>64.7</td><td>51.2</td><td>56.3</td><td>71.8</td><td>67.4</td><td>47.1</td></tr>
         <tr><td class="model">Flux.2-Klein-9B</td><td class="overall">58.5</td><td>63.7</td><td>60.7</td><td>49.5</td><td>63.2</td><td>30.0</td><td>53.5</td><td>71.0</td><td>67.0</td><td>41.1</td></tr>
         <tr><td class="model">Flux.2-Klein-4B</td><td class="overall">52.3</td><td>55.8</td><td>52.6</td><td>42.3</td><td>59.7</td><td>16.1</td><td>49.8</td><td>67.7</td><td>60.1</td><td>35.3</td></tr>
-        <tr><td class="model">Flux.2-Klein-4B-DPO-v2</td><td class="overall">50.4</td><td>52.8</td><td>50.6</td><td>38.8</td><td>59.7</td><td>9.3</td><td>48.3</td><td>64.3</td><td>59.9</td><td>32.6</td></tr>
-        <tr><td class="model">Bagel-DPO-v2</td><td class="overall">50.0</td><td>52.1</td><td>49.8</td><td>37.8</td><td>57.8</td><td>19.9</td><td>48.8</td><td>63.0</td><td>61.2</td><td>32.1</td></tr>
         <tr><td class="model">Bagel</td><td class="overall">49.1</td><td>51.5</td><td>49.2</td><td>37.7</td><td>56.2</td><td>16.1</td><td>48.8</td><td>62.8</td><td>58.5</td><td>32.1</td></tr>
+        <tr><td class="model">OmniGen2</td><td class="overall">47.4</td><td>49.1</td><td>46.1</td><td>33.5</td><td>56.4</td><td>7.8</td><td>47.3</td><td>61.4</td><td>60.3</td><td>30.6</td></tr>
+        <tr><td class="model">Show-o2</td><td class="overall">34.4</td><td>32.7</td><td>30.9</td><td>21.0</td><td>47.2</td><td>2.4</td><td>38.0</td><td>49.8</td><td>40.9</td><td>19.9</td></tr>
         <tr class="stratum search"><th colspan="11" scope="rowgroup">SearchIntensive <span class="count">external knowledge is required</span></th></tr>
         <tr><td class="model">GPT-Image-2</td><td class="overall">75.5</td><td>74.4</td><td>73.7</td><td>72.2</td><td>77.4</td><td>77.7</td><td>68.9</td><td>83.9</td><td>84.9</td><td>70.4</td></tr>
         <tr><td class="model">Qwen-Image-3-Max</td><td class="overall">67.6</td><td>65.8</td><td>65.3</td><td>62.8</td><td>71.1</td><td>67.9</td><td>62.3</td><td>77.0</td><td>78.6</td><td>59.6</td></tr>
@@ -446,14 +448,16 @@ body.modal-open{overflow:hidden}
         <tr><td class="model">Qwen-Image-2-Pro</td><td class="overall">57.5</td><td>53.9</td><td>53.1</td><td>48.3</td><td>65.3</td><td>55.1</td><td>57.3</td><td>68.9</td><td>72.8</td><td>46.8</td></tr>
         <tr><td class="model">Qwen-Image-2</td><td class="overall">54.1</td><td>49.9</td><td>49.6</td><td>44.1</td><td>62.5</td><td>50.1</td><td>54.3</td><td>66.2</td><td>71.4</td><td>42.0</td></tr>
         <tr><td class="model">SeedDream-4.5</td><td class="overall">54.1</td><td>51.7</td><td>50.8</td><td>45.2</td><td>61.8</td><td>50.4</td><td>50.8</td><td>65.9</td><td>69.3</td><td>42.1</td></tr>
-        <tr><td class="model">Jimeng-4.0 / SeedDream-4.0</td><td class="overall">49.6</td><td>45.6</td><td>45.1</td><td>39.3</td><td>58.8</td><td>37.2</td><td>50.9</td><td>62.5</td><td>68.0</td><td>36.8</td></tr>
-        <tr><td class="model">Gemini-2.5-Flash</td><td class="overall">47.1</td><td>43.0</td><td>42.3</td><td>36.1</td><td>56.9</td><td>31.2</td><td>48.9</td><td>60.5</td><td>67.0</td><td>35.9</td></tr>
+        <tr><td class="model">SeedDream-4.0</td><td class="overall">49.6</td><td>45.6</td><td>45.1</td><td>39.3</td><td>58.8</td><td>37.2</td><td>50.9</td><td>62.5</td><td>68.0</td><td>36.8</td></tr>
+        <tr><td class="model">Nano-Banana</td><td class="overall">47.1</td><td>43.0</td><td>42.3</td><td>36.1</td><td>56.9</td><td>31.2</td><td>48.9</td><td>60.5</td><td>67.0</td><td>35.9</td></tr>
+        <tr><td class="model">SenseNova-U1</td><td class="overall">31.6</td><td>29.3</td><td>27.6</td><td>21.6</td><td>39.5</td><td>15.8</td><td>32.2</td><td>42.5</td><td>48.4</td><td>21.0</td></tr>
         <tr><td class="model">Qwen-Image</td><td class="overall">28.6</td><td>25.0</td><td>23.8</td><td>17.4</td><td>37.9</td><td>9.2</td><td>29.9</td><td>41.0</td><td>45.5</td><td>17.7</td></tr>
+        <tr><td class="model">Mage-Flow</td><td class="overall">28.4</td><td>23.0</td><td>21.7</td><td>15.7</td><td>38.7</td><td>9.7</td><td>35.0</td><td>40.0</td><td>50.2</td><td>16.2</td></tr>
         <tr><td class="model">Flux.2-Klein-9B</td><td class="overall">26.9</td><td>23.8</td><td>22.4</td><td>15.1</td><td>36.1</td><td>5.8</td><td>29.9</td><td>38.3</td><td>47.7</td><td>16.7</td></tr>
         <tr><td class="model">Flux.2-Klein-4B</td><td class="overall">23.9</td><td>20.1</td><td>18.6</td><td>11.5</td><td>33.0</td><td>3.4</td><td>28.1</td><td>35.7</td><td>44.8</td><td>12.7</td></tr>
-        <tr><td class="model">Flux.2-Klein-4B-DPO-v2</td><td class="overall">23.8</td><td>18.3</td><td>17.3</td><td>10.7</td><td>34.0</td><td>3.2</td><td>29.8</td><td>36.2</td><td>47.1</td><td>10.9</td></tr>
-        <tr><td class="model">Bagel-DPO-v2</td><td class="overall">22.8</td><td>17.3</td><td>16.6</td><td>10.6</td><td>32.9</td><td>2.4</td><td>28.1</td><td>35.1</td><td>40.5</td><td>10.7</td></tr>
         <tr><td class="model">Bagel</td><td class="overall">22.2</td><td>18.7</td><td>17.7</td><td>12.4</td><td>30.4</td><td>2.2</td><td>25.0</td><td>32.4</td><td>38.1</td><td>14.2</td></tr>
+        <tr><td class="model">OmniGen2</td><td class="overall">20.4</td><td>16.4</td><td>14.9</td><td>8.8</td><td>29.2</td><td>2.5</td><td>24.3</td><td>31.4</td><td>40.8</td><td>9.5</td></tr>
+        <tr><td class="model">Show-o2</td><td class="overall">17.5</td><td>8.1</td><td>8.0</td><td>4.2</td><td>30.2</td><td>0.7</td><td>26.5</td><td>34.3</td><td>31.7</td><td>3.4</td></tr>
       </tbody>
     </table>
     <div class="benchmark-note">Knowledge-sensitive measures test whether requested facts are present. Results use present-only aggregation; coverage is reported in the interactive leaderboard.</div>
