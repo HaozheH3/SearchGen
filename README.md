@@ -37,7 +37,7 @@ Haozhe Wang<sup>1</sup> · Weijia Feng<sup>3</sup> · Jinpeng Yu<sup>3</sup> · 
 
 ## TL;DR — Teach What You Can, Search the Rest
 
-Modern image generators render gorgeously and lie fluently. Ask for the 2025 Osaka Expo mascot and you get a confident, wrong invention. The failure isn't the pixels—it's the **knowledge**. On **SearchGen-Bench**, open generators score just **22.2–28.6 out of 100** on search-intensive prompts—up to a 41.4-point collapse.
+Modern image generators render gorgeously and lie fluently. Ask for the 2025 Osaka Expo mascot and you get a confident, wrong invention. The failure isn't the pixels—it's the **knowledge**. On **SearchGen-Bench**, frontier open generators score just **21–28 out of 100** on search-intensive prompts—up to a roughly 40-point collapse that standard benchmarks never register.
 
 Search is the obvious fix, the way an illustrator consults references. But naive search backfires: it corrupts prompts the generator already handled. The real problem is a **knowledge boundary**—the line between what a generator can learn and what it must look up. That line is generator-specific, it moves during training, and it cannot be hand-drawn. It has to be discovered.
 
@@ -59,11 +59,11 @@ Worse, generators have no way to flag their own ignorance. They are trained to a
 
 *Ask for a specific person, a labeled scientific diagram, or live data and today's best generators confidently fabricate. These representative cases span SearchGen's 12 failure categories.*
 
-## Finding 1 — A 41-Point Gap That No Benchmark Shows
+## Finding 1 — A 40-Point Gap That No Benchmark Shows
 
-> **Generators diverge by up to 41.4 points when search-intensive world knowledge is required.**
+> **Generators that score comparably on standard prompts diverge by nearly 40 points when search-intensive world knowledge is required.**
 
-Across 15 generators, NoSearch Overall9 scores span **49.1–78.9**. On prompts needing external knowledge, open generators fall to **22.2–28.6**, while the strongest commercial systems remain above 60.
+On prompts that need only what a model already learned, open and commercial generators land in the same band (**67–75 out of 100**). Turn to prompts that need live world knowledge, and the field splits: open generators crater to **21–28**, while commercial systems with built-in search barely move. Existing benchmarks test rendering inside known concepts, so they never see this gap at all.
 
 To surface it, we built **SearchGen-Bench**: 751 test prompts scored with separate dimensions for **knowledge** and **rendering**. The split is the whole point. When a generator scores poorly on knowledge checklists but remains strong on image quality, the diagnosis is unambiguous—it can draw; it just does not know.
 
@@ -71,10 +71,10 @@ To surface it, we built **SearchGen-Bench**: 751 test prompts scored with separa
   <img src="assets/readme/b1.png" width="900" alt="SearchGen-Bench results across no-search and search-intensive prompts">
 </p>
 
-***SearchGen-Bench results.** Finalized 3d5 Overall9 scores on 100 NoSearch and 651 Search-Intensive prompts. The largest gap is 41.4 points.*
+***SearchGen-Bench results.** Generators score well on prompts they can answer from memory (gray). On prompts requiring external knowledge (orange), every open generator collapses—up to a 40-point drop—while commercial systems with built-in search hold. The bottleneck is missing knowledge, not rendering skill.*
 
 <p align="center">
-  <img src="assets/readme/searchgenbench_arena_style.png" width="760" alt="Overall9 SearchGen-Bench ranking of fifteen image generators on the full 751-prompt evaluation">
+  <img src="assets/readme/searchgenbench_arena_style.png" width="760" alt="Overall9 SearchGen-Bench ranking of seventeen image generators on the full 751-prompt evaluation">
 </p>
 
 ***Overall SearchGen-Bench ranking.** GPT-Image-2 leads, followed by Qwen-Image-3-Max and Grok-Imagine-Image. Scores use Overall9 from the finalized 3d5 evaluator.*
@@ -91,15 +91,17 @@ Scores are reported on a 0–100 scale; higher is better. **Checklist**, **Rubri
 | NoSearch | Commercial | Nano Banana Pro | 73.3 | 78.4 | 76.3 | 70.2 | 70.7 | 85.6 | 65.2 | 80.3 | 77.1 | 63.0 |
 | NoSearch | Commercial | Qwen-Image-2-Pro | 71.2 | 76.8 | 74.1 | 67.3 | 70.5 | 77.8 | 61.8 | 78.3 | 75.3 | 61.2 |
 | NoSearch | Commercial | Qwen-Image-2 | 71.1 | 76.2 | 73.1 | 67.5 | 70.2 | 79.5 | 63.8 | 79.2 | 74.2 | 60.3 |
-| NoSearch | Commercial | Jimeng-4.0 / SeedDream-4.0 | 70.7 | 76.4 | 73.3 | 65.8 | 69.0 | 76.0 | 61.7 | 80.8 | 75.5 | 58.5 |
+| NoSearch | Commercial | SeedDream-4.0 | 70.7 | 76.4 | 73.3 | 65.8 | 69.0 | 76.0 | 61.7 | 80.8 | 75.5 | 58.5 |
 | NoSearch | Open | Qwen-Image | 70.0 | 74.9 | 72.0 | 65.5 | 69.2 | 61.1 | 61.7 | 77.0 | 78.6 | 60.1 |
 | NoSearch | Commercial | SeedDream-4.5 | 69.3 | 76.2 | 72.8 | 65.5 | 67.3 | 74.0 | 59.0 | 76.8 | 73.4 | 59.6 |
-| NoSearch | Commercial | Gemini-2.5-Flash | 66.3 | 70.8 | 68.5 | 61.8 | 67.7 | 49.0 | 59.7 | 77.5 | 70.5 | 56.2 |
+| NoSearch | Commercial | Nano-Banana | 66.3 | 70.8 | 68.5 | 61.8 | 67.7 | 49.0 | 59.7 | 77.5 | 70.5 | 56.2 |
+| NoSearch | Open | SenseNova-U1 | 62.8 | 68.1 | 65.2 | 58.5 | 64.3 | 58.3 | 56.2 | 72.2 | 65.1 | 51.1 |
+| NoSearch | Open | Mage-Flow | 61.2 | 64.2 | 61.8 | 54.5 | 64.7 | 51.2 | 56.3 | 71.8 | 67.4 | 47.1 |
 | NoSearch | Open | Flux.2-Klein-9B | 58.5 | 63.7 | 60.7 | 49.5 | 63.2 | 30.0 | 53.5 | 71.0 | 67.0 | 41.1 |
 | NoSearch | Open | Flux.2-Klein-4B | 52.3 | 55.8 | 52.6 | 42.3 | 59.7 | 16.1 | 49.8 | 67.7 | 60.1 | 35.3 |
-| NoSearch | Open | Flux.2-Klein-4B-DPO-v2 | 50.4 | 52.8 | 50.6 | 38.8 | 59.7 | 9.3 | 48.3 | 64.3 | 59.9 | 32.6 |
-| NoSearch | Open | Bagel-DPO-v2 | 50.0 | 52.1 | 49.8 | 37.8 | 57.8 | 19.9 | 48.8 | 63.0 | 61.2 | 32.1 |
 | NoSearch | Open | Bagel | 49.1 | 51.5 | 49.2 | 37.7 | 56.2 | 16.1 | 48.8 | 62.8 | 58.5 | 32.1 |
+| NoSearch | Open | OmniGen2 | 47.4 | 49.1 | 46.1 | 33.5 | 56.4 | 7.8 | 47.3 | 61.4 | 60.3 | 30.6 |
+| NoSearch | Open | Show-o2 | 34.4 | 32.7 | 30.9 | 21.0 | 47.2 | 2.4 | 38.0 | 49.8 | 40.9 | 19.9 |
 | SearchIntensive | Commercial | GPT-Image-2 | 75.5 | 74.4 | 73.7 | 72.2 | 77.4 | 77.7 | 68.9 | 83.9 | 84.9 | 70.4 |
 | SearchIntensive | Commercial | Qwen-Image-3-Max | 67.6 | 65.8 | 65.3 | 62.8 | 71.1 | 67.9 | 62.3 | 77.0 | 78.6 | 59.6 |
 | SearchIntensive | Commercial | Grok-Imagine-Image | 66.7 | 65.9 | 64.6 | 62.8 | 69.5 | 65.7 | 61.7 | 75.6 | 77.8 | 59.7 |
@@ -107,14 +109,16 @@ Scores are reported on a 0–100 scale; higher is better. **Checklist**, **Rubri
 | SearchIntensive | Commercial | Qwen-Image-2-Pro | 57.5 | 53.9 | 53.1 | 48.3 | 65.3 | 55.1 | 57.3 | 68.9 | 72.8 | 46.8 |
 | SearchIntensive | Commercial | Qwen-Image-2 | 54.1 | 49.9 | 49.6 | 44.1 | 62.5 | 50.1 | 54.3 | 66.2 | 71.4 | 42.0 |
 | SearchIntensive | Commercial | SeedDream-4.5 | 54.1 | 51.7 | 50.8 | 45.2 | 61.8 | 50.4 | 50.8 | 65.9 | 69.3 | 42.1 |
-| SearchIntensive | Commercial | Jimeng-4.0 / SeedDream-4.0 | 49.6 | 45.6 | 45.1 | 39.3 | 58.8 | 37.2 | 50.9 | 62.5 | 68.0 | 36.8 |
-| SearchIntensive | Commercial | Gemini-2.5-Flash | 47.1 | 43.0 | 42.3 | 36.1 | 56.9 | 31.2 | 48.9 | 60.5 | 67.0 | 35.9 |
+| SearchIntensive | Commercial | SeedDream-4.0 | 49.6 | 45.6 | 45.1 | 39.3 | 58.8 | 37.2 | 50.9 | 62.5 | 68.0 | 36.8 |
+| SearchIntensive | Commercial | Nano-Banana | 47.1 | 43.0 | 42.3 | 36.1 | 56.9 | 31.2 | 48.9 | 60.5 | 67.0 | 35.9 |
+| SearchIntensive | Open | SenseNova-U1 | 31.6 | 29.3 | 27.6 | 21.6 | 39.5 | 15.8 | 32.2 | 42.5 | 48.4 | 21.0 |
 | SearchIntensive | Open | Qwen-Image | 28.6 | 25.0 | 23.8 | 17.4 | 37.9 | 9.2 | 29.9 | 41.0 | 45.5 | 17.7 |
+| SearchIntensive | Open | Mage-Flow | 28.4 | 23.0 | 21.7 | 15.7 | 38.7 | 9.7 | 35.0 | 40.0 | 50.2 | 16.2 |
 | SearchIntensive | Open | Flux.2-Klein-9B | 26.9 | 23.8 | 22.4 | 15.1 | 36.1 | 5.8 | 29.9 | 38.3 | 47.7 | 16.7 |
 | SearchIntensive | Open | Flux.2-Klein-4B | 23.9 | 20.1 | 18.6 | 11.5 | 33.0 | 3.4 | 28.1 | 35.7 | 44.8 | 12.7 |
-| SearchIntensive | Open | Flux.2-Klein-4B-DPO-v2 | 23.8 | 18.3 | 17.3 | 10.7 | 34.0 | 3.2 | 29.8 | 36.2 | 47.1 | 10.9 |
-| SearchIntensive | Open | Bagel-DPO-v2 | 22.8 | 17.3 | 16.6 | 10.6 | 32.9 | 2.4 | 28.1 | 35.1 | 40.5 | 10.7 |
 | SearchIntensive | Open | Bagel | 22.2 | 18.7 | 17.7 | 12.4 | 30.4 | 2.2 | 25.0 | 32.4 | 38.1 | 14.2 |
+| SearchIntensive | Open | OmniGen2 | 20.4 | 16.4 | 14.9 | 8.8 | 29.2 | 2.5 | 24.3 | 31.4 | 40.8 | 9.5 |
+| SearchIntensive | Open | Show-o2 | 17.5 | 8.1 | 8.0 | 4.2 | 30.2 | 0.7 | 26.5 | 34.3 | 31.7 | 3.4 |
 
 *NoSearch contains 100 prompts; Search-Intensive is the 651-row union of VisualSearch and TextualSearch. Scores use present-only aggregation.*
 
