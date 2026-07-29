@@ -22,7 +22,7 @@ Haozhe Wang<sup>1</sup> · Weijia Feng<sup>3</sup> · Jinpeng Yu<sup>3</sup> · 
 <p>
   <a href="https://huggingface.co/datasets/JasperHaozhe/SearchGen-20K"><img src="https://img.shields.io/badge/%F0%9F%A4%97-SearchGen--20K-FFD21E?style=for-the-badge" height="28" alt="SearchGen-20K on Hugging Face"></a>
   <a href="https://huggingface.co/datasets/JasperHaozhe/SearchGen-Corpus-1M"><img src="https://img.shields.io/badge/%F0%9F%A4%97-SearchGen--Corpus--1M-FFD21E?style=for-the-badge" height="28" alt="SearchGen-Corpus-1M on Hugging Face"></a>
-  <a href="https://huggingface.co/datasets/JasperHaozhe/SearchGen-Bench"><img src="https://img.shields.io/badge/%F0%9F%A4%97-SearchGen--Bench-FFD21E?style=for-the-badge" height="28" alt="SearchGen-Bench on Hugging Face"></a>
+  <a href="https://huggingface.co/datasets/JasperHaozhe/SearchGen-Bench"><img src="https://img.shields.io/badge/%F0%9F%A4%97-AgentGen--Bench-FFD21E?style=for-the-badge" height="28" alt="AgentGen-Bench on Hugging Face"></a>
 </p>
 
 <p>
@@ -33,9 +33,9 @@ Haozhe Wang<sup>1</sup> · Weijia Feng<sup>3</sup> · Jinpeng Yu<sup>3</sup> · 
 <p><strong>Enjoying SearchGen? Help us by upvoting and starring the project.</strong></p>
 
 <p>
-  <a href="https://huggingface.co/papers/2607.05382"><img src="assets/readme/upvote-hf.svg" height="54" alt="Upvote on Hugging Face"></a>
-  <a href="https://alphaxiv.org/abs/2607.05382"><img src="assets/readme/upvote-alphaxiv.svg" height="54" alt="Upvote on alphaXiv"></a>
-  <a href="https://github.com/HaozheH3/SearchGen"><img src="assets/readme/star-github.svg" height="54" alt="Star on GitHub"></a>
+  <a href="https://huggingface.co/papers/2607.05382"><img src="https://img.shields.io/badge/Hugging%20Face-Upvote-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black" height="28" alt="Upvote on Hugging Face"></a>
+  <a href="https://alphaxiv.org/abs/2607.05382"><img src="https://img.shields.io/badge/alphaXiv-Upvote-2563EB?style=for-the-badge" height="28" alt="Upvote on alphaXiv"></a>
+  <a href="https://github.com/HaozheH3/SearchGen"><img src="https://img.shields.io/badge/GitHub-Star-181717?style=for-the-badge&logo=github&logoColor=white" height="28" alt="Star on GitHub"></a>
 </p>
 
 **Image generators fabricate what they don't know. _This one looks it up first—and knows when not to._**
@@ -48,7 +48,7 @@ Haozhe Wang<sup>1</sup> · Weijia Feng<sup>3</sup> · Jinpeng Yu<sup>3</sup> · 
 
 ## TL;DR — Teach What You Can, Search the Rest
 
-Modern image generators render gorgeously and lie fluently. Ask for the 2025 Osaka Expo mascot and you get a confident, wrong invention. The failure isn't the pixels—it's the **knowledge**. On **SearchGen-Bench**, frontier open generators score just **21–28 out of 100** on search-intensive prompts—up to a roughly 40-point collapse that standard benchmarks never register.
+Modern image generators render gorgeously and lie fluently. Ask for the 2025 Osaka Expo mascot and you get a confident, wrong invention. The failure isn't the pixels—it's the **knowledge**. On **AgentGen-Bench**, frontier open generators score just **21–28 out of 100** on search-intensive prompts—up to a roughly 40-point collapse that standard benchmarks never register.
 
 Search is the obvious fix, the way an illustrator consults references. But naive search backfires: it corrupts prompts the generator already handled. The real problem is a **knowledge boundary**—the line between what a generator can learn and what it must look up. That line is generator-specific, it moves during training, and it cannot be hand-drawn. It has to be discovered.
 
@@ -76,19 +76,19 @@ Worse, generators have no way to flag their own ignorance. They are trained to a
 
 On prompts that need only what a model already learned, open and commercial generators land in the same band (**67–75 out of 100**). Turn to prompts that need live world knowledge, and the field splits: open generators crater to **21–28**, while commercial systems with built-in search barely move. Existing benchmarks test rendering inside known concepts, so they never see this gap at all.
 
-To surface it, we built **SearchGen-Bench**: 751 test prompts scored with separate dimensions for **knowledge** and **rendering**. The split is the whole point. When a generator scores poorly on knowledge checklists but remains strong on image quality, the diagnosis is unambiguous—it can draw; it just does not know.
+To surface it, we built **AgentGen-Bench**: 751 test prompts scored with separate dimensions for **knowledge** and **rendering**. The split is the whole point. When a generator scores poorly on knowledge checklists but remains strong on image quality, the diagnosis is unambiguous—it can draw; it just does not know.
 
 <p align="center">
-  <img src="assets/readme/b1.png" width="900" alt="SearchGen-Bench results across no-search and search-intensive prompts">
+  <img src="assets/readme/b1.png" width="900" alt="AgentGen-Bench results across no-search and search-intensive prompts">
 </p>
 
-***SearchGen-Bench results.** Generators score well on prompts they can answer from memory (gray). On prompts requiring external knowledge (orange), every open generator collapses—up to a 40-point drop—while commercial systems with built-in search hold. The bottleneck is missing knowledge, not rendering skill.*
+***AgentGen-Bench results.** Generators score well on prompts they can answer from memory (gray). On prompts requiring external knowledge (orange), every open generator collapses—up to a 40-point drop—while commercial systems with built-in search hold. The bottleneck is missing knowledge, not rendering skill.*
 
 <p align="center">
-  <img src="assets/readme/searchgenbench_arena_style.png" width="760" alt="Overall9 SearchGen-Bench ranking of seventeen image generators on the full 751-prompt evaluation">
+  <img src="assets/readme/searchgenbench_arena_style.png" width="760" alt="Overall9 AgentGen-Bench ranking of seventeen image generators on the full 751-prompt evaluation">
 </p>
 
-***Overall SearchGen-Bench ranking.** GPT-Image-2 leads, followed by Qwen-Image-3-Max and Grok-Imagine-Image. Scores use Overall9 from the finalized 3d5 evaluator.*
+***Overall AgentGen-Bench ranking.** GPT-Image-2 leads, followed by Qwen-Image-3-Max and Grok-Imagine-Image. Scores use Overall9 from the finalized 3d5 evaluator.*
 
 ### Full Benchmark Breakdown
 
@@ -308,12 +308,12 @@ Then export them with `set -a; source .env; set +a`.
 
 ## Evaluation Quick Start
 
-Download [SearchGen-Bench](https://huggingface.co/datasets/JasperHaozhe/SearchGen-Bench), then prepare a predictions manifest following [`evaluation/examples/generated_images_manifest.example.jsonl`](evaluation/examples/generated_images_manifest.example.jsonl). From the repository's `evaluation/` directory, validate all inputs without API calls, replacing the benchmark paths with the location of your download:
+Download [AgentGen-Bench](https://huggingface.co/datasets/JasperHaozhe/SearchGen-Bench), then prepare a predictions manifest following [`evaluation/examples/generated_images_manifest.example.jsonl`](evaluation/examples/generated_images_manifest.example.jsonl). From the repository's `evaluation/` directory, validate all inputs without API calls, replacing the benchmark paths with the location of your download:
 
 ```bash
 python evaluate.py \
-  --metadata /path/to/SearchGen-Bench/eval_metadata.jsonl \
-  --benchmark-root /path/to/SearchGen-Bench \
+  --metadata /path/to/AgentGen-Bench/eval_metadata.jsonl \
+  --benchmark-root /path/to/AgentGen-Bench \
   --predictions-manifest predictions.jsonl \
   --output-dir results \
   --model your-judge-model \
@@ -324,7 +324,7 @@ Remove `--preflight` and add `--workers 16` to run evaluation. Completed success
 
 ## Evaluation
 
-SearchGen-Bench separates no-search and search-intensive prompts so evaluation can distinguish missing world knowledge from rendering failures and damage caused by unnecessary retrieval.
+AgentGen-Bench separates no-search and search-intensive prompts so evaluation can distinguish missing world knowledge from rendering failures and damage caused by unnecessary retrieval.
 
 The released evaluation protocol reports checklist satisfaction, adaptive-rubric satisfaction, prompt faithfulness, image quality, text rendering, AI naturalness, composition and aesthetics, physical plausibility, visual-reference consistency, and text-reference consistency. Component scores use a 0–3 scale with half points; non-applicable fields remain unscored.
 
@@ -356,8 +356,8 @@ The code release is licensed under the [Apache License 2.0](LICENSE).
 <div align="center">
   <p><strong>Enjoying SearchGen? Help us by upvoting and starring the project.</strong></p>
   <p>
-    <a href="https://huggingface.co/papers/2607.05382"><img src="assets/readme/upvote-hf.svg" height="54" alt="Upvote on Hugging Face"></a>
-    <a href="https://alphaxiv.org/abs/2607.05382"><img src="assets/readme/upvote-alphaxiv.svg" height="54" alt="Upvote on alphaXiv"></a>
-    <a href="https://github.com/HaozheH3/SearchGen"><img src="assets/readme/star-github.svg" height="54" alt="Star on GitHub"></a>
+    <a href="https://huggingface.co/papers/2607.05382"><img src="https://img.shields.io/badge/Hugging%20Face-Upvote-FFD21E?style=for-the-badge&logo=huggingface&logoColor=black" height="28" alt="Upvote on Hugging Face"></a>
+    <a href="https://alphaxiv.org/abs/2607.05382"><img src="https://img.shields.io/badge/alphaXiv-Upvote-2563EB?style=for-the-badge" height="28" alt="Upvote on alphaXiv"></a>
+    <a href="https://github.com/HaozheH3/SearchGen"><img src="https://img.shields.io/badge/GitHub-Star-181717?style=for-the-badge&logo=github&logoColor=white" height="28" alt="Star on GitHub"></a>
   </p>
 </div>
