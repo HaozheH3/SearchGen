@@ -10,13 +10,24 @@ Haozhe Wang<sup>1</sup> · Weijia Feng<sup>3</sup> · Jinpeng Yu<sup>3</sup> · 
 
 ✉ Corresponding authors: Jiaming Liu, Cong Wei
 
-[📄 arXiv](https://arxiv.org/abs/2607.05382) · [🌐 Project Page](https://haozheh3.github.io/SearchGen/) · [💻 GitHub](https://github.com/HaozheH3/SearchGen)
-
-[🤗 SearchGen-20K](https://huggingface.co/datasets/JasperHaozhe/SearchGen-20K) · [🤗 SearchGen-Corpus-1M](https://huggingface.co/datasets/JasperHaozhe/SearchGen-Corpus-1M) · [🤗 SearchGen-Bench](https://huggingface.co/datasets/JasperHaozhe/SearchGen-Bench)
+<p>
+  <a href="https://haozheh3.github.io/SearchGen/"><img src="https://img.shields.io/badge/Explore-Project%20Page-2563EB?style=for-the-badge&logo=googlechrome&logoColor=white" height="36" alt="Explore the Project Page"></a>
+</p>
 
 <p>
-  <a href="http://101.47.155.111:8880/studio"><img src="assets/readme/live-interactive-demo.svg" height="58" alt="Launch the Live Interactive Demo"></a>
-  <a href="https://haozheh3.github.io/SearchGen/demo.html"><img src="assets/readme/demo.svg" height="54" alt="Watch the Demo"></a>
+  <a href="https://arxiv.org/abs/2607.05382"><img src="https://img.shields.io/badge/arXiv-2607.05382-B31B1B?style=for-the-badge&logo=arxiv&logoColor=white" height="28" alt="Paper on arXiv"></a>
+  <a href="https://github.com/HaozheH3/SearchGen"><img src="https://img.shields.io/badge/GitHub-Code-181717?style=for-the-badge&logo=github&logoColor=white" height="28" alt="SearchGen code on GitHub"></a>
+</p>
+
+<p>
+  <a href="https://huggingface.co/datasets/JasperHaozhe/SearchGen-20K"><img src="https://img.shields.io/badge/%F0%9F%A4%97-SearchGen--20K-FFD21E?style=for-the-badge" height="28" alt="SearchGen-20K on Hugging Face"></a>
+  <a href="https://huggingface.co/datasets/JasperHaozhe/SearchGen-Corpus-1M"><img src="https://img.shields.io/badge/%F0%9F%A4%97-SearchGen--Corpus--1M-FFD21E?style=for-the-badge" height="28" alt="SearchGen-Corpus-1M on Hugging Face"></a>
+  <a href="https://huggingface.co/datasets/JasperHaozhe/SearchGen-Bench"><img src="https://img.shields.io/badge/%F0%9F%A4%97-SearchGen--Bench-FFD21E?style=for-the-badge" height="28" alt="SearchGen-Bench on Hugging Face"></a>
+</p>
+
+<p>
+  <a href="http://101.47.155.111:8880/studio"><img src="https://img.shields.io/badge/Live-Interactive%20Demo-F97316?style=for-the-badge&logo=rocket&logoColor=white" height="28" alt="Launch the Live Interactive Demo"></a>
+  <a href="https://haozheh3.github.io/SearchGen/demo.html"><img src="https://img.shields.io/badge/Watch-Static%20Demo-7C3AED?style=for-the-badge&logo=youtube&logoColor=white" height="28" alt="Watch the Static Demo"></a>
 </p>
 
 <p><strong>Enjoying SearchGen? Help us by upvoting and starring the project.</strong></p>
