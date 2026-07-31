@@ -85,7 +85,7 @@ To surface it, we built **AgentGen-Bench**: 751 test prompts scored with separat
 ***AgentGen-Bench results.** Generators score well on prompts they can answer from memory (gray). On prompts requiring external knowledge (orange), every open generator collapses—up to a 40-point drop—while commercial systems with built-in search hold. The bottleneck is missing knowledge, not rendering skill.*
 
 <p align="center">
-  <img src="assets/readme/searchgenbench_arena_style.png" width="760" alt="Overall9 AgentGen-Bench ranking of seventeen image generators on the full 751-prompt evaluation">
+  <img src="assets/readme/agentgenbench_arena_style.png" width="760" alt="Overall9 AgentGen-Bench ranking of seventeen image generators on the full 751-prompt evaluation">
 </p>
 
 ***Overall AgentGen-Bench ranking.** GPT-Image-2 leads, followed by Qwen-Image-3-Max and Grok-Imagine-Image. Scores use Overall9 from the finalized 3d5 evaluator.*
