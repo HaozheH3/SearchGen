@@ -91,7 +91,7 @@ To surface it, we built **AgentGen-Bench** (previously named **SearchGen-Bench**
 
 ***Overall AgentGen-Bench ranking.** GPT-Image-2 leads, followed by Grok-Imagine-2.0-Low and Qwen-Image-3-Max. Scores use Overall9 from the finalized 3d5 evaluator.*
 
-### Full and Test-mini Leaderboard
+### Benchmark Leaderboards
 
 **Full** evaluates all 751 benchmark prompts. **Test-mini** is the fixed,
 published 200-prompt slice obtained by selecting rows whose `subset` array
@@ -105,32 +105,55 @@ testmini = benchmark.filter(lambda row: "testmini" in row["subset"])
 assert len(testmini) == 200
 ```
 
-Scores are on a 0–100 scale. Overall9 is the primary ranking metric; coverage
-is `scored prompts / slice prompts`, with missing evaluator scores excluded
-from aggregation. Across all 18 models, Test-mini preserves the Full Overall9
-rank order (Pearson `r = 0.9994`; mean absolute displayed-score difference
-`0.77`).
+Scores are on a 0–100 scale. Each table reports Overall9 for the same 18
+generators. Coverage is `scored prompts / slice prompts`, with missing
+evaluator scores excluded from aggregation.
 
-| Full rank | Model | Full cov. | Full O9 | Full O10 | Test-mini cov. | Test-mini O9 | Test-mini O10 |
-|---:|---|---:|---:|---:|---:|---:|---:|
-| 1 | GPT-Image-2 | 718/751 | 76.0 | 74.8 | 200/200 | 76.3 | 75.2 |
-| 2 | Grok-Imagine-2.0-Low | 715/751 | 75.2 | 74.1 | 196/200 | 73.9 | 72.8 |
-| 3 | Qwen-Image-3-Max | 738/751 | 68.4 | 67.2 | 195/200 | 68.2 | 66.8 |
-| 4 | Grok-Imagine | 717/751 | 67.8 | 66.5 | 196/200 | 67.7 | 66.4 |
-| 5 | Nano Banana Pro | 738/751 | 65.0 | 63.6 | 200/200 | 64.7 | 63.2 |
-| 6 | Qwen-Image-2-Pro | 742/751 | 59.4 | 58.0 | 197/200 | 60.3 | 59.0 |
-| 7 | Qwen-Image-2 | 741/751 | 56.4 | 54.9 | 197/200 | 56.9 | 55.5 |
-| 8 | SeedDream-4.5 | 746/751 | 56.2 | 54.7 | 199/200 | 56.6 | 55.2 |
-| 9 | SeedDream-4.0 | 750/751 | 52.5 | 50.9 | 200/200 | 51.8 | 50.1 |
-| 10 | Nano-Banana | 740/751 | 49.7 | 47.9 | 200/200 | 48.4 | 46.5 |
-| 11 | SenseNova-U1 | 750/751 | 35.7 | 34.4 | 200/200 | 35.4 | 34.0 |
-| 12 | Qwen-Image | 751/751 | 34.1 | 32.8 | 200/200 | 32.7 | 31.5 |
-| 13 | Mage-Flow | 751/751 | 32.8 | 31.4 | 200/200 | 31.4 | 30.0 |
-| 14 | Flux.2-Klein-9B | 750/751 | 31.1 | 29.7 | 200/200 | 30.5 | 29.2 |
-| 15 | Flux.2-Klein-4B | 751/751 | 27.7 | 26.4 | 200/200 | 27.1 | 25.7 |
-| 16 | Bagel | 751/751 | 25.8 | 24.6 | 200/200 | 24.8 | 23.5 |
-| 17 | OmniGen2 | 750/751 | 24.0 | 22.8 | 199/200 | 22.2 | 21.1 |
-| 18 | Show-o2 | 751/751 | 19.8 | 18.7 | 200/200 | 19.1 | 18.1 |
+#### Full benchmark (751 prompts)
+
+| Rank | Model | Coverage | Overall9 |
+|---:|---|---:|---:|
+| 1 | GPT-Image-2 | 718/751 | 76.0 |
+| 2 | Grok-Imagine-2.0-Low | 715/751 | 75.2 |
+| 3 | Qwen-Image-3-Max | 738/751 | 68.4 |
+| 4 | Grok-Imagine | 717/751 | 67.8 |
+| 5 | Nano Banana Pro | 738/751 | 65.0 |
+| 6 | Qwen-Image-2-Pro | 742/751 | 59.4 |
+| 7 | Qwen-Image-2 | 741/751 | 56.4 |
+| 8 | SeedDream-4.5 | 746/751 | 56.2 |
+| 9 | SeedDream-4.0 | 750/751 | 52.5 |
+| 10 | Nano-Banana | 740/751 | 49.7 |
+| 11 | SenseNova-U1 | 750/751 | 35.7 |
+| 12 | Qwen-Image | 751/751 | 34.1 |
+| 13 | Mage-Flow | 751/751 | 32.8 |
+| 14 | Flux.2-Klein-9B | 750/751 | 31.1 |
+| 15 | Flux.2-Klein-4B | 751/751 | 27.7 |
+| 16 | Bagel | 751/751 | 25.8 |
+| 17 | OmniGen2 | 750/751 | 24.0 |
+| 18 | Show-o2 | 751/751 | 19.8 |
+
+#### Test-mini (200 prompts)
+
+| Rank | Model | Coverage | Overall9 |
+|---:|---|---:|---:|
+| 1 | GPT-Image-2 | 200/200 | 76.3 |
+| 2 | Grok-Imagine-2.0-Low | 196/200 | 73.9 |
+| 3 | Qwen-Image-3-Max | 195/200 | 68.2 |
+| 4 | Grok-Imagine | 196/200 | 67.7 |
+| 5 | Nano Banana Pro | 200/200 | 64.7 |
+| 6 | Qwen-Image-2-Pro | 197/200 | 60.3 |
+| 7 | Qwen-Image-2 | 197/200 | 56.9 |
+| 8 | SeedDream-4.5 | 199/200 | 56.6 |
+| 9 | SeedDream-4.0 | 200/200 | 51.8 |
+| 10 | Nano-Banana | 200/200 | 48.4 |
+| 11 | SenseNova-U1 | 200/200 | 35.4 |
+| 12 | Qwen-Image | 200/200 | 32.7 |
+| 13 | Mage-Flow | 200/200 | 31.4 |
+| 14 | Flux.2-Klein-9B | 200/200 | 30.5 |
+| 15 | Flux.2-Klein-4B | 200/200 | 27.1 |
+| 16 | Bagel | 200/200 | 24.8 |
+| 17 | OmniGen2 | 199/200 | 22.2 |
+| 18 | Show-o2 | 200/200 | 19.1 |
 
 <details>
 <summary><strong>Mini-easy and Mini-hard leaderboards (100 prompts each)</strong></summary>
@@ -140,49 +163,49 @@ they are not necessarily a partition of the 200-prompt `testmini` slice.
 
 #### Mini-easy
 
-| Rank | Model | Coverage | Overall9 | Overall10 |
-|---:|---|---:|---:|---:|
-| 1 | GPT-Image-2 | 100/100 | 79.7 | 79.1 |
-| 2 | Grok-Imagine-2.0-Low | 98/100 | 79.5 | 78.9 |
-| 3 | Qwen-Image-3-Max | 99/100 | 74.9 | 74.0 |
-| 4 | Grok-Imagine | 98/100 | 73.4 | 72.5 |
-| 5 | Qwen-Image-2-Pro | 99/100 | 69.3 | 68.2 |
-| 6 | Nano Banana Pro | 100/100 | 66.5 | 65.3 |
-| 7 | SeedDream-4.0 | 100/100 | 64.3 | 63.1 |
-| 8 | SeedDream-4.5 | 99/100 | 63.9 | 62.6 |
-| 9 | Qwen-Image-2 | 99/100 | 63.5 | 62.1 |
-| 10 | Nano-Banana | 100/100 | 54.4 | 52.4 |
-| 11 | SenseNova-U1 | 100/100 | 40.6 | 39.0 |
-| 12 | Qwen-Image | 100/100 | 38.7 | 37.1 |
-| 13 | Mage-Flow | 100/100 | 37.7 | 36.0 |
-| 14 | Flux.2-Klein-9B | 100/100 | 34.8 | 33.1 |
-| 15 | Flux.2-Klein-4B | 100/100 | 32.6 | 30.8 |
-| 16 | Bagel | 100/100 | 29.3 | 27.7 |
-| 17 | OmniGen2 | 100/100 | 26.5 | 25.0 |
-| 18 | Show-o2 | 100/100 | 20.2 | 18.9 |
+| Rank | Model | Coverage | Overall9 |
+|---:|---|---:|---:|
+| 1 | GPT-Image-2 | 100/100 | 79.7 |
+| 2 | Grok-Imagine-2.0-Low | 98/100 | 79.5 |
+| 3 | Qwen-Image-3-Max | 99/100 | 74.9 |
+| 4 | Grok-Imagine | 98/100 | 73.4 |
+| 5 | Qwen-Image-2-Pro | 99/100 | 69.3 |
+| 6 | Nano Banana Pro | 100/100 | 66.5 |
+| 7 | SeedDream-4.0 | 100/100 | 64.3 |
+| 8 | SeedDream-4.5 | 99/100 | 63.9 |
+| 9 | Qwen-Image-2 | 99/100 | 63.5 |
+| 10 | Nano-Banana | 100/100 | 54.4 |
+| 11 | SenseNova-U1 | 100/100 | 40.6 |
+| 12 | Qwen-Image | 100/100 | 38.7 |
+| 13 | Mage-Flow | 100/100 | 37.7 |
+| 14 | Flux.2-Klein-9B | 100/100 | 34.8 |
+| 15 | Flux.2-Klein-4B | 100/100 | 32.6 |
+| 16 | Bagel | 100/100 | 29.3 |
+| 17 | OmniGen2 | 100/100 | 26.5 |
+| 18 | Show-o2 | 100/100 | 20.2 |
 
 #### Mini-hard
 
-| Rank | Model | Coverage | Overall9 | Overall10 |
-|---:|---|---:|---:|---:|
-| 1 | Grok-Imagine-2.0-Low | 96/100 | 71.9 | 70.5 |
-| 2 | GPT-Image-2 | 100/100 | 71.3 | 70.1 |
-| 3 | Qwen-Image-3-Max | 99/100 | 64.3 | 62.9 |
-| 4 | Grok-Imagine | 94/100 | 61.8 | 60.4 |
-| 5 | Nano Banana Pro | 100/100 | 60.8 | 59.3 |
-| 6 | Qwen-Image-2-Pro | 100/100 | 50.6 | 49.0 |
-| 7 | Qwen-Image-2 | 100/100 | 50.0 | 48.4 |
-| 8 | SeedDream-4.5 | 100/100 | 49.0 | 47.7 |
-| 9 | Nano-Banana | 100/100 | 44.4 | 42.7 |
-| 10 | SeedDream-4.0 | 100/100 | 38.9 | 37.4 |
-| 11 | SenseNova-U1 | 100/100 | 29.7 | 28.6 |
-| 12 | Qwen-Image | 100/100 | 29.5 | 28.4 |
-| 13 | Mage-Flow | 100/100 | 28.3 | 27.2 |
-| 14 | Flux.2-Klein-9B | 100/100 | 27.3 | 26.2 |
-| 15 | Bagel | 100/100 | 23.0 | 22.2 |
-| 16 | Flux.2-Klein-4B | 100/100 | 21.9 | 20.9 |
-| 17 | OmniGen2 | 100/100 | 21.9 | 21.0 |
-| 18 | Show-o2 | 100/100 | 15.8 | 14.9 |
+| Rank | Model | Coverage | Overall9 |
+|---:|---|---:|---:|
+| 1 | Grok-Imagine-2.0-Low | 96/100 | 71.9 |
+| 2 | GPT-Image-2 | 100/100 | 71.3 |
+| 3 | Qwen-Image-3-Max | 99/100 | 64.3 |
+| 4 | Grok-Imagine | 94/100 | 61.8 |
+| 5 | Nano Banana Pro | 100/100 | 60.8 |
+| 6 | Qwen-Image-2-Pro | 100/100 | 50.6 |
+| 7 | Qwen-Image-2 | 100/100 | 50.0 |
+| 8 | SeedDream-4.5 | 100/100 | 49.0 |
+| 9 | Nano-Banana | 100/100 | 44.4 |
+| 10 | SeedDream-4.0 | 100/100 | 38.9 |
+| 11 | SenseNova-U1 | 100/100 | 29.7 |
+| 12 | Qwen-Image | 100/100 | 29.5 |
+| 13 | Mage-Flow | 100/100 | 28.3 |
+| 14 | Flux.2-Klein-9B | 100/100 | 27.3 |
+| 15 | Bagel | 100/100 | 23.0 |
+| 16 | Flux.2-Klein-4B | 100/100 | 21.9 |
+| 17 | OmniGen2 | 100/100 | 21.9 |
+| 18 | Show-o2 | 100/100 | 15.8 |
 
 </details>
 
