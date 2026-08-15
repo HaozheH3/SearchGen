@@ -38,6 +38,42 @@
     },
     {
       "component_counts": {
+        "ai_naturalness": 715,
+        "checklist": 715,
+        "composition_and_aesthetics": 715,
+        "image_quality": 715,
+        "physical_plausibility": 533,
+        "prompt_faithfulness": 715,
+        "rubric_adaptive": 715,
+        "text_reference_evaluation": 494,
+        "text_rendering": 540,
+        "visual_reference_evaluation": 581
+      },
+      "components": {
+        "ai_naturalness": 68.6,
+        "checklist": 74.4,
+        "composition_and_aesthetics": 83.6,
+        "image_quality": 76.3,
+        "physical_plausibility": 84.7,
+        "prompt_faithfulness": 71.4,
+        "rubric_adaptive": 73.5,
+        "text_reference_evaluation": 63.2,
+        "text_rendering": 80.2,
+        "visual_reference_evaluation": 68.4
+      },
+      "coverage": 0.9521,
+      "display_name": "Grok-Imagine-2-Low",
+      "missing_policy": "exclude",
+      "model_id": "grok-imagine-image-2.0-low",
+      "n_included": 715,
+      "n_scored": 715,
+      "n_total": 751,
+      "overall_10": 74.1,
+      "overall_9": 75.2,
+      "type": "Commercial"
+    },
+    {
+      "component_counts": {
         "ai_naturalness": 738,
         "checklist": 738,
         "composition_and_aesthetics": 738,
@@ -98,7 +134,7 @@
         "visual_reference_evaluation": 60.8
       },
       "coverage": 0.9547,
-      "display_name": "Grok-Imagine-Image",
+      "display_name": "Grok-Imagine",
       "missing_policy": "exclude",
       "model_id": "xai_image",
       "n_included": 717,
@@ -659,6 +695,42 @@
         "physical_plausibility": 93,
         "prompt_faithfulness": 97,
         "rubric_adaptive": 97,
+        "text_reference_evaluation": 40,
+        "text_rendering": 31,
+        "visual_reference_evaluation": 89
+      },
+      "components": {
+        "ai_naturalness": 66.3,
+        "checklist": 83.0,
+        "composition_and_aesthetics": 84.0,
+        "image_quality": 72.5,
+        "physical_plausibility": 80.8,
+        "prompt_faithfulness": 75.9,
+        "rubric_adaptive": 80.0,
+        "text_reference_evaluation": 56.2,
+        "text_rendering": 85.5,
+        "visual_reference_evaluation": 68.7
+      },
+      "coverage": 0.97,
+      "display_name": "Grok-Imagine-2-Low",
+      "missing_policy": "exclude",
+      "model_id": "grok-imagine-image-2.0-low",
+      "n_included": 97,
+      "n_scored": 97,
+      "n_total": 100,
+      "overall_10": 76.0,
+      "overall_9": 76.9,
+      "type": "Commercial"
+    },
+    {
+      "component_counts": {
+        "ai_naturalness": 97,
+        "checklist": 97,
+        "composition_and_aesthetics": 97,
+        "image_quality": 97,
+        "physical_plausibility": 93,
+        "prompt_faithfulness": 97,
+        "rubric_adaptive": 97,
         "text_reference_evaluation": 37,
         "text_rendering": 29,
         "visual_reference_evaluation": 89
@@ -676,7 +748,7 @@
         "visual_reference_evaluation": 66.9
       },
       "coverage": 0.97,
-      "display_name": "Grok-Imagine-Image",
+      "display_name": "Grok-Imagine",
       "missing_policy": "exclude",
       "model_id": "xai_image",
       "n_included": 97,
@@ -1266,6 +1338,42 @@
     },
     {
       "component_counts": {
+        "ai_naturalness": 618,
+        "checklist": 618,
+        "composition_and_aesthetics": 618,
+        "image_quality": 618,
+        "physical_plausibility": 440,
+        "prompt_faithfulness": 618,
+        "rubric_adaptive": 618,
+        "text_reference_evaluation": 454,
+        "text_rendering": 509,
+        "visual_reference_evaluation": 492
+      },
+      "components": {
+        "ai_naturalness": 69.0,
+        "checklist": 73.1,
+        "composition_and_aesthetics": 83.5,
+        "image_quality": 76.9,
+        "physical_plausibility": 85.6,
+        "prompt_faithfulness": 70.7,
+        "rubric_adaptive": 72.5,
+        "text_reference_evaluation": 63.8,
+        "text_rendering": 79.9,
+        "visual_reference_evaluation": 68.3
+      },
+      "coverage": 0.9493,
+      "display_name": "Grok-Imagine-2-Low",
+      "missing_policy": "exclude",
+      "model_id": "grok-imagine-image-2.0-low",
+      "n_included": 618,
+      "n_scored": 618,
+      "n_total": 651,
+      "overall_10": 73.8,
+      "overall_9": 74.9,
+      "type": "Commercial"
+    },
+    {
+      "component_counts": {
         "ai_naturalness": 641,
         "checklist": 641,
         "composition_and_aesthetics": 641,
@@ -1326,7 +1434,7 @@
         "visual_reference_evaluation": 59.7
       },
       "coverage": 0.9524,
-      "display_name": "Grok-Imagine-Image",
+      "display_name": "Grok-Imagine",
       "missing_policy": "exclude",
       "model_id": "xai_image",
       "n_included": 620,
@@ -1844,6 +1952,42 @@
   "TextualSearch": [
     {
       "component_counts": {
+        "ai_naturalness": 263,
+        "checklist": 263,
+        "composition_and_aesthetics": 263,
+        "image_quality": 263,
+        "physical_plausibility": 168,
+        "prompt_faithfulness": 263,
+        "rubric_adaptive": 263,
+        "text_reference_evaluation": 255,
+        "text_rendering": 259,
+        "visual_reference_evaluation": 172
+      },
+      "components": {
+        "ai_naturalness": 68.7,
+        "checklist": 68.8,
+        "composition_and_aesthetics": 85.4,
+        "image_quality": 76.7,
+        "physical_plausibility": 94.9,
+        "prompt_faithfulness": 71.2,
+        "rubric_adaptive": 69.9,
+        "text_reference_evaluation": 54.6,
+        "text_rendering": 71.0,
+        "visual_reference_evaluation": 68.9
+      },
+      "coverage": 0.9962,
+      "display_name": "Grok-Imagine-2-Low",
+      "missing_policy": "exclude",
+      "model_id": "grok-imagine-image-2.0-low",
+      "n_included": 263,
+      "n_scored": 263,
+      "n_total": 264,
+      "overall_10": 72.1,
+      "overall_9": 74.1,
+      "type": "Commercial"
+    },
+    {
+      "component_counts": {
         "ai_naturalness": 260,
         "checklist": 260,
         "composition_and_aesthetics": 260,
@@ -1904,7 +2048,7 @@
         "visual_reference_evaluation": 55.3
       },
       "coverage": 1.0,
-      "display_name": "Grok-Imagine-Image",
+      "display_name": "Grok-Imagine",
       "missing_policy": "exclude",
       "model_id": "xai_image",
       "n_included": 264,
@@ -2494,6 +2638,42 @@
     },
     {
       "component_counts": {
+        "ai_naturalness": 355,
+        "checklist": 355,
+        "composition_and_aesthetics": 355,
+        "image_quality": 355,
+        "physical_plausibility": 272,
+        "prompt_faithfulness": 355,
+        "rubric_adaptive": 355,
+        "text_reference_evaluation": 199,
+        "text_rendering": 250,
+        "visual_reference_evaluation": 320
+      },
+      "components": {
+        "ai_naturalness": 69.2,
+        "checklist": 76.2,
+        "composition_and_aesthetics": 82.2,
+        "image_quality": 77.1,
+        "physical_plausibility": 79.8,
+        "prompt_faithfulness": 70.3,
+        "rubric_adaptive": 74.4,
+        "text_reference_evaluation": 75.7,
+        "text_rendering": 89.1,
+        "visual_reference_evaluation": 68.0
+      },
+      "coverage": 0.9173,
+      "display_name": "Grok-Imagine-2-Low",
+      "missing_policy": "exclude",
+      "model_id": "grok-imagine-image-2.0-low",
+      "n_included": 355,
+      "n_scored": 355,
+      "n_total": 387,
+      "overall_10": 75.2,
+      "overall_9": 75.5,
+      "type": "Commercial"
+    },
+    {
+      "component_counts": {
         "ai_naturalness": 380,
         "checklist": 380,
         "composition_and_aesthetics": 380,
@@ -2554,7 +2734,7 @@
         "visual_reference_evaluation": 62.0
       },
       "coverage": 0.9199,
-      "display_name": "Grok-Imagine-Image",
+      "display_name": "Grok-Imagine",
       "missing_policy": "exclude",
       "model_id": "xai_image",
       "n_included": 356,

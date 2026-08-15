@@ -298,7 +298,8 @@ body.modal-open{overflow:hidden}
   <div class="badges">
     <a class="badge-link hf" href="https://huggingface.co/datasets/JasperHaozhe/SearchGen-20K" target="_blank" rel="noopener">&#129303; SearchGen-20K</a>
     <a class="badge-link hf" href="https://huggingface.co/datasets/JasperHaozhe/SearchGen-Corpus-1M" target="_blank" rel="noopener">&#129303; SearchGen-Corpus-1M</a>
-    <a class="badge-link hf" href="https://huggingface.co/datasets/JasperHaozhe/SearchGen-Bench" target="_blank" rel="noopener">&#129303; AgentGen Bench</a>
+    <a class="badge-link hf" href="https://huggingface.co/datasets/JasperHaozhe/AgentGen-Bench" target="_blank" rel="noopener">&#129303; AgentGen Bench</a>
+    <a class="badge-link hf" href="https://huggingface.co/JasperHaozhe/AgentGen-Bench-Evaluator" target="_blank" rel="noopener">&#129303; AgentGen Bench Evaluator</a>
     <a class="badge-link hf" href="https://huggingface.co/spaces/CongWei1230/SearchGen-Bench" target="_blank" rel="noopener">&#129303; LeaderBoard</a>
   </div>
   <!-- benchmark, live interactive demo, and animated static walkthrough -->
@@ -388,7 +389,7 @@ body.modal-open{overflow:hidden}
   </div>
 
   <p>On prompts that need only what a model already learned, open and commercial generators land in the same band (67–75 out of 100). Turn to prompts that need live world knowledge, and the field splits: open generators crater to <strong>21–28</strong>, while commercial systems with built-in search barely move. Existing benchmarks test rendering inside known concepts, so they never see this gap at all.</p>
-  <p>AgentGen Bench contains 751 prompts scored by the finalized 3d5 evaluator. The primary <strong>Overall9</strong> metric averages nine applicable components and excludes Text Reference.</p>
+  <p><strong>AgentGen Bench</strong>, previously named <strong>SearchGen-Bench</strong>, contains 751 prompts and is designed for the broader evaluation of agentic generation. For full reproducibility, use the released <a href="https://huggingface.co/JasperHaozhe/AgentGen-Bench-Evaluator" target="_blank" rel="noopener">AgentGen-Bench-Evaluator</a>, trained on top of Qwen3.5-9B. The primary <strong>Overall9</strong> metric averages nine applicable components and excludes Text Reference.</p>
 
   <figure class="fig">
     <img src="assets/figures/b1.png" alt="Per-generator quality on NoSearch vs Search-Intensive strata across twelve generators.">

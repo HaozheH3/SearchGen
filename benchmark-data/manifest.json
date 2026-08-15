@@ -48,7 +48,7 @@
     },
     "subset_field": "subset"
   },
-  "generated_at": "2026-07-26T14:15:01+00:00",
+  "generated_at": "2026-08-15T05:06:41+00:00",
   "models": {
     "bagel": {
       "aliases": [],
@@ -70,6 +70,16 @@
       ],
       "display_name": "GPT-Image-2",
       "source_id": "gpt_image",
+      "type": "Commercial"
+    },
+    "grok-imagine-image-2.0-low": {
+      "aliases": [
+        "Grok Imagine Image 2.0 Low",
+        "Grok-Imagine-Image-2.0-Low",
+        "grok-imagine-image-2.0"
+      ],
+      "display_name": "Grok-Imagine-2-Low",
+      "source_id": "grok-imagine-image-2.0",
       "type": "Commercial"
     },
     "klein4b": {
@@ -170,9 +180,10 @@
     },
     "xai_image": {
       "aliases": [
-        "Grok Imagine Image"
+        "Grok Imagine Image",
+        "Grok-Imagine-Image"
       ],
-      "display_name": "Grok-Imagine-Image",
+      "display_name": "Grok-Imagine",
       "source_id": "xai_image",
       "type": "Commercial"
     }

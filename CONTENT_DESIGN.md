@@ -27,10 +27,10 @@
 | **Authors** | Haozhe Wang¹ · Weijia Feng³ · Jinpeng Yu³ · Che Liu⁴ · Ping Nie² · Fangzhen Lin¹ · Jiaming Liu³ ✉ · Ruihua Huang³ · Jimmy Lin² · Wenhu Chen² · Cong Wei² ✉ |
 | **Affiliations** | ¹ Hong Kong University of Science and Technology · ² University of Waterloo · ³ Qwen Applications · ⁴ Imperial College London |
 | **Corresponding** | Jiaming Liu, Cong Wei (✉) |
-| **Badge links (hero)** | arXiv · Project Page · GitHub (`HaozheH3/SearchGen`) · 🤗 SearchGen-20K (dataset) · 🤗 SearchGen-Corpus-1M (search corpus) · 🤗 SearchGen-Bench |
+| **Badge links (hero)** | arXiv · Project Page · GitHub (`HaozheH3/SearchGen`) · 🤗 SearchGen-20K (dataset) · 🤗 SearchGen-Corpus-1M (search corpus) · 🤗 AgentGen-Bench |
 
 **Canonical numbers (use these verbatim, site-wide):**
-`20,839` prompts (SearchGen-20K, total) · `751`-prompt test set (SearchGen-Bench) ·
+`20,839` prompts (SearchGen-20K, total) · `751`-prompt test set (AgentGen-Bench) ·
 `20,188` training rows · `12` failure categories · `22` domains · `5.2` mean
 knowledge gaps/prompt · `93.1%` of `31,537` entities appear in one prompt ·
 open generators score `21–28 / 100` on search-intensive prompts (a ~`40`-point
@@ -86,7 +86,7 @@ accent stat; no chart here — it would compete with Finding 1).
 
 > Modern image generators render gorgeously and lie fluently. Ask for the 2025
 > Osaka Expo mascot and you get a confident, wrong invention. The failure isn't the
-> pixels — it's the *knowledge*. On **SearchGen-Bench**, frontier open generators
+> pixels — it's the *knowledge*. On **AgentGen-Bench**, frontier open generators
 > score just **21–28 out of 100** on search-intensive prompts — up to a ~40-point
 > collapse that standard benchmarks never register.
 >
@@ -153,7 +153,7 @@ below. **Balance: ~75% visual / 25% text.**
 > while commercial systems with built-in search barely move. Existing benchmarks
 > test rendering inside known concepts, so they never see this gap at all.
 >
-> To surface it, we built **SearchGen-Bench**: 751 test prompts scored by a
+> To surface it, we built **AgentGen-Bench** (previously SearchGen-Bench): 751 test prompts scored by a
 > 9-component judge on a 0–100 scale, with separate dimensions for *knowledge* and
 > for *rendering*. The split is the whole point. When Flux.2-Klein-9B scores 24.2 on
 > knowledge checklists but stays high on image quality, the diagnosis is
