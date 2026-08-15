@@ -22,7 +22,8 @@ Haozhe Wang<sup>1</sup> · Weijia Feng<sup>3</sup> · Jinpeng Yu<sup>3</sup> · 
 <p>
   <a href="https://huggingface.co/datasets/JasperHaozhe/SearchGen-20K"><img src="https://img.shields.io/badge/%F0%9F%A4%97-SearchGen--20K-FFD21E?style=for-the-badge" height="28" alt="SearchGen-20K on Hugging Face"></a>
   <a href="https://huggingface.co/datasets/JasperHaozhe/SearchGen-Corpus-1M"><img src="https://img.shields.io/badge/%F0%9F%A4%97-SearchGen--Corpus--1M-FFD21E?style=for-the-badge" height="28" alt="SearchGen-Corpus-1M on Hugging Face"></a>
-  <a href="https://huggingface.co/datasets/JasperHaozhe/SearchGen-Bench"><img src="https://img.shields.io/badge/%F0%9F%A4%97-AgentGen--Bench-FFD21E?style=for-the-badge" height="28" alt="AgentGen-Bench on Hugging Face"></a>
+  <a href="https://huggingface.co/datasets/JasperHaozhe/AgentGen-Bench"><img src="https://img.shields.io/badge/%F0%9F%A4%97-AgentGen--Bench-FFD21E?style=for-the-badge" height="28" alt="AgentGen-Bench on Hugging Face"></a>
+  <a href="https://huggingface.co/JasperHaozhe/AgentGen-Bench-Evaluator"><img src="https://img.shields.io/badge/%F0%9F%A4%97-AgentGen--Bench--Evaluator-FFD21E?style=for-the-badge" height="28" alt="AgentGen-Bench-Evaluator on Hugging Face"></a>
 </p>
 
 <p>
@@ -76,7 +77,7 @@ Worse, generators have no way to flag their own ignorance. They are trained to a
 
 On prompts that need only what a model already learned, open and commercial generators land in the same band (**67–75 out of 100**). Turn to prompts that need live world knowledge, and the field splits: open generators crater to **21–28**, while commercial systems with built-in search barely move. Existing benchmarks test rendering inside known concepts, so they never see this gap at all.
 
-To surface it, we built **AgentGen-Bench**: 751 test prompts scored with separate dimensions for **knowledge** and **rendering**. The split is the whole point. When a generator scores poorly on knowledge checklists but remains strong on image quality, the diagnosis is unambiguous—it can draw; it just does not know.
+To surface it, we built **AgentGen-Bench** (previously named **SearchGen-Bench**): 751 test prompts scored with separate dimensions for **knowledge** and **rendering**. The new name reflects the benchmark's broader use for evaluating agentic generation. The split is the whole point. When a generator scores poorly on knowledge checklists but remains strong on image quality, the diagnosis is unambiguous—it can draw; it just does not know.
 
 <p align="center">
   <img src="assets/readme/b1.png" width="900" alt="AgentGen-Bench results across no-search and search-intensive prompts">
@@ -287,6 +288,9 @@ Follow [`agent/QUICKSTART.md`](agent/QUICKSTART.md) for a fully offline run. To 
 
 ## Evaluation Environment
 
+For full reproducibility, we recommend the released
+[AgentGen-Bench-Evaluator](https://huggingface.co/JasperHaozhe/AgentGen-Bench-Evaluator),
+which is trained on top of [Qwen3.5-9B](https://huggingface.co/Qwen/Qwen3.5-9B).
 The evaluator requires Python 3.10 or newer:
 
 ```bash
@@ -306,9 +310,24 @@ SEARCHGEN_EVAL_API_KEY=replace_me
 
 Then export them with `set -a; source .env; set +a`.
 
+Serve the released evaluator with vLLM using the provided portable script:
+
+```bash
+pip install vllm
+bash evaluation/serve_evaluator.sh
+# Multi-GPU: one data-parallel replica per listed GPU
+bash evaluation/serve_evaluator.sh --gpus 0,1,2,3
+```
+
+The script enforces `--chat-template-content-format openai`, which is required
+for the evaluator's multimodal OpenAI-style messages. For multiple GPUs it uses
+vLLM data parallelism by default (`--data-parallel-size`), with tensor parallel
+size one. See [`evaluation/serve_evaluator.sh`](evaluation/serve_evaluator.sh)
+for optional model, port, DP, and TP overrides.
+
 ## Evaluation Quick Start
 
-Download [AgentGen-Bench](https://huggingface.co/datasets/JasperHaozhe/SearchGen-Bench), then prepare a predictions manifest following [`evaluation/examples/generated_images_manifest.example.jsonl`](evaluation/examples/generated_images_manifest.example.jsonl). From the repository's `evaluation/` directory, validate all inputs without API calls, replacing the benchmark paths with the location of your download:
+Download [AgentGen-Bench](https://huggingface.co/datasets/JasperHaozhe/AgentGen-Bench), then prepare a predictions manifest following [`evaluation/examples/generated_images_manifest.example.jsonl`](evaluation/examples/generated_images_manifest.example.jsonl). From the repository's `evaluation/` directory, validate all inputs without API calls, replacing the benchmark paths with the location of your download:
 
 ```bash
 python evaluate.py \
