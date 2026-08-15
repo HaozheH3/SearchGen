@@ -49,7 +49,7 @@ Haozhe Wang<sup>1</sup> · Weijia Feng<sup>3</sup> · Jinpeng Yu<sup>3</sup> · 
 
 ## TL;DR — Teach What You Can, Search the Rest
 
-Modern image generators render gorgeously and lie fluently. Ask for the 2025 Osaka Expo mascot and you get a confident, wrong invention. The failure isn't the pixels—it's the **knowledge**. On **AgentGen-Bench**, frontier open generators score just **21–28 out of 100** on search-intensive prompts—up to a roughly 40-point collapse that standard benchmarks never register.
+Modern image generators render gorgeously and lie fluently. Ask for the 2025 Osaka Expo mascot and you get a confident, wrong invention. The failure isn't the pixels—it's the **knowledge**. On **AgentGen-Bench**, open generators score just **17.5–31.6 out of 100** on search-intensive prompts—with a collapse of up to 41.4 points that standard benchmarks never register.
 
 Search is the obvious fix, the way an illustrator consults references. But naive search backfires: it corrupts prompts the generator already handled. The real problem is a **knowledge boundary**—the line between what a generator can learn and what it must look up. That line is generator-specific, it moves during training, and it cannot be hand-drawn. It has to be discovered.
 
@@ -71,11 +71,11 @@ Worse, generators have no way to flag their own ignorance. They are trained to a
 
 *Ask for a specific person, a labeled scientific diagram, or live data and today's best generators confidently fabricate. These representative cases span SearchGen's 12 failure categories.*
 
-## Finding 1 — A 40-Point Gap That No Benchmark Shows
+## Finding 1 — A 41.4-Point Gap That No Benchmark Shows
 
-> **Generators that score comparably on standard prompts diverge by nearly 40 points when search-intensive world knowledge is required.**
+> **Generators that score comparably on standard prompts diverge by up to 41.4 points when search-intensive world knowledge is required.**
 
-On prompts that need only what a model already learned, open and commercial generators land in the same band (**67–75 out of 100**). Turn to prompts that need live world knowledge, and the field splits: open generators crater to **21–28**, while commercial systems with built-in search barely move. Existing benchmarks test rendering inside known concepts, so they never see this gap at all.
+On NoSearch prompts, the strongest open generator reaches **70.0**, overlapping the commercial range (**66.3–78.9**). Turn to prompts that need live world knowledge and the field splits: open generators span **17.5–31.6**, while the five leading commercial systems score **63.6–75.5** and drop by only **2.0–9.7** points. Existing benchmarks test rendering inside known concepts, so they never see this gap at all.
 
 To surface it, we built **AgentGen-Bench** (previously named **SearchGen-Bench**): 751 test prompts scored with separate dimensions for **knowledge** and **rendering**. The new name reflects the benchmark's broader use for evaluating agentic generation. The split is the whole point. When a generator scores poorly on knowledge checklists but remains strong on image quality, the diagnosis is unambiguous—it can draw; it just does not know.
 
@@ -83,13 +83,108 @@ To surface it, we built **AgentGen-Bench** (previously named **SearchGen-Bench**
   <img src="assets/readme/b1.png" width="900" alt="AgentGen-Bench results across no-search and search-intensive prompts">
 </p>
 
-***AgentGen-Bench results.** Generators score well on prompts they can answer from memory (gray). On prompts requiring external knowledge (orange), every open generator collapses—up to a 40-point drop—while commercial systems with built-in search hold. The bottleneck is missing knowledge, not rendering skill.*
+***AgentGen-Bench results.** Generators score well on prompts they can answer from memory (gray). On prompts requiring external knowledge (blue), every open generator drops—by as much as 41.4 points—while the leading commercial systems remain comparatively stable. The bottleneck is missing knowledge, not rendering skill.*
 
 <p align="center">
-  <img src="assets/readme/agentgenbench_arena_style.png" width="760" alt="Overall9 AgentGen-Bench ranking of seventeen image generators on the full 751-prompt evaluation">
+  <img src="assets/readme/agentgenbench_arena_style.png" width="760" alt="Overall9 AgentGen-Bench ranking of eighteen image generators on the full 751-prompt evaluation">
 </p>
 
-***Overall AgentGen-Bench ranking.** GPT-Image-2 leads, followed by Qwen-Image-3-Max and Grok-Imagine-Image. Scores use Overall9 from the finalized 3d5 evaluator.*
+***Overall AgentGen-Bench ranking.** GPT-Image-2 leads, followed by Grok-Imagine-2.0-Low and Qwen-Image-3-Max. Scores use Overall9 from the finalized 3d5 evaluator.*
+
+### Full and Test-mini Leaderboard
+
+**Full** evaluates all 751 benchmark prompts. **Test-mini** is the fixed,
+published 200-prompt slice obtained by selecting rows whose `subset` array
+contains the official `testmini` label—it is not a new random sample:
+
+```python
+from datasets import load_dataset
+
+benchmark = load_dataset("JasperHaozhe/AgentGen-Bench", split="test")
+testmini = benchmark.filter(lambda row: "testmini" in row["subset"])
+assert len(testmini) == 200
+```
+
+Scores are on a 0–100 scale. Overall9 is the primary ranking metric; coverage
+is `scored prompts / slice prompts`, with missing evaluator scores excluded
+from aggregation. Across all 18 models, Test-mini preserves the Full Overall9
+rank order (Pearson `r = 0.9994`; mean absolute displayed-score difference
+`0.77`).
+
+| Full rank | Model | Full cov. | Full O9 | Full O10 | Test-mini cov. | Test-mini O9 | Test-mini O10 |
+|---:|---|---:|---:|---:|---:|---:|---:|
+| 1 | GPT-Image-2 | 718/751 | 76.0 | 74.8 | 200/200 | 76.3 | 75.2 |
+| 2 | Grok-Imagine-2.0-Low | 715/751 | 75.2 | 74.1 | 196/200 | 73.9 | 72.8 |
+| 3 | Qwen-Image-3-Max | 738/751 | 68.4 | 67.2 | 195/200 | 68.2 | 66.8 |
+| 4 | Grok-Imagine | 717/751 | 67.8 | 66.5 | 196/200 | 67.7 | 66.4 |
+| 5 | Nano Banana Pro | 738/751 | 65.0 | 63.6 | 200/200 | 64.7 | 63.2 |
+| 6 | Qwen-Image-2-Pro | 742/751 | 59.4 | 58.0 | 197/200 | 60.3 | 59.0 |
+| 7 | Qwen-Image-2 | 741/751 | 56.4 | 54.9 | 197/200 | 56.9 | 55.5 |
+| 8 | SeedDream-4.5 | 746/751 | 56.2 | 54.7 | 199/200 | 56.6 | 55.2 |
+| 9 | SeedDream-4.0 | 750/751 | 52.5 | 50.9 | 200/200 | 51.8 | 50.1 |
+| 10 | Nano-Banana | 740/751 | 49.7 | 47.9 | 200/200 | 48.4 | 46.5 |
+| 11 | SenseNova-U1 | 750/751 | 35.7 | 34.4 | 200/200 | 35.4 | 34.0 |
+| 12 | Qwen-Image | 751/751 | 34.1 | 32.8 | 200/200 | 32.7 | 31.5 |
+| 13 | Mage-Flow | 751/751 | 32.8 | 31.4 | 200/200 | 31.4 | 30.0 |
+| 14 | Flux.2-Klein-9B | 750/751 | 31.1 | 29.7 | 200/200 | 30.5 | 29.2 |
+| 15 | Flux.2-Klein-4B | 751/751 | 27.7 | 26.4 | 200/200 | 27.1 | 25.7 |
+| 16 | Bagel | 751/751 | 25.8 | 24.6 | 200/200 | 24.8 | 23.5 |
+| 17 | OmniGen2 | 750/751 | 24.0 | 22.8 | 199/200 | 22.2 | 21.1 |
+| 18 | Show-o2 | 751/751 | 19.8 | 18.7 | 200/200 | 19.1 | 18.1 |
+
+<details>
+<summary><strong>Mini-easy and Mini-hard leaderboards (100 prompts each)</strong></summary>
+
+`testmini_easy` and `testmini_hard` are independent official label slices;
+they are not necessarily a partition of the 200-prompt `testmini` slice.
+
+#### Mini-easy
+
+| Rank | Model | Coverage | Overall9 | Overall10 |
+|---:|---|---:|---:|---:|
+| 1 | GPT-Image-2 | 100/100 | 79.7 | 79.1 |
+| 2 | Grok-Imagine-2.0-Low | 98/100 | 79.5 | 78.9 |
+| 3 | Qwen-Image-3-Max | 99/100 | 74.9 | 74.0 |
+| 4 | Grok-Imagine | 98/100 | 73.4 | 72.5 |
+| 5 | Qwen-Image-2-Pro | 99/100 | 69.3 | 68.2 |
+| 6 | Nano Banana Pro | 100/100 | 66.5 | 65.3 |
+| 7 | SeedDream-4.0 | 100/100 | 64.3 | 63.1 |
+| 8 | SeedDream-4.5 | 99/100 | 63.9 | 62.6 |
+| 9 | Qwen-Image-2 | 99/100 | 63.5 | 62.1 |
+| 10 | Nano-Banana | 100/100 | 54.4 | 52.4 |
+| 11 | SenseNova-U1 | 100/100 | 40.6 | 39.0 |
+| 12 | Qwen-Image | 100/100 | 38.7 | 37.1 |
+| 13 | Mage-Flow | 100/100 | 37.7 | 36.0 |
+| 14 | Flux.2-Klein-9B | 100/100 | 34.8 | 33.1 |
+| 15 | Flux.2-Klein-4B | 100/100 | 32.6 | 30.8 |
+| 16 | Bagel | 100/100 | 29.3 | 27.7 |
+| 17 | OmniGen2 | 100/100 | 26.5 | 25.0 |
+| 18 | Show-o2 | 100/100 | 20.2 | 18.9 |
+
+#### Mini-hard
+
+| Rank | Model | Coverage | Overall9 | Overall10 |
+|---:|---|---:|---:|---:|
+| 1 | Grok-Imagine-2.0-Low | 96/100 | 71.9 | 70.5 |
+| 2 | GPT-Image-2 | 100/100 | 71.3 | 70.1 |
+| 3 | Qwen-Image-3-Max | 99/100 | 64.3 | 62.9 |
+| 4 | Grok-Imagine | 94/100 | 61.8 | 60.4 |
+| 5 | Nano Banana Pro | 100/100 | 60.8 | 59.3 |
+| 6 | Qwen-Image-2-Pro | 100/100 | 50.6 | 49.0 |
+| 7 | Qwen-Image-2 | 100/100 | 50.0 | 48.4 |
+| 8 | SeedDream-4.5 | 100/100 | 49.0 | 47.7 |
+| 9 | Nano-Banana | 100/100 | 44.4 | 42.7 |
+| 10 | SeedDream-4.0 | 100/100 | 38.9 | 37.4 |
+| 11 | SenseNova-U1 | 100/100 | 29.7 | 28.6 |
+| 12 | Qwen-Image | 100/100 | 29.5 | 28.4 |
+| 13 | Mage-Flow | 100/100 | 28.3 | 27.2 |
+| 14 | Flux.2-Klein-9B | 100/100 | 27.3 | 26.2 |
+| 15 | Bagel | 100/100 | 23.0 | 22.2 |
+| 16 | Flux.2-Klein-4B | 100/100 | 21.9 | 20.9 |
+| 17 | OmniGen2 | 100/100 | 21.9 | 21.0 |
+| 18 | Show-o2 | 100/100 | 15.8 | 14.9 |
+
+</details>
 
 ### Full Benchmark Breakdown
 
@@ -98,7 +193,8 @@ Scores are reported on a 0–100 scale; higher is better. **Checklist**, **Rubri
 | Stratum | Type | Generator | Overall9 | Checklist | Rubric | Prompt | Image quality | Text rendering | AI naturalness | Composition | Physical plausibility | Visual ref. |
 |:--|:--|:--|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|
 | NoSearch | Commercial | GPT-Image-2 | 78.9 | 84.8 | 82.7 | 79.3 | 73.4 | 92.3 | 67.6 | 86.5 | 81.2 | 70.9 |
-| NoSearch | Commercial | Grok-Imagine-Image | 74.8 | 81.3 | 78.3 | 72.7 | 72.3 | 83.9 | 65.6 | 79.7 | 77.2 | 66.9 |
+| NoSearch | Commercial | Grok-Imagine-2.0-Low | 76.9 | 83.0 | 80.0 | 75.9 | 72.5 | 85.5 | 66.3 | 84.0 | 80.8 | 68.7 |
+| NoSearch | Commercial | Grok-Imagine | 74.8 | 81.3 | 78.3 | 72.7 | 72.3 | 83.9 | 65.6 | 79.7 | 77.2 | 66.9 |
 | NoSearch | Commercial | Qwen-Image-3-Max | 73.7 | 79.1 | 76.2 | 69.8 | 70.3 | 86.2 | 63.9 | 82.5 | 78.3 | 64.0 |
 | NoSearch | Commercial | Nano Banana Pro | 73.3 | 78.4 | 76.3 | 70.2 | 70.7 | 85.6 | 65.2 | 80.3 | 77.1 | 63.0 |
 | NoSearch | Commercial | Qwen-Image-2-Pro | 71.2 | 76.8 | 74.1 | 67.3 | 70.5 | 77.8 | 61.8 | 78.3 | 75.3 | 61.2 |
@@ -115,8 +211,9 @@ Scores are reported on a 0–100 scale; higher is better. **Checklist**, **Rubri
 | NoSearch | Open | OmniGen2 | 47.4 | 49.1 | 46.1 | 33.5 | 56.4 | 7.8 | 47.3 | 61.4 | 60.3 | 30.6 |
 | NoSearch | Open | Show-o2 | 34.4 | 32.7 | 30.9 | 21.0 | 47.2 | 2.4 | 38.0 | 49.8 | 40.9 | 19.9 |
 | SearchIntensive | Commercial | GPT-Image-2 | 75.5 | 74.4 | 73.7 | 72.2 | 77.4 | 77.7 | 68.9 | 83.9 | 84.9 | 70.4 |
+| SearchIntensive | Commercial | Grok-Imagine-2.0-Low | 74.9 | 73.1 | 72.5 | 70.7 | 76.9 | 79.9 | 69.0 | 83.5 | 85.6 | 68.3 |
 | SearchIntensive | Commercial | Qwen-Image-3-Max | 67.6 | 65.8 | 65.3 | 62.8 | 71.1 | 67.9 | 62.3 | 77.0 | 78.6 | 59.6 |
-| SearchIntensive | Commercial | Grok-Imagine-Image | 66.7 | 65.9 | 64.6 | 62.8 | 69.5 | 65.7 | 61.7 | 75.6 | 77.8 | 59.7 |
+| SearchIntensive | Commercial | Grok-Imagine | 66.7 | 65.9 | 64.6 | 62.8 | 69.5 | 65.7 | 61.7 | 75.6 | 77.8 | 59.7 |
 | SearchIntensive | Commercial | Nano Banana Pro | 63.6 | 60.7 | 60.1 | 56.4 | 68.1 | 61.3 | 60.0 | 72.7 | 78.1 | 55.4 |
 | SearchIntensive | Commercial | Qwen-Image-2-Pro | 57.5 | 53.9 | 53.1 | 48.3 | 65.3 | 55.1 | 57.3 | 68.9 | 72.8 | 46.8 |
 | SearchIntensive | Commercial | Qwen-Image-2 | 54.1 | 49.9 | 49.6 | 44.1 | 62.5 | 50.1 | 54.3 | 66.2 | 71.4 | 42.0 |
