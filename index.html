@@ -337,7 +337,7 @@ body.modal-open{overflow:hidden}
 <section class="card narrow" id="tldr">
   <span class="eyebrow">TL;DR</span>
   <h2>The short version — teach what you can, search the rest</h2>
-  <p>Modern image generators render gorgeously and lie fluently. Ask for the 2025 Osaka Expo mascot and you get a confident, wrong invention. The failure isn't the pixels — it's the <span class="em">knowledge</span>. On <strong>AgentGen Bench</strong>, frontier open generators score just <strong>21–28 out of 100</strong> on search-intensive prompts — up to a ~40-point collapse that standard benchmarks never register.</p>
+  <p>Modern image generators render gorgeously and lie fluently. Ask for the 2025 Osaka Expo mascot and you get a confident, wrong invention. The failure isn't the pixels — it's the <span class="em">knowledge</span>. On <strong>AgentGen Bench</strong>, open generators score just <strong>17.5–31.6 out of 100</strong> on search-intensive prompts — with a collapse of up to 41.4 points that standard benchmarks never register.</p>
   <p>Search is the obvious fix, the way an illustrator consults references. But naive search backfires: it corrupts prompts the generator already handled. The real problem is a <strong>knowledge boundary</strong> — the line between what a generator can learn and what it must look up. That line is generator-specific, it moves during training, and it can't be hand-drawn. It has to be <span class="em">discovered</span>.</p>
   <p>So we discover it, by <strong>co-training the generator and the search agent together</strong>. Below: how the collapse works, why naive search fails, what the knowledge boundary is, and how a co-trained 8B reasoner on a 4B generator matches a frontier <span class="em">reasoner</span> on the same generator — jump to the finding cards. ↓</p>
 </section>
@@ -381,24 +381,24 @@ body.modal-open{overflow:hidden}
 <!-- ========================= §3 Finding 1 ========================= -->
 <section class="card" id="finding1">
   <span class="eyebrow">Finding 1</span>
-  <h2>A 40-point gap that no benchmark shows</h2>
+  <h2>A 41.4-point gap that no benchmark shows</h2>
 
   <div class="callout finding">
     <div class="tag">&#9679; Finding 1</div>
-    <p class="lead">Generators that score comparably on standard prompts diverge by nearly 40 points when search-intensive world knowledge is required.</p>
+    <p class="lead">Generators that score comparably on standard prompts diverge by up to 41.4 points when search-intensive world knowledge is required.</p>
   </div>
 
-  <p>On prompts that need only what a model already learned, open and commercial generators land in the same band (67–75 out of 100). Turn to prompts that need live world knowledge, and the field splits: open generators crater to <strong>21–28</strong>, while commercial systems with built-in search barely move. Existing benchmarks test rendering inside known concepts, so they never see this gap at all.</p>
+  <p>On NoSearch prompts, the strongest open generator reaches 70.0, overlapping the commercial range (66.3–78.9). Turn to prompts that need live world knowledge and the field splits: open generators span <strong>17.5–31.6</strong>, while the five leading commercial systems score 63.6–75.5 and drop by only 2.0–9.7 points. Existing benchmarks test rendering inside known concepts, so they never see this gap at all.</p>
   <p><strong>AgentGen Bench</strong>, previously named <strong>SearchGen-Bench</strong>, contains 751 prompts and is designed for the broader evaluation of agentic generation. For full reproducibility, use the released <a href="https://huggingface.co/JasperHaozhe/AgentGen-Bench-Evaluator" target="_blank" rel="noopener">AgentGen-Bench-Evaluator</a>, trained on top of Qwen3.5-9B. The primary <strong>Overall9</strong> metric averages nine applicable components and excludes Text Reference.</p>
 
   <figure class="fig">
-    <img src="assets/figures/b1.png" alt="Per-generator quality on NoSearch vs Search-Intensive strata across twelve generators.">
-    <figcaption><b>Generators score well on prompts they can answer from memory (gray).</b> On prompts that require external knowledge (orange), every open generator collapses — up to a 40-point drop — while commercial systems with built-in search hold. The bottleneck is missing knowledge, not rendering skill.</figcaption>
+    <img src="assets/figures/b1.png" alt="Per-generator Overall9 quality on NoSearch versus Search-Intensive strata across eighteen generators.">
+    <figcaption><b>Generators score well on prompts they can answer from memory (gray).</b> On prompts that require external knowledge (blue), every open generator drops — by as much as 41.4 points — while the leading commercial systems remain comparatively stable. The bottleneck is missing knowledge, not rendering skill.</figcaption>
   </figure>
 
   <figure class="fig">
-    <img src="assets/figures/agentgenbench_arena_style.png" alt="Overall9 AgentGen Bench ranking of seventeen image generators on the full 751-prompt evaluation.">
-    <figcaption><b>Overall AgentGen Bench ranking.</b> GPT-Image-2 leads, followed by Qwen-Image-3-Max and Grok-Imagine-Image. Scores use Overall9 from the finalized 3d5 evaluator.</figcaption>
+    <img src="assets/figures/agentgenbench_arena_style.png" alt="Overall9 AgentGen Bench ranking of eighteen image generators on the full 751-prompt evaluation.">
+    <figcaption><b>Overall AgentGen Bench ranking.</b> GPT-Image-2 leads, followed by Grok-Imagine-2.0-Low and Qwen-Image-3-Max. Scores use Overall9 from the finalized 3d5 evaluator.</figcaption>
   </figure>
 
   <div class="benchmark-head">
@@ -425,7 +425,8 @@ body.modal-open{overflow:hidden}
       <tbody>
         <tr class="stratum memory"><th colspan="11" scope="rowgroup">NoSearch <span class="count">parametric knowledge is sufficient</span></th></tr>
         <tr><td class="model">GPT-Image-2</td><td class="overall">78.9</td><td>84.8</td><td>82.7</td><td>79.3</td><td>73.4</td><td>92.3</td><td>67.6</td><td>86.5</td><td>81.2</td><td>70.9</td></tr>
-        <tr><td class="model">Grok-Imagine-Image</td><td class="overall">74.8</td><td>81.3</td><td>78.3</td><td>72.7</td><td>72.3</td><td>83.9</td><td>65.6</td><td>79.7</td><td>77.2</td><td>66.9</td></tr>
+        <tr><td class="model">Grok-Imagine-2.0-Low</td><td class="overall">76.9</td><td>83.0</td><td>80.0</td><td>75.9</td><td>72.5</td><td>85.5</td><td>66.3</td><td>84.0</td><td>80.8</td><td>68.7</td></tr>
+        <tr><td class="model">Grok-Imagine</td><td class="overall">74.8</td><td>81.3</td><td>78.3</td><td>72.7</td><td>72.3</td><td>83.9</td><td>65.6</td><td>79.7</td><td>77.2</td><td>66.9</td></tr>
         <tr><td class="model">Qwen-Image-3-Max</td><td class="overall">73.7</td><td>79.1</td><td>76.2</td><td>69.8</td><td>70.3</td><td>86.2</td><td>63.9</td><td>82.5</td><td>78.3</td><td>64.0</td></tr>
         <tr><td class="model">Nano Banana Pro</td><td class="overall">73.3</td><td>78.4</td><td>76.3</td><td>70.2</td><td>70.7</td><td>85.6</td><td>65.2</td><td>80.3</td><td>77.1</td><td>63.0</td></tr>
         <tr><td class="model">Qwen-Image-2-Pro</td><td class="overall">71.2</td><td>76.8</td><td>74.1</td><td>67.3</td><td>70.5</td><td>77.8</td><td>61.8</td><td>78.3</td><td>75.3</td><td>61.2</td></tr>
@@ -443,8 +444,9 @@ body.modal-open{overflow:hidden}
         <tr><td class="model">Show-o2</td><td class="overall">34.4</td><td>32.7</td><td>30.9</td><td>21.0</td><td>47.2</td><td>2.4</td><td>38.0</td><td>49.8</td><td>40.9</td><td>19.9</td></tr>
         <tr class="stratum search"><th colspan="11" scope="rowgroup">SearchIntensive <span class="count">external knowledge is required</span></th></tr>
         <tr><td class="model">GPT-Image-2</td><td class="overall">75.5</td><td>74.4</td><td>73.7</td><td>72.2</td><td>77.4</td><td>77.7</td><td>68.9</td><td>83.9</td><td>84.9</td><td>70.4</td></tr>
+        <tr><td class="model">Grok-Imagine-2.0-Low</td><td class="overall">74.9</td><td>73.1</td><td>72.5</td><td>70.7</td><td>76.9</td><td>79.9</td><td>69.0</td><td>83.5</td><td>85.6</td><td>68.3</td></tr>
         <tr><td class="model">Qwen-Image-3-Max</td><td class="overall">67.6</td><td>65.8</td><td>65.3</td><td>62.8</td><td>71.1</td><td>67.9</td><td>62.3</td><td>77.0</td><td>78.6</td><td>59.6</td></tr>
-        <tr><td class="model">Grok-Imagine-Image</td><td class="overall">66.7</td><td>65.9</td><td>64.6</td><td>62.8</td><td>69.5</td><td>65.7</td><td>61.7</td><td>75.6</td><td>77.8</td><td>59.7</td></tr>
+        <tr><td class="model">Grok-Imagine</td><td class="overall">66.7</td><td>65.9</td><td>64.6</td><td>62.8</td><td>69.5</td><td>65.7</td><td>61.7</td><td>75.6</td><td>77.8</td><td>59.7</td></tr>
         <tr><td class="model">Nano Banana Pro</td><td class="overall">63.6</td><td>60.7</td><td>60.1</td><td>56.4</td><td>68.1</td><td>61.3</td><td>60.0</td><td>72.7</td><td>78.1</td><td>55.4</td></tr>
         <tr><td class="model">Qwen-Image-2-Pro</td><td class="overall">57.5</td><td>53.9</td><td>53.1</td><td>48.3</td><td>65.3</td><td>55.1</td><td>57.3</td><td>68.9</td><td>72.8</td><td>46.8</td></tr>
         <tr><td class="model">Qwen-Image-2</td><td class="overall">54.1</td><td>49.9</td><td>49.6</td><td>44.1</td><td>62.5</td><td>50.1</td><td>54.3</td><td>66.2</td><td>71.4</td><td>42.0</td></tr>

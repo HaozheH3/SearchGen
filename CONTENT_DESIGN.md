@@ -33,7 +33,7 @@
 `20,839` prompts (SearchGen-20K, total) · `751`-prompt test set (AgentGen-Bench) ·
 `20,188` training rows · `12` failure categories · `22` domains · `5.2` mean
 knowledge gaps/prompt · `93.1%` of `31,537` entities appear in one prompt ·
-open generators score `21–28 / 100` on search-intensive prompts (a ~`40`-point
+open generators score `17.5–31.6 / 100` on search-intensive prompts (up to a `41.4`-point
 collapse) · SearchGen-Corpus-1M = `145,642` search sessions, `559,973` unique URLs,
 `370,733` cached downloads · `90,452` reasoning traces · `281,925` generations ·
 co-trained Klein-4B `31.8` vs frontier oracle `31.2` · DPO `+2.8`, RFT `+2.6` ·
@@ -87,7 +87,7 @@ accent stat; no chart here — it would compete with Finding 1).
 > Modern image generators render gorgeously and lie fluently. Ask for the 2025
 > Osaka Expo mascot and you get a confident, wrong invention. The failure isn't the
 > pixels — it's the *knowledge*. On **AgentGen-Bench**, frontier open generators
-> score just **21–28 out of 100** on search-intensive prompts — up to a ~40-point
+> score just **17.5–31.6 out of 100** on search-intensive prompts — with up to a 41.4-point
 > collapse that standard benchmarks never register.
 >
 > Search is the obvious fix, the way an illustrator consults references. But naive
@@ -142,15 +142,15 @@ below. **Balance: ~75% visual / 25% text.**
 
 **Layout:** full-width chart, generous whitespace. **Balance: ~60% visual / 40% text** (a "card": chart + a tight takeaway).
 
-**H2:** A 40-point gap that no benchmark shows
+**H2:** A 41.4-point gap that no benchmark shows
 
 > **Finding 1 — Generators that score comparably on standard prompts diverge by
-> nearly 40 points when search-intensive world knowledge is required.**
+> up to 41.4 points when search-intensive world knowledge is required.**
 >
-> On prompts that need only what a model already learned, open and commercial
-> generators land in the same band (67–75 out of 100). Turn to prompts that need
-> live world knowledge, and the field splits: open generators crater to **21–28**,
-> while commercial systems with built-in search barely move. Existing benchmarks
+> On NoSearch prompts, the strongest open generator reaches 70.0, overlapping
+> the commercial range (66.3–78.9). Turn to prompts that need live world
+> knowledge and the field splits: open generators span **17.5–31.6**, while the
+> five leading commercial systems score 63.6–75.5 and drop by only 2.0–9.7 points. Existing benchmarks
 > test rendering inside known concepts, so they never see this gap at all.
 >
 > To surface it, we built **AgentGen-Bench** (previously SearchGen-Bench): 751 test prompts scored by a
@@ -163,8 +163,8 @@ below. **Balance: ~75% visual / 25% text.**
 
 **🖼 Visual**
 - **Source:** `figures/b1_stratum_collapse.pdf` → **convert SVG + recolor** (PNG@2× acceptable if time-boxed). **[P0]**
-- **Shows:** per-generator quality on NoSearch stratum vs Search-Intensive stratum across 9 generators; drops of −0.1 (GPT-Image-2) to −39.1 (Qwen-Image-2).
-- **Caption:** *Generators score well on prompts they can answer from memory (gray). On prompts that require external knowledge (orange), every open generator collapses — up to a 40-point drop — while commercial systems with built-in search hold. The bottleneck is missing knowledge, not rendering skill.*
+- **Shows:** per-generator quality on NoSearch stratum vs Search-Intensive stratum across 18 generators; drops of 2.0 (Grok-Imagine-2.0-Low) to 41.4 (Qwen-Image).
+- **Caption:** *Generators score well on prompts they can answer from memory (gray). On prompts that require external knowledge, every open generator drops — by as much as 41.4 points — while the leading commercial systems remain comparatively stable. The bottleneck is missing knowledge, not rendering skill.*
 - **Recolor spec:** gray = NoSearch stratum · orange `#ea580c` = Search-Intensive stratum · −Δ labels in red `#dc2626`. (Drop the current blue — it collides with the brand accent. Gray/orange + numeric Δ is colorblind-safe.)
 
 ---

@@ -62,7 +62,7 @@
         "visual_reference_evaluation": 70.4
       },
       "coverage": 0.9382,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 501,
@@ -712,7 +712,7 @@
         "visual_reference_evaluation": 65.5
       },
       "coverage": 0.9497,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 151,
@@ -1326,7 +1326,7 @@
         "visual_reference_evaluation": 71.0
       },
       "coverage": 0.9573,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 269,
@@ -1976,7 +1976,7 @@
         "visual_reference_evaluation": 63.0
       },
       "coverage": 0.9915,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 117,
@@ -2662,7 +2662,7 @@
         "visual_reference_evaluation": 61.1
       },
       "coverage": 0.9189,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 385,
@@ -3276,7 +3276,7 @@
         "visual_reference_evaluation": 68.3
       },
       "coverage": 0.989,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 270,
@@ -3926,7 +3926,7 @@
         "visual_reference_evaluation": 68.1
       },
       "coverage": 1.0,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 30,
@@ -4576,7 +4576,7 @@
         "visual_reference_evaluation": 74.2
       },
       "coverage": 0.9781,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 402,
@@ -5262,7 +5262,7 @@
         "visual_reference_evaluation": 50.0
       },
       "coverage": 1.0,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 38,
@@ -5912,7 +5912,7 @@
         "visual_reference_evaluation": 60.1
       },
       "coverage": 1.0,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 56,
@@ -6526,7 +6526,7 @@
         "visual_reference_evaluation": 66.7
       },
       "coverage": 0.9697,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 32,
@@ -7212,7 +7212,7 @@
         "visual_reference_evaluation": 70.1
       },
       "coverage": 0.9784,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 181,

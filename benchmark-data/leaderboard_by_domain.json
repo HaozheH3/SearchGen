@@ -62,7 +62,7 @@
         "visual_reference_evaluation": 68.1
       },
       "coverage": 0.9286,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 13,
@@ -712,7 +712,7 @@
         "visual_reference_evaluation": 69.2
       },
       "coverage": 0.9316,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 177,
@@ -1362,7 +1362,7 @@
         "visual_reference_evaluation": 67.9
       },
       "coverage": 0.9457,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 244,
@@ -2012,7 +2012,7 @@
         "visual_reference_evaluation": 61.7
       },
       "coverage": 0.978,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 89,
@@ -2662,7 +2662,7 @@
         "visual_reference_evaluation": 65.9
       },
       "coverage": 0.9529,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 162,
@@ -3312,7 +3312,7 @@
         "visual_reference_evaluation": 79.3
       },
       "coverage": 0.9919,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 123,
@@ -3962,7 +3962,7 @@
         "visual_reference_evaluation": 61.5
       },
       "coverage": 0.8696,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 20,
@@ -4576,7 +4576,7 @@
         "visual_reference_evaluation": 81.7
       },
       "coverage": 0.9429,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 33,
@@ -5262,7 +5262,7 @@
         "visual_reference_evaluation": 46.9
       },
       "coverage": 0.5857,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 41,
@@ -5912,7 +5912,7 @@
         "visual_reference_evaluation": 66.7
       },
       "coverage": 0.9903,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 102,
@@ -6526,7 +6526,7 @@
         "visual_reference_evaluation": 81.7
       },
       "coverage": 1.0,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 31,
@@ -7212,7 +7212,7 @@
         "visual_reference_evaluation": 61.6
       },
       "coverage": 0.8933,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 67,
@@ -7898,7 +7898,7 @@
         "visual_reference_evaluation": 75.0
       },
       "coverage": 1.0,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 6,
@@ -8512,7 +8512,7 @@
         "visual_reference_evaluation": 53.8
       },
       "coverage": 1.0,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 27,
@@ -9162,7 +9162,7 @@
         "visual_reference_evaluation": 74.7
       },
       "coverage": 0.9737,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 37,
@@ -9848,7 +9848,7 @@
         "visual_reference_evaluation": 40.0
       },
       "coverage": 1.0,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 6,
@@ -10498,7 +10498,7 @@
         "visual_reference_evaluation": 50.9
       },
       "coverage": 0.9889,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 89,
@@ -11076,7 +11076,7 @@
         "visual_reference_evaluation": 45.8
       },
       "coverage": 1.0,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 4,
@@ -11726,7 +11726,7 @@
         "visual_reference_evaluation": 77.2
       },
       "coverage": 0.9527,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 141,
@@ -12412,7 +12412,7 @@
         "visual_reference_evaluation": 58.8
       },
       "coverage": 0.9831,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 58,
@@ -13062,7 +13062,7 @@
         "visual_reference_evaluation": 74.4
       },
       "coverage": 0.9906,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 105,
@@ -13712,7 +13712,7 @@
         "visual_reference_evaluation": 70.5
       },
       "coverage": 1.0,
-      "display_name": "Grok-Imagine-2-Low",
+      "display_name": "Grok-Imagine-2.0-Low",
       "missing_policy": "exclude",
       "model_id": "grok-imagine-image-2.0-low",
       "n_included": 117,

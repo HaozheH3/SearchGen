@@ -61,7 +61,7 @@
       "visual_reference_evaluation": 68.4
     },
     "coverage": 0.9521,
-    "display_name": "Grok-Imagine-2-Low",
+    "display_name": "Grok-Imagine-2.0-Low",
     "missing_policy": "exclude",
     "model_id": "grok-imagine-image-2.0-low",
     "n_included": 715,
